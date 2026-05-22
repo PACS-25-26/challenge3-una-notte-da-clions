@@ -48,20 +48,23 @@ enum class ExecutionMode {
  * @struct Data_Struct
  * @brief Holds geometric parameters, discretization data, source terms, and the exact solution.
  * 
+ * @tparam Func0 Callable type (lambda) for the source term.
  * @tparam Func1 Callable type (lambda) for the boundary condition or source term on edge 1.
  * @tparam Func2 Callable type for the boundary condition or source term on edge 2.
  * @tparam Func3 Callable type for the boundary condition or source term on edge 3.
  * @tparam Func4 Callable type for the boundary condition or source term on edge 4.
  * @tparam u_ex Callable type for the exact analytical solution, used for convergence verification.
  */
-template <typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+template <typename Func0,typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
 struct Data_Struct {
     unsigned n; 
     double x1, x2; 
-    Func1 f1;  
-    Func2 f2; 
-    Func3 f3;
-    Func4 f4;
+
+    Func0 f0;  // Source term
+    Func1 f1;  //BC bottom edge
+    Func2 f2;  //BC right edge
+    Func3 f3;  //BC top edge
+    Func4 f4;  //BC left edge
     u_ex u_exact_lambda;
     double tolerance;
     unsigned max_iterations;
@@ -110,10 +113,10 @@ namespace laplacian_solvers {
      * @tparam execution_mode The computational runtime policy (SEQUENTIAL, PARALLEL).
      */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
     class Laplacian_Solver {
         private:
-            Data_Struct<Func1, Func2, Func3, Func4, u_ex> data;
+            Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> data;
             Eigen::MatrixXd meshX;
             Eigen::MatrixXd meshY;
             double h;
@@ -126,7 +129,7 @@ namespace laplacian_solvers {
             * @brief Constructs a new Laplacian Solver instance.
              * @param data Constant reference to the input data structure defining the problem parameters.
             */
-            Laplacian_Solver(const Data_Struct<Func1, Func2, Func3, Func4, u_ex>& d) : data(d) {}; //OK
+            Laplacian_Solver(const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex>& d) : data(d) {}; //OK
 
             /**
              * @brief Executes the numerical simulation for the specific template configuration.

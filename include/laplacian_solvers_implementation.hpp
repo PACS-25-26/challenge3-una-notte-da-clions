@@ -11,8 +11,8 @@ namespace laplacian_solvers{
 
     // CONSTRUCTOR
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::Laplacian_Solver(const Data_Struct<Func1, Func2, Func3, Func4, u_ex>& d) : data(d) {
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::Laplacian_Solver(const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex>& d) : data(d) {
         meshX = Eigen::MatrixXd::Zero(data.n, data.n);
         meshY = Eigen::MatrixXd::Zero(data.n, data.n);
         h = (data.x2 - data.x1) / (data.n - 1);
@@ -48,8 +48,8 @@ namespace laplacian_solvers{
 
     //sequential or parallel?
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::solve(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::solve(){
 
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) {
             return sequential_solve();
@@ -61,8 +61,8 @@ namespace laplacian_solvers{
 
     // Jacobi or Schwarz?
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::sequential_solve(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::sequential_solve(){
         if constexpr (solver_type == SolverType::JACOBI) {
             return jacobi_sequential();
         } else {
@@ -72,8 +72,8 @@ namespace laplacian_solvers{
 
     
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::parallel_solve(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::parallel_solve(){
         if constexpr (solver_type == SolverType::JACOBI) {
             return jacobi_parallel();
         } else {
@@ -83,8 +83,8 @@ namespace laplacian_solvers{
 
     // DIRICHLET or NEUMANN or ROBIN?
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return jacobi_sequential_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -95,8 +95,8 @@ namespace laplacian_solvers{
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return jacobi_parallel_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -107,8 +107,8 @@ namespace laplacian_solvers{
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return schwarz_sequential_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -119,8 +119,8 @@ namespace laplacian_solvers{
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return schwarz_parallel_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -133,97 +133,98 @@ namespace laplacian_solvers{
     // ACTUAL SOLVERS JACOBI
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_dirichlet(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_dirichlet(){
         // Implementazione del metodo di Jacobi sequenziale con condizioni al contorno di Dirichlet
+    
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_neumann(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_neumann(){
         // Implementazione del metodo di Jacobi sequenziale con condizioni al contorno di Neumann
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_robin(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_robin(){
         // Implementazione del metodo di Jacobi sequenziale con condizioni al contorno di Robin
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_dirichlet(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_dirichlet(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Dirichlet
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_neumann(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_neumann(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Neumann
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_robin(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_robin(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Robin
     }
 
     //ACTUAL SOLVERS SCHWARZ
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential_dirichlet(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential_dirichlet(){
         // Implementazione del metodo di Schwarz sequenziale con condizioni al contorno di Dirichlet
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential_neumann(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential_neumann(){
         // Implementazione del metodo di Schwarz sequenziale con condizioni al contorno di Neumann
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential_robin(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_sequential_robin(){
         // Implementazione del metodo di Schwarz sequenziale con condizioni al contorno di Robin
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_dirichlet(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_dirichlet(){
         // Implementazione del metodo di Schwarz parallelo con condizioni al contorno di Dirichlet
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_neumann(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_neumann(){
         // Implementazione del metodo di Schwarz parallelo con condizioni al contorno di Neumann
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_robin(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_robin(){
         // Implementazione del metodo di Schwarz parallelo con condizioni al contorno di Robin
     }
 
 
     // CONVERGENCE TEST METHOD
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Convergence_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::convergence_test(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    Convergence_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::convergence_test(){
         
     }
 
     // PRINT AND EXPORT METHODS
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::print(){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::print(){
         // STAMPA GRIGLIA, SOLUZIONE DISCRETA, SOLUZIONE ESATTA
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func1, Func2, Func3, Func4, u_ex>::export_to_vtk(const Eigen::MatrixXd& meshX, const Eigen::MatrixXd& meshY, const Eigen::MatrixXd& u_h, const std::string& filename){
+              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::export_to_vtk(const Eigen::MatrixXd& meshX, const Eigen::MatrixXd& meshY, const Eigen::MatrixXd& u_h, const std::string& filename){
         // Esporta i dati in formato VTK per la visualizzazione con Paraview
     }
 
