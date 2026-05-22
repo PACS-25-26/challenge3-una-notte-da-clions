@@ -62,7 +62,10 @@ struct Data_Struct {
     Func2 f2; 
     Func3 f3;
     Func4 f4;
-    u_ex u_exact;
+    u_ex u_exact_lambda;
+    double tolerance;
+    unsigned max_iterations;
+    double gamma; // Parameter for Robin boundary condition: gamma*u + du/dn = g
 };
 
 /**
@@ -106,17 +109,24 @@ namespace laplacian_solvers {
      * @tparam boundary_condition The applied physical boundary condition type (DIRICHLET, NEUMANN, ROBIN).
      * @tparam execution_mode The computational runtime policy (SEQUENTIAL, PARALLEL).
      */
-    template<SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode>
-    class LaplacianSolver {
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
+              typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+    class Laplacian_Solver {
         private:
-            Data_Struct data;
+            Data_Struct<Func1, Func2, Func3, Func4, u_ex> data;
+            Eigen::MatrixXd meshX;
+            Eigen::MatrixXd meshY;
+            double h;
+            Eigen::MatrixXd u_h;
+            Eigen::MatrixXd u_exact;
+            
         public:
         
             /**
             * @brief Constructs a new Laplacian Solver instance.
              * @param data Constant reference to the input data structure defining the problem parameters.
             */
-            LaplacianSolver(const Data_Struct& data) : data(data){};
+            Laplacian_Solver(const Data_Struct<Func1, Func2, Func3, Func4, u_ex>& d) : data(d) {}; //OK
 
             /**
              * @brief Executes the numerical simulation for the specific template configuration.
@@ -125,7 +135,7 @@ namespace laplacian_solvers {
              * 
              * @return Result_Struct Output structure containing the mesh, discrete solution u_h, and total iterations.
              */
-            Result_Struct solve();
+            Result_Struct solve(); //OK
 
             /**
              * @brief Executes the numerical simulation for the specific template configuration.
@@ -135,6 +145,35 @@ namespace laplacian_solvers {
              * @return Result_Struct Output structure containing the mesh, discrete solution u_h, and total iterations.
              */
             Convergence_Struct convergence_test(); 
+
+            void print();
+            void export_to_vtk(const Eigen::MatrixXd& meshX, const Eigen::MatrixXd& meshY, const Eigen::MatrixXd& u_h, const std::string& filename);
+
+            private:
+            // Private helper methods
+
+            //SOLVER STRUCTURE: sequential / parallel -> jacobi / schwarz -> dirichlet / neumann / robin
+            Result_Struct sequential_solve(); //OK
+            Result_Struct parallel_solve(); //OK
+
+            Result_Struct jacobi_sequential(); //OK
+            Result_Struct jacobi_parallel(); //OK
+            Result_Struct schwarz_sequential(); //OK
+            Result_Struct schwarz_parallel(); //OK
+ 
+            Result_Struct jacobi_sequential_dirichlet();
+            Result_Struct jacobi_sequential_neumann();
+            Result_Struct jacobi_sequential_robin();
+            Result_Struct jacobi_parallel_dirichlet();
+            Result_Struct jacobi_parallel_neumann();
+            Result_Struct jacobi_parallel_robin();
+            Result_Struct schwarz_sequential_dirichlet();
+            Result_Struct schwarz_sequential_neumann();
+            Result_Struct schwarz_sequential_robin();
+            Result_Struct schwarz_parallel_dirichlet();
+            Result_Struct schwarz_parallel_neumann();
+            Result_Struct schwarz_parallel_robin();
+
     };
 
 } // namespace laplacian_solvers
