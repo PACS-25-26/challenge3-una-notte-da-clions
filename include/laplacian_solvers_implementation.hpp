@@ -26,6 +26,7 @@ namespace laplacian_solvers{
         u_h = Eigen::MatrixXd::Zero(data.n, data.n);
         u_exact = Eigen::MatrixXd::Zero(data.n, data.n);
 
+        //The mesh is generated in a way that the point (x1,x2) corresponds to the top-left corner of the domain, and (x2,x1) to the bottom-right corner.
         for (unsigned i = 0; i < data.n; ++i) {
             for (unsigned j = 0; j < data.n; ++j) {
                 meshX(i, j) = data.x1 + j * h;
