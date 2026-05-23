@@ -16,6 +16,9 @@
 #include <fstream>
 #include <Eigen/Dense>
 #include <chrono>
+#include <mpi.h>
+#include <omp.h>
+#include <algorithm>
 
 /**
  * @enum SolverType
@@ -185,10 +188,10 @@ namespace laplacian_solvers {
             Result_Struct jacobi_sequential_dirichlet(); //OK
             Result_Struct jacobi_sequential_neumann(); //OK
             Result_Struct jacobi_sequential_robin(); //OK
-            Result_Struct jacobi_parallel_dirichlet();
+            Result_Struct jacobi_parallel_dirichlet();//OK
             Result_Struct jacobi_parallel_neumann();
             Result_Struct jacobi_parallel_robin();
-            Result_Struct schwarz_parallel_dirichlet();
+            Result_Struct schwarz_parallel_dirichlet();//OK
             Result_Struct schwarz_parallel_neumann();
             Result_Struct schwarz_parallel_robin();
 
