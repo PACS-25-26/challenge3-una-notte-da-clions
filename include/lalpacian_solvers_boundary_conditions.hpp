@@ -16,7 +16,7 @@
      */
 
 template <BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-void apply_boundary_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> data, Eigen::MatrixXd meshX, Eigen::MatrixXd meshY, const unsigned mpi_rank, const unsigned mpi_size){
+void apply_boundary_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex>& data, const Eigen::MatrixXd & meshX, const Eigen::MatrixXd &meshY, unsigned mpi_rank = -1, unsigned mpi_size = -1){
     if constexpr(boundary_condition == BoundaryCondition::DIRICHLET) apply_dirichlet_condition<execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
     if constexpr(boundary_condition == BoundaryCondition::NEUMANN) apply_neumann_condition<execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
     if constexpr(boundary_condition == BoundaryCondition::ROBIN) apply_robin_condition<execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
@@ -27,7 +27,7 @@ void apply_boundary_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Fu
      * The template function can select the execution policy (sequential or parallel)
      */
 template <ExecutionMode execution_mode, typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-void apply_dirichlet_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> data, Eigen::MatrixXd meshX, Eigen::MatrixXd meshY, const unsigned mpi_rank, const unsigned mpi_size){
+void apply_dirichlet_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> & data, const Eigen::MatrixXd & meshX, const Eigen::MatrixXd & meshY, const unsigned mpi_rank, const unsigned mpi_size){
     
     const unsigned last = data.n - 1;
     
@@ -62,7 +62,7 @@ void apply_dirichlet_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, F
      * The template function can select the execution policy (sequential or parallel). Notice that the compatibility condition is not checked
      */
 template <ExecutionMode execution_mode, typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-void apply_neumann_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> data, Eigen::MatrixXd meshX, Eigen::MatrixXd meshY, const unsigned mpi_rank){
+void apply_neumann_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> & data, const Eigen::MatrixXd & meshX, const Eigen::MatrixXd & meshY, const unsigned mpi_rank){
     
     const unsigned last = data.n - 1;
     const double h = abs(data.x2 - data.x1) / (data.n - 1);
@@ -100,7 +100,7 @@ void apply_neumann_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Fun
      */
 
 template <ExecutionMode execution_mode, typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-void apply_robin_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> data, Eigen::MatrixXd meshX, Eigen::MatrixXd meshY, const unsigned mpi_rank){
+void apply_robin_condition(Eigen::MatrixXd & u_h, const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> & data, const Eigen::MatrixXd & meshX, const Eigen::MatrixXd & meshY, const unsigned mpi_rank){
     const unsigned last = data.n - 1;
     const double h = abs(data.x2 - data.x1) / (data.n - 1);
     const double den = 1 + h*data.gamma; // Denominator for the Robin condition update formula

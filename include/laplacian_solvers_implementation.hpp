@@ -24,16 +24,7 @@ namespace laplacian_solvers{
         
         build_mesh();
         build_exact_solution();
-        
-        if constexpr (boundary_condition == BoundaryCondition::DIRICHLET){
-            for (unsigned i = 0; i < data.n; ++i) {
-                u_h(i, 0) = data.f4(meshX(i, 0), meshY(i, 0)); // Left edge
-                u_h(i, data.n - 1) = data.f2(meshX(i, data.n - 1), meshY(i, data.n - 1)); // Right edge
-                u_h(0, i) = data.f3(meshX(0, i), meshY(0, i)); // Top edge
-                u_h(data.n - 1, i) = data.f1(meshX(data.n - 1, i), meshY(data.n - 1, i)); // Bottom edge
-            }
-            
-        }
+        u_h = Eigen::MatrixXd::Zero(data.n, data.n);
 
     };
 
@@ -53,9 +44,7 @@ namespace laplacian_solvers{
         h = abs(data.x2 - data.x1) / (data.n - 1); // Uniform grid spacing. Works even if x2 < x1. 
 
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) build_mesh_sequential();
-        else{
-            build_mesh_parallel();
-        }
+        else build_mesh_parallel();
     }
 
     /**
@@ -171,18 +160,6 @@ namespace laplacian_solvers{
         MPI_Allgather(local_exact_solution.data(), (end_row - start_row) * data.n, MPI_DOUBLE, u_exact.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
     }
 
-    /* --- BOUNDARY CONDITIONS --- */
-    /**
-     * @brief Primary dispatcher for the Laplacian solver.
-     * Routes the execution flow to either sequential or parallel solvers based on the compile-time 
-     * 'execution_mode' parameter using constexpr if-branching.
-     */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::apply_dirichlet_bc_sequential(){
-
-    }
-
     /* --- SOLVE METHOD --- */
 
     //sequential or parallel?
@@ -296,10 +273,12 @@ namespace laplacian_solvers{
               typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_dirichlet(){
 
-        Eigen::MatrixXd u_new = u_h;
+        Eigen::MatrixXd u_new = u_h; // u_h è stato inizializzato?
         unsigned iter = 0;
         double err = data.tolerance + 1.0; 
         const double h2 = h * h;    
+
+        apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY);
 
         while (err > data.tolerance && iter < data.max_iterations) {
             err = 0.0;
@@ -355,6 +334,7 @@ namespace laplacian_solvers{
                 }
             }
 
+            /*
             //BC NEUMANN
             for (unsigned i = 0; i < data.n; ++i) {
                 // left edge
@@ -369,6 +349,9 @@ namespace laplacian_solvers{
                 // bottom edge 
                 u_new(last, i) = u_new(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i));
             }
+            */
+
+            apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_new, data, meshX, meshY);
 
             for (unsigned i = 0; i < data.n; ++i) {
                 error = std::max({error, std::abs(u_new(i, 0) - u_h(i, 0)), 
@@ -419,6 +402,7 @@ namespace laplacian_solvers{
                 }
             }
 
+            /**
             for (unsigned i = 0; i < data.n; ++i) {
                 // Left edge
                 u_new(i, 0) = (u_new(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0))) / den;
@@ -431,7 +415,9 @@ namespace laplacian_solvers{
                 
                 // Bottom edge 
                 u_new(last, i) = (u_new(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i))) / den;
-            }
+            }*/
+
+            apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_new, data, meshX, meshY);
 
             for (unsigned i = 0; i < data.n; ++i) {
                 error = std::max({error, std::abs(u_new(i, 0) - u_h(i, 0)), 
@@ -471,7 +457,7 @@ namespace laplacian_solvers{
         unsigned local_rows = data.n / mpi_size;
         unsigned r = data.n % mpi_size;
         if (static_cast<unsigned>(mpi_rank) < r) {
-        local_rows++;
+            local_rows++;
         }
 
         //Global indexes for meshX and meshY
@@ -488,6 +474,8 @@ namespace laplacian_solvers{
         ParallelMatrix u_h_new_local = ParallelMatrix::Zero(local_rows + 2, data.n); 
         ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
+
+        apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
 
         u_h_local.block(1, 0, local_rows, data.n) = u_h.block(start_row, 0, local_rows, data.n);
         
@@ -614,6 +602,8 @@ namespace laplacian_solvers{
         ParallelMatrix u_h_new_local = ParallelMatrix::Zero(local_rows + 2, data.n); 
         ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
+
+        apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
 
         u_h_local.block(1, 0, local_rows, data.n) = u_h.block(start_row, 0, local_rows, data.n);
         
