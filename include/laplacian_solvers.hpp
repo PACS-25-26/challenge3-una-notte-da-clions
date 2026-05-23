@@ -175,7 +175,23 @@ namespace laplacian_solvers {
             void export_to_vtk(const Eigen::MatrixXd& meshX, const Eigen::MatrixXd& meshY, const Eigen::MatrixXd& u_h, const std::string& filename);
 
             private:
-            // Private helper methods
+            // PRIVATE HELPER METHODS
+
+            // Mesh and exact solution builders
+            void build_mesh(); //OK
+            void build_exact_solution(); //OK
+            void build_mesh_sequential(); //OK
+            void build_mesh_parallel(); //OK
+            void build_exact_solution(); //OK
+            void build_exact_solution_sequential(); //OK
+            void build_exact_solution_parallel(); //OK
+
+            // Boundary condition application methods
+            void apply_dirichlet_bc_sequential(); //OK
+            void apply_neumann_bc_sequential();
+            void apply_robin_bc_sequential();
+
+
 
             //SOLVER STRUCTURE: sequential / parallel -> jacobi / schwarz -> dirichlet / neumann / robin
             Result_Struct sequential_solve(); //OK
