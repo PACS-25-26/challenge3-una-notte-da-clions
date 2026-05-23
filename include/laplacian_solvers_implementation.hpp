@@ -7,15 +7,15 @@
  */
 #ifndef LAPLACIAN_SOLVERS_IMPLEMENTATION_HPP
 #define LAPLACIAN_SOLVERS_IMPLEMENTATION_HPP
+
 #include "laplacian_solvers.hpp"
+#include "laplacian_solvers_boundary_conditions.hpp"
 
 #include <iostream>
 #include <cmath>
 #include <vector>
 #include <fstream>
 
-// Use row major eigen matrixes for better performance in parallelism
-using eigenMatrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
 namespace laplacian_solvers{
 
@@ -148,7 +148,7 @@ namespace laplacian_solvers{
         const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
         const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
 
-        auto local_exact_solution = eigenMatrixd::Zero(end_row - start_row, data.n);
+        auto local_exact_solution = eigenMatrix::Zero(end_row - start_row, data.n);
 
         // Thread safety is guaranteed since each process has different rows.
         for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
@@ -265,12 +265,12 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_dirichlet(){
 
-        Eigen::MatrixXd u_new = u_h; // u_h è stato inizializzato?
+        eigenMatrix u_new = u_h; // u_h è stato inizializzato?
         unsigned iter = 0;
         double err = data.tolerance + 1.0; 
         const double h2 = h * h;    
 
-        apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY);
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY);
 
         while (err > data.tolerance && iter < data.max_iterations) {
             err = 0.0;
@@ -307,7 +307,7 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_neumann(){
         
-        Eigen::MatrixXd u_new = u_h; // Parte da zero (inizializzati nel costruttore)
+        eigenMatrix u_new = u_h; // Parte da zero (inizializzati nel costruttore)
         unsigned iter = 0;
         double error = data.tolerance + 1.0;
         const double h2 = h * h;
@@ -342,7 +342,7 @@ namespace laplacian_solvers{
             }
             */
 
-            apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_new, data, meshX, meshY);
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY);
 
             for (unsigned i = 0; i < data.n; ++i) {
                 error = std::max({error, std::abs(u_new(i, 0) - u_h(i, 0)), 
@@ -370,7 +370,7 @@ namespace laplacian_solvers{
      */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_robin(){
-        Eigen::MatrixXd u_new = u_h; // Inizializzata a zeri dal costruttore
+        eigenMatrix u_new = u_h; // Inizializzata a zeri dal costruttore
         unsigned iter = 0;
         double error = data.tolerance + 1.0;
         const double h2 = h * h;
@@ -407,7 +407,7 @@ namespace laplacian_solvers{
                 u_new(last, i) = (u_new(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i))) / den;
             }*/
 
-            apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_new, data, meshX, meshY);
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY);
 
             for (unsigned i = 0; i < data.n; ++i) {
                 error = std::max({error, std::abs(u_new(i, 0) - u_h(i, 0)), 
@@ -464,7 +464,7 @@ namespace laplacian_solvers{
         ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
-        apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
 
         u_h_local.block(1, 0, local_rows, data.n) = u_h.block(start_row, 0, local_rows, data.n);
         
@@ -589,7 +589,7 @@ namespace laplacian_solvers{
         ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
-        apply_boundary_condition<boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
 
         u_h_local.block(1, 0, local_rows, data.n) = u_h.block(start_row, 0, local_rows, data.n);
         
@@ -701,7 +701,7 @@ namespace laplacian_solvers{
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const Eigen::MatrixXd& meshX, const Eigen::MatrixXd& meshY, const Eigen::MatrixXd& u_h, const std::string& filename){
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_h, const std::string& filename){
         // Esporta i dati in formato VTK per la visualizzazione con Paraview
     }
 
