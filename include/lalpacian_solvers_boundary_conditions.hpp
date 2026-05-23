@@ -17,9 +17,9 @@
 
 template <BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
 void apply_boundary_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix &meshY, unsigned mpi_rank = -1, unsigned mpi_size = -1){
-    if constexpr(boundary_condition == BoundaryCondition::DIRICHLET) apply_dirichlet_condition<execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
-    if constexpr(boundary_condition == BoundaryCondition::NEUMANN) apply_neumann_condition<execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
-    if constexpr(boundary_condition == BoundaryCondition::ROBIN) apply_robin_condition<execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
+    if constexpr(boundary_condition == BoundaryCondition::DIRICHLET) apply_dirichlet_condition<execution_mode, funcType, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
+    if constexpr(boundary_condition == BoundaryCondition::NEUMANN) apply_neumann_condition<execution_mode, funcType, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
+    if constexpr(boundary_condition == BoundaryCondition::ROBIN) apply_robin_condition<execution_mode, funcType, u_ex>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
 }
 
 /**
