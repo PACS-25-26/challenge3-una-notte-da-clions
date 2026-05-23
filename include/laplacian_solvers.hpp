@@ -59,17 +59,17 @@ enum class ExecutionMode {
  * @tparam Func4 Callable type for the boundary condition or source term on edge 4.
  * @tparam u_ex Callable type for the exact analytical solution, used for convergence verification.
  */
-template <typename Func0,typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+template <typename funcType>
 struct Data_Struct {
     unsigned n; 
     double x1, x2; 
 
-    Func0 f0;  // Source term
-    Func1 f1;  //BC bottom edge
-    Func2 f2;  //BC right edge
-    Func3 f3;  //BC top edge
-    Func4 f4;  //BC left edge
-    u_ex u_exact_lambda;
+    funcType f0;  // Source term
+    funcType f1;  //BC bottom edge
+    funcType f2;  //BC right edge
+    funcType f3;  //BC top edge
+    funcType f4;  //BC left edge
+    funcType u_exact_lambda;
     double tolerance;
     unsigned max_iterations;
     double gamma; // Parameter for Robin boundary condition: gamma*u + du/dn = g
@@ -116,18 +116,14 @@ namespace laplacian_solvers {
      * @tparam solver_type The iterative linear solver choice (JACOBI, SCHWARZ).
      * @tparam boundary_condition The applied physical boundary condition type (DIRICHLET, NEUMANN, ROBIN).
      * @tparam execution_mode The computational runtime policy (SEQUENTIAL, PARALLEL).
-     * @tparam Func0 Callable type (lambda) for the source term g(x,y).
-     * @tparam Func1 Callable type for the bottom boundary condition or flux.
-     * @tparam Func2 Callable type for the right boundary condition or flux.
-     * @tparam Func3 Callable type for the top boundary condition or flux.
-     * @tparam Func4 Callable type for the left boundary condition or flux.
-     * @tparam u_ex Callable type for the exact analytical solution.
+     * @tparam funcType Callable type (lambda) for the source term g(x,y) and the boundary conditions.
+
      */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
+              typename funcType>
     class Laplacian_Solver {
         private:
-            Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex> data; ///< Configuration of the problem and parameters.
+            Data_Struct<funcType> data; ///< Configuration of the problem and parameters.
             Eigen::MatrixXd meshX;    ///< Matrix containing the X coordinates of the structured grid.
             Eigen::MatrixXd meshY;    ///< Matrix containing the Y coordinates of the structured grid.
             double h;                 ///< Uniform grid spacing parameter h.
@@ -142,7 +138,7 @@ namespace laplacian_solvers {
              * @note Initializes grid coordinates, computes exact solution matrix, and pre-applies 
              *       Dirichlet conditions if statically configured.
              */
-            Laplacian_Solver(const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex>& d) : data(d) {}; //OK
+            Laplacian_Solver(const Data_Struct<funcType>& d) : data(d) {}; //OK
 
             /**
              * @brief Dispatches the computation to the correct solver branch based on ExecutionMode.
@@ -185,13 +181,6 @@ namespace laplacian_solvers {
             void build_exact_solution(); //OK
             void build_exact_solution_sequential(); //OK
             void build_exact_solution_parallel(); //OK
-
-            // Boundary condition application methods
-            void apply_dirichlet_bc_sequential(); //OK
-            void apply_neumann_bc_sequential();
-            void apply_robin_bc_sequential();
-
-
 
             //SOLVER STRUCTURE: sequential / parallel -> jacobi / schwarz -> dirichlet / neumann / robin
             Result_Struct sequential_solve(); //OK

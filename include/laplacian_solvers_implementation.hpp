@@ -14,17 +14,20 @@
 #include <vector>
 #include <fstream>
 
+// Use row major eigen matrixes for better performance in parallelism
+using eigenMatrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+
 namespace laplacian_solvers{
 
     /* --- CONSTRUCTOR --- */
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::Laplacian_Solver(const Data_Struct<Func0, Func1, Func2, Func3, Func4, u_ex>& d) : data(d) {
+              typename funcType>
+    Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::Laplacian_Solver(const Data_Struct<funcType>& d) : data(d) {
         
         build_mesh();
         build_exact_solution();
-        u_h = Eigen::MatrixXd::Zero(data.n, data.n);
+        u_h = eigenMatrix::Zero(data.n, data.n);
 
     };
 
@@ -36,11 +39,11 @@ namespace laplacian_solvers{
      */
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::build_mesh(){
+              typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh(){
 
-        meshX = Eigen::MatrixXd::Zero(data.n, data.n);
-        meshY = Eigen::MatrixXd::Zero(data.n, data.n);
+        meshX = eigenMatrix::Zero(data.n, data.n);
+        meshY = eigenMatrix::Zero(data.n, data.n);
         h = abs(data.x2 - data.x1) / (data.n - 1); // Uniform grid spacing. Works even if x2 < x1. 
 
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) build_mesh_sequential();
@@ -52,9 +55,8 @@ namespace laplacian_solvers{
      * Simply loops over the grid points and assigns the corresponding coordinates to meshX and meshY.
      */
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::build_mesh_sequential(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_sequential(){
         
         for(unsigned i = 0; i < data.n; i++) for(unsigned j = 0; j < data.n; j++) {
             meshX(i, j) = data.x1 + j * h;
@@ -67,9 +69,8 @@ namespace laplacian_solvers{
      * This is done by decompsing the domain according to example shown on the challenge pdf file
      */
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::build_mesh_parallel(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_parallel(){
         
         // Get rank information
         const int mpi_rank, mpi_size;
@@ -84,8 +85,8 @@ namespace laplacian_solvers{
         const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
         const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
 
-        auto local_meshX = Eigen::MatrixXd::Zero(end_row - start_row, data.n);
-        auto local_meshY = Eigen::MatrixXd::Zero(end_row - start_row, data.n);
+        auto local_meshX = eigenMatrix::Zero(end_row - start_row, data.n);
+        auto local_meshY = eigenMatrix::Zero(end_row - start_row, data.n);
 
 
         // Thread safety is guaranteed since each process has different rows.
@@ -105,10 +106,10 @@ namespace laplacian_solvers{
      */
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::build_exact_solution(){
+              typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution(){
 
-        u_exact = Eigen::MatrixXd::Zero(data.n, data.n);
+        u_exact = eigenMatrix::Zero(data.n, data.n);
 
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) build_exact_solution_sequential();
         else build_exact_solution_parallel();
@@ -118,9 +119,8 @@ namespace laplacian_solvers{
      * @brief Builds the exact solution according to sequential execution mode.
      * Simply loops over the grid points, evaluates the exact solution and stores the result.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::build_exact_solution_sequential(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_sequential(){
         
         for(unsigned i = 0; i < data.n; i++) for(unsigned j = 0; j < data.n; j++) 
             u_exact(i, j) = data.u_exact_lambda(meshX(i, j), meshY(i, j));
@@ -132,9 +132,8 @@ namespace laplacian_solvers{
      * This is done by decompsing the domain according to example shown on the challenge pdf file
      */
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::build_exact_solution_parallel(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_parallel(){
         
         // Get rank information
         const int mpi_rank, mpi_size;
@@ -149,7 +148,7 @@ namespace laplacian_solvers{
         const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
         const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
 
-        auto local_exact_solution = Eigen::MatrixXd::Zero(end_row - start_row, data.n);
+        auto local_exact_solution = eigenMatrixd::Zero(end_row - start_row, data.n);
 
         // Thread safety is guaranteed since each process has different rows.
         for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
@@ -168,9 +167,8 @@ namespace laplacian_solvers{
      * Routes the execution flow to either sequential or parallel solvers based on the compile-time 
      * 'execution_mode' parameter using constexpr if-branching.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::solve(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::solve(){
 
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) {
             return sequential_solve();
@@ -187,9 +185,8 @@ namespace laplacian_solvers{
      * Routes to the Jacobi sequential implementation. Throws a std::runtime_error if Schwarz 
      * is selected, as it requires distributed-memory parallelism (MPI).
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::sequential_solve(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::sequential_solve(){
         if constexpr (solver_type == SolverType::JACOBI) {
             return jacobi_sequential();
         } else {
@@ -202,9 +199,8 @@ namespace laplacian_solvers{
      * Routes to either Jacobi parallel or Schwarz parallel implementations based on 
      * the compile-time 'solver_type' parameter.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::parallel_solve(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::parallel_solve(){
         if constexpr (solver_type == SolverType::JACOBI) {
             return jacobi_parallel();
         } else {
@@ -218,9 +214,8 @@ namespace laplacian_solvers{
      * @brief Dispatches the sequential Jacobi solver to the specific boundary condition implementation.
      * Maps the 'boundary_condition' template parameter to Dirichlet, Neumann, or Robin methods.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return jacobi_sequential_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -234,9 +229,8 @@ namespace laplacian_solvers{
      * @brief Dispatches the parallel Jacobi solver to the specific boundary condition implementation.
      * Maps the 'boundary_condition' template parameter to Dirichlet, Neumann, or Robin methods.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return jacobi_parallel_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -250,9 +244,8 @@ namespace laplacian_solvers{
      * @brief Dispatches the parallel Schwarz solver to the specific boundary condition implementation.
      * Routes the execution flow to the appropriate domain decomposition implementation.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return schwarz_parallel_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -269,9 +262,8 @@ namespace laplacian_solvers{
      * The method updates the entire domain grid iteratively by averaging neighbors until 
      * the residual error falls below the specified tolerance or max iterations are reached.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_dirichlet(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_dirichlet(){
 
         Eigen::MatrixXd u_new = u_h; // u_h è stato inizializzato?
         unsigned iter = 0;
@@ -312,9 +304,8 @@ namespace laplacian_solvers{
      * Implements finite difference approximations for the derivative boundary conditions.
      * The edge values are updated based on the gradient function (f1-f4) and the nearest inner node.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_neumann(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_neumann(){
         
         Eigen::MatrixXd u_new = u_h; // Parte da zero (inizializzati nel costruttore)
         unsigned iter = 0;
@@ -377,9 +368,8 @@ namespace laplacian_solvers{
      * Implements mixed boundary conditions. The update rule involves a weighted average 
      * regulated by the 'gamma' parameter to represent the Robin boundary constraint.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_sequential_robin(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_robin(){
         Eigen::MatrixXd u_new = u_h; // Inizializzata a zeri dal costruttore
         unsigned iter = 0;
         double error = data.tolerance + 1.0;
@@ -444,9 +434,8 @@ namespace laplacian_solvers{
      * strip of the matrix. MPI_Sendrecv ensures the first and last rows are exchanged between 
      * neighbors before each computation step. OpenMP is used for multi-threading within each node.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_dirichlet(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_dirichlet(){
     
         //MPI initialization
         int mpi_rank, mpi_size;
@@ -470,8 +459,8 @@ namespace laplacian_solvers{
         if (rank_down >= mpi_size) rank_down = MPI_PROC_NULL;
 
         //Local matrices
-        ParallelMatrix u_h_local = ParallelMatrix::Zero(local_rows + 2, data.n);
-        ParallelMatrix u_h_new_local = ParallelMatrix::Zero(local_rows + 2, data.n); 
+        ParallelMatrix u_h_local = eigenMatrix::Zero(local_rows + 2, data.n);
+        ParallelMatrix u_h_new_local = eigenMatrix::Zero(local_rows + 2, data.n); 
         ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
@@ -552,15 +541,13 @@ namespace laplacian_solvers{
 
     }
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_neumann(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_neumann(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Neumann
     }
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::jacobi_parallel_robin(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_robin(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Robin
     }
 
@@ -573,9 +560,8 @@ namespace laplacian_solvers{
      * boundary values are synchronized. The global convergence is monitored via MPI_Allreduce 
      * to ensure consistency across the entire grid.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_dirichlet(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel_dirichlet(){
         //MPI initialization
         int mpi_rank, mpi_size;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
@@ -598,8 +584,8 @@ namespace laplacian_solvers{
         if (rank_down >= mpi_size) rank_down = MPI_PROC_NULL;
 
         //Local matrices
-        ParallelMatrix u_h_local = ParallelMatrix::Zero(local_rows + 2, data.n);
-        ParallelMatrix u_h_new_local = ParallelMatrix::Zero(local_rows + 2, data.n); 
+        ParallelMatrix u_h_local = eigenMatrix::Zero(local_rows + 2, data.n);
+        ParallelMatrix u_h_new_local = eigenMatrix::Zero(local_rows + 2, data.n); 
         ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
@@ -691,36 +677,31 @@ namespace laplacian_solvers{
         return result;
     }
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_neumann(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel_neumann(){
         // Implementazione del metodo di Schwarz parallelo con condizioni al contorno di Neumann
     }
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::schwarz_parallel_robin(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel_robin(){
         // Implementazione del metodo di Schwarz parallelo con condizioni al contorno di Robin
     }
 
 
     /* --- CONVERGENCE TEST METHOD --- */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    Convergence_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::convergence_test(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Convergence_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::convergence_test(){
         
     }
 
     /* --- PRINT AND EXPORT METHODS --- */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::print(){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print(){
         // STAMPA GRIGLIA, SOLUZIONE DISCRETA, SOLUZIONE ESATTA SULLA GRIGLIA
     }
 
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename Func0, typename Func1, typename Func2, typename Func3, typename Func4, typename u_ex>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, Func0, Func1, Func2, Func3, Func4, u_ex>::export_to_vtk(const Eigen::MatrixXd& meshX, const Eigen::MatrixXd& meshY, const Eigen::MatrixXd& u_h, const std::string& filename){
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const Eigen::MatrixXd& meshX, const Eigen::MatrixXd& meshY, const Eigen::MatrixXd& u_h, const std::string& filename){
         // Esporta i dati in formato VTK per la visualizzazione con Paraview
     }
 
