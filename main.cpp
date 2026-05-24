@@ -27,12 +27,14 @@ int main(int argc, char* argv[]) {
     data.u_exact_lambda = [](double x, double y) { return std::sin(2*M_PI*x)*std::sin(2*M_PI*y); }; // Exact solution
     data.tolerance = 1e-6;
     data.max_iterations = 10000;
-    data.gamma = 1.0; // Parameter for Robin boundary condition
+    data.alpha = 1.0; // Parameter for Robin boundary condition
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::SEQUENTIAL, funcType> solver(data);
     solver.build_mesh();
-    solver.print();
 
+    auto result = solver.solve();
+
+    solver.print();
 
     MPI_Finalize();
     return 0;

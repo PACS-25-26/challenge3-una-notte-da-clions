@@ -71,7 +71,7 @@ struct Data_Struct {
     funcType u_exact_lambda;
     double tolerance;
     unsigned max_iterations;
-    double gamma; // Parameter for Robin boundary condition: gamma*u + du/dn = g
+    double alpha; // Parameter for Robin boundary condition: gamma*u + du/dn = g
 };
 
 /**
@@ -124,9 +124,10 @@ namespace laplacian_solvers {
             Data_Struct<funcType> data; ///< Configuration of the problem and parameters.
             eigenMatrix meshX;    ///< Matrix containing the X coordinates of the structured grid.
             eigenMatrix meshY;    ///< Matrix containing the Y coordinates of the structured grid.
-            double h;                 ///< Uniform grid spacing parameter h.
+            double h;             ///< Uniform grid spacing parameter h.
             eigenMatrix u_h;      ///< Discrete solution matrix.
             eigenMatrix u_exact;  ///< Analytical solution over the mesh points matrix.
+
             
         public:
         
@@ -166,7 +167,7 @@ namespace laplacian_solvers {
              * @param u_h Final discrete simulation results matrix.
              * @param filename Target path/name of the generated file.
              */
-            void export_to_vtk(const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_h, const std::string& filename);
+            void export_to_vtk(const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_h, const std::string& filename) const;
 
             void build_mesh(); //OK
 
@@ -212,5 +213,6 @@ namespace laplacian_solvers {
 #include "laplacian_solvers_implementation.hpp"
 #include "laplacian_solvers_postprocessing.hpp"
 #include "laplacian_solvers_initializer.hpp"
+#include "laplacian_solvers_sequential_implementations"
 
 #endif 

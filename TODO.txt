@@ -13,6 +13,8 @@ COSE DA IMPLEMENTARE E MIGLIORIE
  - Controllare che il parallelismo sia effettivamente ibrido (mi sono scordato openmp nella mesh e soluzione esatta...)
  - Forse la funzioe che calcola l'errore può essere resa template?
  - Nel testo il parametro di robin è alpha, non gamma
+ - L'errore è la norma di frobenius * sqrt(h) -> usiamo le funzioni di eigen
 
  - Magari conviene dividere il file di implementazione in altri file .hpp, dato che questo è già bello grande ed incasinato. Si potrebbe fare un file
 per le cose sequenziali e uno per le parallele, oppure dividere in base al contenuto (solver, utilities, inizializzazione, etc...)
+

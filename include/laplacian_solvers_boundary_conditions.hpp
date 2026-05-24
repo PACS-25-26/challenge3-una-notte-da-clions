@@ -36,12 +36,14 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
         
         // Top edge
         if(mpi_rank == mpi_size - 1) for(unsigned i = 0; i < data.n; i++) u_h(0, i) = data.f3(meshX(0, i), meshY(0, i));
-
+        
         // Left and right edges - might rewrite the corners
         for(unsigned i = 0; i < u_h.rows(); i++){
             u_h(i, 0) = data.f4(meshX(i, 0), meshY(i, 0));
             u_h(i, last) = data.f2(meshX(i, last), meshY(i, last));
         }
+
+        std::cout << "test" << std::endl;
     }
 }
 
@@ -91,7 +93,7 @@ template <ExecutionMode execution_mode, typename funcType>
 void apply_robin_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix& meshY, const unsigned mpi_rank, const unsigned mpi_size){
     const unsigned last = data.n - 1;
     const double h = abs(data.x2 - data.x1) / (data.n - 1);
-    const double den = 1 + h*data.gamma; // Denominator for the Robin condition update formula
+    const double den = 1 + h*data.alpha; // Denominator for the Robin condition update formula
 
     if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
          for (unsigned i = 0; i < data.n; ++i) {
