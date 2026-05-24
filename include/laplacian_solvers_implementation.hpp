@@ -31,133 +31,6 @@ namespace laplacian_solvers{
 
     };
 
-    /* --- MESH GENERATION AND INITIALIZATION --- */
-
-    /**
-     * @brief Builds the mesh according to sequential or parallel execution mode.
-     * Since the required operation are trivial, the overhead cost of paralleization might actually be a detriment. 
-     */
-
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh(){
-
-        meshX = eigenMatrix::Zero(data.n, data.n);
-        meshY = eigenMatrix::Zero(data.n, data.n);
-        h = abs(data.x2 - data.x1) / (data.n - 1); // Uniform grid spacing. Works even if x2 < x1. 
-
-        if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) build_mesh_sequential();
-        else build_mesh_parallel();
-    }
-
-    /**
-     * @brief Builds the mesh according to sequential execution mode.
-     * Simply loops over the grid points and assigns the corresponding coordinates to meshX and meshY.
-     */
-
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_sequential(){
-        
-        for(unsigned i = 0; i < data.n; i++) for(unsigned j = 0; j < data.n; j++) {
-            meshX(i, j) = data.x1 + j * h;
-            meshY(i, j) = data.x2 - i * h;
-        }
-    }
-
-    /**
-     * @brief Builds the mesh according to parallel execution mode.
-     * This is done by decompsing the domain according to example shown on the challenge pdf file
-     */
-
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_parallel(){
-        
-        // Get rank information
-        const int mpi_rank, mpi_size;
-        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
-
-        // Distribute rows among processes. If the number of rows is not divided by the number of threads, the remaining ones will be assigned to the
-        // fisrt threads, as shown in Figure 1 of the challenge pdf file.
-        const unsigned local_rows = data.n / mpi_size;
-        const unsigned remainder_rows = data.n % mpi_size;
-
-        const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
-        const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
-
-        auto local_meshX = eigenMatrix::Zero(end_row - start_row, data.n);
-        auto local_meshY = eigenMatrix::Zero(end_row - start_row, data.n);
-
-
-        // Thread safety is guaranteed since each process has different rows.
-        for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
-            local_meshX(i, j) = data.x1 + j * h;
-            local_meshY(i, j) = data.x2 - (i + start_row) * h;
-        }
-
-        // Gather the local meshes into the global one. Al processes will have a copy of the complete mesh.
-        MPI_Allgather(local_meshX.data(), (end_row - start_row) * data.n, MPI_DOUBLE, meshX.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
-        MPI_Allgather(local_meshY.data(), (end_row - start_row) * data.n, MPI_DOUBLE, meshY.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
-    }
-
-    /**
-     * @brief Builds the mesh according to parallel execution mode.
-     * This is done by decompsing the domain according to example shown on the challenge pdf file
-     */
-
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution(){
-
-        u_exact = eigenMatrix::Zero(data.n, data.n);
-
-        if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) build_exact_solution_sequential();
-        else build_exact_solution_parallel();
-    }
-
-    /**
-     * @brief Builds the exact solution according to sequential execution mode.
-     * Simply loops over the grid points, evaluates the exact solution and stores the result.
-     */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_sequential(){
-        
-        for(unsigned i = 0; i < data.n; i++) for(unsigned j = 0; j < data.n; j++) 
-            u_exact(i, j) = data.u_exact_lambda(meshX(i, j), meshY(i, j));
-        
-    }
-
-    /**
-     * @brief Builds the exact solution according to parallel execution mode.
-     * This is done by decompsing the domain according to example shown on the challenge pdf file
-     */
-
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_parallel(){
-        
-        // Get rank information
-        const int mpi_rank, mpi_size;
-        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
-
-        // Distribute rows among processes. If the number of rows is not divided by the number of threads, the remaining ones will be assigned to the
-        // fisrt threads, as shown in Figure 1 of the challenge pdf file.
-        const unsigned local_rows = data.n / mpi_size;
-        const unsigned remainder_rows = data.n % mpi_size;
-
-        const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
-        const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
-
-        auto local_exact_solution = eigenMatrix::Zero(end_row - start_row, data.n);
-
-        // Thread safety is guaranteed since each process has different rows.
-        for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
-            local_exact_solution(i, j) = data.u_exact_lambda(meshX(i + start_row, j), meshY(i + start_row, j));
-        }
-
-        // Gather the local exact solutions into the global one. All processes will have a copy of the complete exact solution.
-        MPI_Allgather(local_exact_solution.data(), (end_row - start_row) * data.n, MPI_DOUBLE, u_exact.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
-    }
 
     /* --- SOLVE METHOD --- */
 
@@ -265,7 +138,7 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_dirichlet(){
 
-        eigenMatrix u_new = u_h; // u_h è stato inizializzato?
+        eigenMatrix u_new = u_h; // u_h è stato inizializzato? -> si nel costruttore 
         unsigned iter = 0;
         double err = data.tolerance + 1.0; 
         const double h2 = h * h;    
@@ -459,10 +332,10 @@ namespace laplacian_solvers{
         if (rank_down >= mpi_size) rank_down = MPI_PROC_NULL;
 
         //Local matrices
-        ParallelMatrix u_h_local = eigenMatrix::Zero(local_rows + 2, data.n);
-        ParallelMatrix u_h_new_local = eigenMatrix::Zero(local_rows + 2, data.n); 
-        ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
-        ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
+        eigenMatrix u_h_local = eigenMatrix::Zero(local_rows + 2, data.n);
+        eigenMatrix u_h_new_local = eigenMatrix::Zero(local_rows + 2, data.n); 
+        eigenMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
+        eigenMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
         apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
 
@@ -516,7 +389,7 @@ namespace laplacian_solvers{
                 displs[i] = displs[i-1] + recv_counts[i-1];
             }
         }
-        ParallelMatrix u_h_gathered;
+        eigenMatrix u_h_gathered;
         if (mpi_rank == 0) {
             u_h_gathered.resize(data.n, data.n);
             u_h_gathered.row(0) = u_h.row(0);
@@ -584,10 +457,10 @@ namespace laplacian_solvers{
         if (rank_down >= mpi_size) rank_down = MPI_PROC_NULL;
 
         //Local matrices
-        ParallelMatrix u_h_local = eigenMatrix::Zero(local_rows + 2, data.n);
-        ParallelMatrix u_h_new_local = eigenMatrix::Zero(local_rows + 2, data.n); 
-        ParallelMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
-        ParallelMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
+        eigenMatrix u_h_local = eigenMatrix::Zero(local_rows + 2, data.n);
+        eigenMatrix u_h_new_local = eigenMatrix::Zero(local_rows + 2, data.n); 
+        eigenMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
+        eigenMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
         apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
 
@@ -653,7 +526,7 @@ namespace laplacian_solvers{
                 displs[i] = displs[i-1] + recv_counts[i-1];
             }
         }
-        ParallelMatrix u_h_gathered;
+        eigenMatrix u_h_gathered;
         if (mpi_rank == 0) {
             u_h_gathered.resize(data.n, data.n);
             u_h_gathered.row(0) = u_h.row(0);
@@ -695,10 +568,6 @@ namespace laplacian_solvers{
     }
 
     /* --- PRINT AND EXPORT METHODS --- */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print(){
-        // STAMPA GRIGLIA, SOLUZIONE DISCRETA, SOLUZIONE ESATTA SULLA GRIGLIA
-    }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_h, const std::string& filename){

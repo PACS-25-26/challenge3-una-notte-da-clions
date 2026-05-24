@@ -1,14 +1,9 @@
 COSE DA IMPLEMENTARE E MIGLIORIE
 
 
-IMPORTANTE!
-Le funzioni che ho scritto sono nel vecchio formato (sbagliato)
-
  - Costruzione parallela di mesh e soluzione iniziale 
  - Aggiungere const in giro
  - Funzione generale per le BC
- - Un solo tipo pe le funzioni al contorno e la soluzione esatta
- - Usare SOLO paralleMatrix -> che però non esiste, quindi bisogna definire un tipo per le matrici row_wise
  - Forse la mesh può essere ottimizzata. Alla fine meshX(i, j) = meshX(k, j) sempre, quindi si può evitare di "calcolare" e salvare tutta la matrice? 
  (Forse però viene usata a volte come matrice...) -> Si potrebbe avere un oggetto che può funzionare sia con la mesh salvata che non
  - In generale, conviene conservare in memoria la mesh o la soluzione esatta? Alla fine si possono calcolare quando servono... Nel caso, meshX, meshY e

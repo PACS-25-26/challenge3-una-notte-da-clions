@@ -118,8 +118,7 @@ namespace laplacian_solvers {
      * @tparam funcType Callable type (lambda) for the source term g(x,y) and the boundary conditions.
 
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
-              typename funcType>
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     class Laplacian_Solver {
         private:
             Data_Struct<funcType> data; ///< Configuration of the problem and parameters.
@@ -137,7 +136,7 @@ namespace laplacian_solvers {
              * @note Initializes grid coordinates, computes exact solution matrix, and pre-applies 
              *       Dirichlet conditions if statically configured.
              */
-            Laplacian_Solver(const Data_Struct<funcType>& d) : data(d) {}; //OK
+            Laplacian_Solver(const Data_Struct<funcType>& d); //OK
 
             /**
              * @brief Dispatches the computation to the correct solver branch based on ExecutionMode.
@@ -157,7 +156,7 @@ namespace laplacian_solvers {
             /**
              * @brief Prints the mesh, discrete solution, and exact solution to the standard output.
              */
-            void print();
+            void print() const;
 
             /**
              * @brief Exports the structured mesh and solution data into legacy VTK format.
@@ -169,17 +168,24 @@ namespace laplacian_solvers {
              */
             void export_to_vtk(const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_h, const std::string& filename);
 
+            void build_mesh(); //OK
+
             private:
             // PRIVATE HELPER METHODS
 
             // Mesh and exact solution builders
-            void build_mesh(); //OK
-            void build_exact_solution(); //OK
+            
             void build_mesh_sequential(); //OK
             void build_mesh_parallel(); //OK
+            
             void build_exact_solution(); //OK
             void build_exact_solution_sequential(); //OK
             void build_exact_solution_parallel(); //OK
+
+            // Print and postprocessing
+            void print_mesh() const;
+            void print_solution() const;
+            void print_exact_solution() const;
 
             //SOLVER STRUCTURE: sequential / parallel -> jacobi / schwarz -> dirichlet / neumann / robin
             Result_Struct sequential_solve(); //OK
@@ -204,5 +210,7 @@ namespace laplacian_solvers {
 } // namespace laplacian_solvers
 
 #include "laplacian_solvers_implementation.hpp"
+#include "laplacian_solvers_postprocessing.hpp"
+#include "laplacian_solvers_initializer.hpp"
 
 #endif 
