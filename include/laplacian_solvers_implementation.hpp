@@ -295,7 +295,7 @@ namespace laplacian_solvers{
             // Second - Compute new values, but not the received ones!
             for(unsigned i = 1; i < total_rows - 1; i++){
                 for(unsigned j = 0; j < data.n; j++){
-                    u_h_local(i, j) = 0.25 * 
+                   // u_h_local(i, j) = 0.25 * 
                     
                 }
             }

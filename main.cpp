@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::SEQUENTIAL, funcType> solver_dirichlet(data);
     solver_dirichlet.build_mesh();
     solver_dirichlet.solve();
-    solver_dirichlet.print();
+    //solver_dirichlet.print();
 
     // =========================================================================
     // TEST 2: NEUMANN
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::SEQUENTIAL, funcType> solver_neumann(data);
     solver_neumann.build_mesh();
     solver_neumann.solve();
-    solver_neumann.print();
+    //solver_neumann.print();
 
     // =========================================================================
     // TEST 3: ROBIN
@@ -95,7 +95,31 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::ROBIN, ExecutionMode::SEQUENTIAL, funcType> solver_robin(data);
     solver_robin.build_mesh();
     solver_robin.solve();
-    solver_robin.print();
+    //solver_robin.print();
+
+    // =========================================================================
+    // TEST 4: DIRICHLET PARALLEL
+    // Exact solution: u(x,y) = sin(pi*x) * sin(pi*y)
+    // -Laplacian(u) = 2*pi^2 * sin(pi*x)*sin(pi*y)
+    // BC: u = 0 on all edges (sin vanishes at 0 and 1 -> exact Dirichlet)
+    // Low frequency: Jacobi converges in ~10000 iterations on a 20x20 grid
+    // =========================================================================
+    std::cout << "\n=== Test 4: DIRICHLET PARALLEL ===" << std::endl;
+    data.f0 = [](double x, double y) {
+        return 2.0 * M_PI * M_PI * std::sin(M_PI * x) * std::sin(M_PI * y);
+    };
+    data.f1 = [](double x, double y) { return 0.0; };
+    data.f2 = [](double x, double y) { return 0.0; };
+    data.f3 = [](double x, double y) { return 0.0; };
+    data.f4 = [](double x, double y) { return 0.0; };
+    data.u_exact_lambda = [](double x, double y) {
+        return std::sin(M_PI * x) * std::sin(M_PI * y);
+    };
+
+    laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::PARALLEL, funcType> solver_dirichlet_parallel(data);
+    solver_dirichlet_parallel.build_mesh();
+    solver_dirichlet_parallel.solve();
+    solver_dirichlet_parallel.print();
 
     MPI_Finalize();
     return 0;
