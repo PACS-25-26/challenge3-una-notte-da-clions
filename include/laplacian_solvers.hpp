@@ -213,6 +213,6 @@ namespace laplacian_solvers {
 #include "laplacian_solvers_implementation.hpp"
 #include "laplacian_solvers_postprocessing.hpp"
 #include "laplacian_solvers_initializer.hpp"
-#include "laplacian_solvers_sequential_implementations"
+#include "laplacian_solvers_sequential_implementations.hpp"
 
 #endif 
