@@ -28,6 +28,8 @@ namespace laplacian_solvers{
         build_mesh();
         build_exact_solution();
         u_h = eigenMatrix::Zero(data.n, data.n);
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
 
     };
 
