@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::SEQUENTIAL, funcType> solver_dirichlet(data);
     solver_dirichlet.build_mesh();
     solver_dirichlet.solve();
-    solver_dirichlet.print();
+    //solver_dirichlet.print();
 
     // =========================================================================
     // TEST 2: NEUMANN
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::SEQUENTIAL, funcType> solver_neumann(data);
     solver_neumann.build_mesh();
     solver_neumann.solve();
-    solver_neumann.print();
+    //solver_neumann.print();
 
     // =========================================================================
     // TEST 3: ROBIN
@@ -85,12 +85,12 @@ int main(int argc, char* argv[]) {
     // Well-posed: Robin term alpha*u breaks the null-space -> unique solution
     // =========================================================================
     std::cout << "\n=== Test 3: ROBIN ===" << std::endl;
-    data.f0 = [](double x, double y) { return -4.0; };
-    data.f1 = [](double x, double y) { return x * x; };
-    data.f2 = [](double x, double y) { return 3.0 + y * y; };
-    data.f3 = [](double x, double y) { return 3.0 + x * x; };
-    data.f4 = [](double x, double y) { return y * y; };
-    data.u_exact_lambda = [](double x, double y) { return x * x + y * y; };
+    data.f0 = [](double x, double y) { return -2.0 * std::exp(x + y); };
+    data.f1 = [](double x, double y) { return 0.0; };
+    data.f2 = [](double x, double y) { return 2.0 * std::exp(1.0 + y); };
+    data.f3 = [](double x, double y) { return 2.0 * std::exp(x + 1.0); };
+    data.f4 = [](double x, double y) { return 0.0; };
+    data.u_exact_lambda = [](double x, double y) { return std::exp(x + y); };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::ROBIN, ExecutionMode::SEQUENTIAL, funcType> solver_robin(data);
     solver_robin.build_mesh();

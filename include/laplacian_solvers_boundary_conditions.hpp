@@ -109,17 +109,6 @@ void apply_robin_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data,
                 u_h(last, i) = (u_h(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i))) / den; // Bottom edge 
         }
 
-        //Corners
-
-        u_h(0, 0)       = 0.5*((u_h(1, 0) + h * data.f3(meshX(0,0), meshY(0,0))) / den
-                              + (u_h(0, 1) + h * data.f4(meshX(0,0), meshY(0,0))) / den);
-        u_h(0, last)    = 0.5*((u_h(1, last) + h * data.f3(meshX(0,last), meshY(0,last)))/ den
-                              + (u_h(0, last-1) + h * data.f2(meshX(0,last), meshY(0,last)))/ den);
-        u_h(last, 0)    = 0.5*((u_h(last-1, 0) + h * data.f1(meshX(last,0),meshY(last,0))) / den
-                              + (u_h(last, 1) + h * data.f4(meshX(last,0), meshY(last,0)))/ den);
-        u_h(last, last) = 0.5*((u_h(last-1, last) + h * data.f1(meshX(last,last), meshY(last,last))) / den
-                              + (u_h(last, last-1) + h * data.f2(meshX(last,last), meshY(last,last)))/ den);
-
     }
 
     if constexpr(execution_mode == ExecutionMode::PARALLEL){
