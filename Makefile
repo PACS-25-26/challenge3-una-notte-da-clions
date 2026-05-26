@@ -20,9 +20,6 @@ CXXFLAGS = -std=c++23 -O1 -I /usr/include/eigen3
 # Select alpha policy
 EXECUTION ?= PARALLEL
 
-ifeq ($(EXECUTION),PARALLEL)
-    LDFLAGS += -ltbb
-endif
 # ----------------------
 
 # Builds the sequence of files to be compiled together with main

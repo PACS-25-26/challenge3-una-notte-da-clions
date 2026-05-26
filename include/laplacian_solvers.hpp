@@ -83,7 +83,7 @@ struct Result_Struct {
     eigenMatrix Y;
     eigenMatrix u_h; 
     unsigned iterations;
-
+    double iterartion_residue = -1.; // Initial value. If the residue is -1 the solver was not called
 };
 
 /**
@@ -125,8 +125,9 @@ namespace laplacian_solvers {
             eigenMatrix meshX;    ///< Matrix containing the X coordinates of the structured grid.
             eigenMatrix meshY;    ///< Matrix containing the Y coordinates of the structured grid.
             double h;             ///< Uniform grid spacing parameter h.
-            eigenMatrix u_h;      ///< Discrete solution matrix.
             eigenMatrix u_exact;  ///< Analytical solution over the mesh points matrix.
+            eigenMatrix u_h; ///< Numerical solution matrix 
+            Result_Struct result; ///< Struct to hold the final results of the solver.
 
             
         public:
@@ -184,9 +185,9 @@ namespace laplacian_solvers {
             void build_exact_solution_parallel(); //OK
 
             // Print and postprocessing
-            void print_mesh() const;
-            void print_solution() const;
-            void print_exact_solution() const;
+            void print_mesh() const; //OK
+            void print_solution() const; //OK
+            void print_exact_solution() const; //OK
 
             //SOLVER STRUCTURE: sequential / parallel -> jacobi / schwarz -> dirichlet / neumann / robin
             Result_Struct sequential_solve(); //OK

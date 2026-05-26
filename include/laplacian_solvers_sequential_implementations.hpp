@@ -44,11 +44,11 @@ namespace laplacian_solvers{
         iter++;
     }
 
-    Result_Struct result;
     result.u_h = u_h;
     result.iterations = iter;
     result.X = meshX;
     result.Y = meshY;
+    result.iterartion_residue = err; 
     return result;
     
     }
@@ -63,19 +63,19 @@ namespace laplacian_solvers{
         
         eigenMatrix u_new = u_h; // Parte da zero (inizializzati nel costruttore)
         unsigned iter = 0;
-        double error = data.tolerance + 1.0;
+        double err = data.tolerance + 1.0;
         const double h2 = h * h;
         const unsigned last = data.n - 1;
 
-        while (error > data.tolerance && iter < data.max_iterations) {
-            error = 0.0;
+        while (err > data.tolerance && iter < data.max_iterations) {
+            err = 0.0;
 
             for (unsigned i = 1; i < last; ++i) {
                 for (unsigned j = 1; j < last; ++j) {
                     u_new(i, j) = 0.25 * (u_h(i-1, j) + u_h(i+1, j) + u_h(i, j-1) + u_h(i, j+1) + h2 * data.f0(meshX(i, j), meshY(i, j)));
                     
                     double diff = std::abs(u_new(i, j) - u_h(i, j));
-                    if (diff > error) error = diff;
+                    if (diff > err) err = diff;
                 }
             }
 
@@ -99,10 +99,10 @@ namespace laplacian_solvers{
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY);
 
             for (unsigned i = 0; i < data.n; ++i) {
-                error = std::max({error, std::abs(u_new(i, 0) - u_h(i, 0)), 
-                                        std::abs(u_new(i, last) - u_h(i, last)),
-                                        std::abs(u_new(0, i) - u_h(0, i)), 
-                                        std::abs(u_new(last, i) - u_h(last, i))});
+                err = std::max({err, std::abs(u_new(i, 0) - u_h(i, 0)), 
+                                       std::abs(u_new(i, last) - u_h(i, last)),
+                                       std::abs(u_new(0, i) - u_h(0, i)), 
+                                       std::abs(u_new(last, i) - u_h(last, i))});
             }
 
             u_h = u_new;
@@ -114,11 +114,11 @@ namespace laplacian_solvers{
         iter++;
         }
 
-        Result_Struct result;
         result.u_h = u_h;
         result.iterations = iter;
         result.X = meshX;
         result.Y = meshY;
+        result.iterartion_residue = err; 
         return result;
     }
 
@@ -134,12 +134,12 @@ namespace laplacian_solvers{
 
         eigenMatrix u_new = u_h; // Inizializzata a zeri dal costruttore
         unsigned iter = 0;
-        double error = data.tolerance + 1.0;
+        double err = data.tolerance + 1.0;
         const double h2 = h * h;
         const unsigned last = data.n - 1;
 
-        while (error > data.tolerance && iter < data.max_iterations) {
-            error = 0.0;
+        while (err > data.tolerance && iter < data.max_iterations) {
+            err = 0.0;
 
             for (unsigned i = 1; i < last; ++i) {
                 for (unsigned j = 1; j < last; ++j) {
@@ -148,7 +148,7 @@ namespace laplacian_solvers{
                                         h2 * data.f0(meshX(i, j), meshY(i, j)));
                     
                     double diff = std::abs(u_new(i, j) - u_h(i, j));
-                    if (diff > error) error = diff;
+                    if (diff > err) err = diff;
                 }
             }
 
@@ -170,21 +170,21 @@ namespace laplacian_solvers{
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY);
 
             for (unsigned i = 0; i < data.n; ++i) {
-                error = std::max({error, std::abs(u_new(i, 0) - u_h(i, 0)), 
-                                        std::abs(u_new(i, last) - u_h(i, last)),
-                                        std::abs(u_new(0, i) - u_h(0, i)), 
-                                        std::abs(u_new(last, i) - u_h(last, i))});
+                err = std::max({err, std::abs(u_new(i, 0) - u_h(i, 0)), 
+                                       std::abs(u_new(i, last) - u_h(i, last)),
+                                       std::abs(u_new(0, i) - u_h(0, i)), 
+                                       std::abs(u_new(last, i) - u_h(last, i))});
             }
 
             u_h = u_new;
             iter++;
         }
 
-        Result_Struct result;
         result.u_h = u_h;
         result.iterations = iter;
         result.X = meshX;
         result.Y = meshY;
+        result.iterartion_residue = err; 
         return result;
     }
 

@@ -57,11 +57,18 @@ namespace laplacian_solvers{
             if(mpi_rank != 0) return; // Only the root process prints
         }
 
+        if(result.iterartion_residue == -1.){
+          std::cout << "Solver was not called" << std::endl; 
+          return;
+        }
 
         for(unsigned i = 0; i < data.n; i++){
             for(unsigned j = 0; j < data.n; j++) std::cout << u_exact(i, j) << " ";
             std::cout << std::endl;
         }   
+
+        std::cout << "Residue error: " << result.iterartion_residue << std::endl;
+        std::cout << "Total iterations: " << result.iterations << std::endl;
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
