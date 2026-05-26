@@ -106,7 +106,12 @@ namespace laplacian_solvers{
             }
 
             u_h = u_new;
-            iter++;
+
+        // Normalizing for unicity
+        double mean = u_h.sum() / (double)(data.n * data.n);
+        u_h.array() -= mean;
+
+        iter++;
         }
 
         Result_Struct result;
@@ -130,8 +135,6 @@ namespace laplacian_solvers{
         double error = data.tolerance + 1.0;
         const double h2 = h * h;
         const unsigned last = data.n - 1;
-
-        const double den = 1.0 + data.alpha * h;
 
         while (error > data.tolerance && iter < data.max_iterations) {
             error = 0.0;
