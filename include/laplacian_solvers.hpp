@@ -86,23 +86,6 @@ struct Result_Struct {
     double iterartion_residue = -1.; // Initial value. If the residue is -1 the solver was not called
 };
 
-/**
- * @struct Convergence_Struct
- * @brief Stores collected benchmark metrics across multiple grid refinement levels.
- * 
- * Tracks L2 errors, iteration counts, and computational times for both serial and parallel
- * runs to facilitate convergence order verification and speedup analysis.
- */
-struct Convergence_Struct {
-    std::vector<double> errors_L2_serial;
-    std::vector<double> errors_L2_parallel; 
-    std::vector<unsigned> n;
-    std::vector<double> iterations_serial;
-    std::vector<double> iterations_parallel;
-    std::vector<double> times_serial;
-    std::vector<double> times_parallel;
-};
-
 namespace laplacian_solvers {
 
     /**
@@ -148,14 +131,6 @@ namespace laplacian_solvers {
             Result_Struct solve(); //OK
 
             /**
-             * @brief Runs an automated convergence test across multiple mesh refinement levels.
-             * @details Computes relative L2 errors against the analytical solution, benchmarks sequential 
-             *          vs parallel execution times, and stores iteration patterns.
-             * @return Convergence_Struct.
-             */
-            Convergence_Struct convergence_test(); 
-
-            /**
              * @brief Prints the mesh, discrete solution, and exact solution to the standard output.
              */
             void print() const;
@@ -163,12 +138,9 @@ namespace laplacian_solvers {
             /**
              * @brief Exports the structured mesh and solution data into legacy VTK format.
              * @details Visualizable using ParaView.
-             * @param meshX Matrix containing coordinates along X axis.
-             * @param meshY Matrix containing coordinates along Y axis.
-             * @param u_h Final discrete simulation results matrix.
              * @param filename Target path/name of the generated file.
              */
-            void export_to_vtk(const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_h, const std::string& filename) const;
+            void export_to_vtk(const std::string& filename) const;
 
             void build_mesh(); //OK
 
