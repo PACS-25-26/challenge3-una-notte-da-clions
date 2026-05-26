@@ -139,109 +139,123 @@ namespace laplacian_solvers{
      */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_dirichlet(){
-    
-        //MPI initialization
+        
+        // MPI initialization
         int mpi_rank, mpi_size;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
         MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
 
-        //Local rows
+        // Compute local rows distribution
         unsigned local_rows = data.n / mpi_size;
         unsigned r = data.n % mpi_size;
         if (static_cast<unsigned>(mpi_rank) < r) {
             local_rows++;
         }
 
-        //Global indexes for meshX and meshY
+        // Determine global starting index for mesh mapping
         unsigned start_row = static_cast<unsigned>(mpi_rank) * (data.n / mpi_size) + std::min(static_cast<unsigned>(mpi_rank), r);
 
-        //Rank up and rank down for communication
+        // Define neighbor ranks for ghost cell exchanges
         int rank_up = mpi_rank - 1;
         int rank_down = mpi_rank + 1;
         if (rank_up < 0) rank_up = MPI_PROC_NULL;
         if (rank_down >= mpi_size) rank_down = MPI_PROC_NULL;
 
-        //Local matrices
+        // Allocate local matrices including ghost layers
         eigenMatrix u_h_local = eigenMatrix::Zero(local_rows + 2, data.n);
         eigenMatrix u_h_new_local = eigenMatrix::Zero(local_rows + 2, data.n); 
         eigenMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         eigenMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
-        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
-
+        // 1. First copy the initial global solution guess into local fluid rows
         u_h_local.block(1, 0, local_rows, data.n) = u_h.block(start_row, 0, local_rows, data.n);
-        
-        if (mpi_rank == 0) {
-            u_h_local.row(0) = u_h.row(0);
-        }
-        if (mpi_rank == mpi_size - 1) {
-            u_h_local.row(local_rows + 1) = u_h.row(data.n - 1);
-        }
-        u_h_new_local = u_h_local;
 
-        // Cycle
-        unsigned i_start = (mpi_rank == 0) ? 2 : 1;
-        unsigned i_end = (mpi_rank == mpi_size - 1) ? local_rows - 1 : local_rows;
+        // 2. Then apply boundary conditions once using local mesh slices
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX_local, meshY_local, mpi_rank, mpi_size);
+
+        u_h_new_local = u_h_local;
+        
+        // Solver iteration setup
+        unsigned i_start = 1;
+        unsigned i_end = local_rows;
         unsigned iter = 0;
         double err = data.tolerance + 1.0;
         const double h2 = h * h;
 
         while (err > data.tolerance && iter < data.max_iterations){
             double loc_err = 0.0;
+            
+            // Exchange internal ghost layers with adjacent processes
             MPI_Sendrecv(u_h_local.data() + 1 * data.n, data.n, MPI_DOUBLE, rank_up, 0, 
-                         u_h_local.data() + 0 * data.n, data.n, MPI_DOUBLE, rank_up, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                        u_h_local.data() + 0 * data.n, data.n, MPI_DOUBLE, rank_up, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             MPI_Sendrecv(u_h_local.data() + local_rows * data.n, data.n, MPI_DOUBLE, rank_down, 1, 
-                         u_h_local.data() + (local_rows + 1) * data.n, data.n, MPI_DOUBLE, rank_down, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                        u_h_local.data() + (local_rows + 1) * data.n, data.n, MPI_DOUBLE, rank_down, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            
+            // Boundary processes preserve top and bottom physical Dirichlet limits across swaps
+            if (mpi_rank == 0) u_h_new_local.row(0) = u_h_local.row(0);
+            if (mpi_rank == mpi_size - 1) u_h_new_local.row(local_rows + 1) = u_h_local.row(local_rows + 1);
+            
             #pragma omp parallel for reduction(max:loc_err)
             for (unsigned i = i_start; i <= i_end; ++i){
+                // Keep left and right boundary conditions constant
+                u_h_new_local(i, 0) = u_h_local(i, 0);
+                u_h_new_local(i, data.n - 1) = u_h_local(i, data.n - 1);
+
                 for (unsigned j = 1; j < data.n - 1; ++j){
-                    u_h_new_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX_local(i-1, j), meshY_local(i-1, j)));                    
+                    // Compute 5-point stencil relaxation step
+                    u_h_new_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + 
+                                                u_h_local(i, j-1) + u_h_local(i, j+1) + 
+                                                h2 * data.f0(meshX_local(i-1, j), meshY_local(i-1, j)));                    
+                    
                     double local_err = std::abs(u_h_new_local(i, j) - u_h_local(i, j));
                     if (local_err > loc_err) {
                         loc_err = local_err;
                     }
                 }
             }
-            //Gather results for next iteration
+            
+            // Check global error convergence across all MPI ranks
             MPI_Allreduce(&loc_err, &err, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
             u_h_local.swap(u_h_new_local);
             iter++;
         }
 
-        //Gather final results
+        // Gather final results setup
         std::vector<int> recv_counts(mpi_size);
         std::vector<int> displs(mpi_size);
         int send_elements = local_rows * data.n;
         MPI_Gather(&send_elements, 1, MPI_INT, recv_counts.data(), 1, MPI_INT, 0, MPI_COMM_WORLD);
+        
         if (mpi_rank == 0) {
             displs[0] = 0;
             for (int i = 1; i < mpi_size; ++i) {
                 displs[i] = displs[i-1] + recv_counts[i-1];
             }
         }
-        eigenMatrix u_h_gathered;
+        
+        // Safely allocate the gather matrix on all ranks to avoid calling .data() on nullptr
+        eigenMatrix u_h_gathered = eigenMatrix::Zero(mpi_rank == 0 ? data.n : 0, mpi_rank == 0 ? data.n : 0);
         if (mpi_rank == 0) {
-            u_h_gathered.resize(data.n, data.n);
+            // Enforce initial global physical boundaries on the gathered output matrix
             u_h_gathered.row(0) = u_h.row(0);
             u_h_gathered.row(data.n - 1) = u_h.row(data.n - 1);
         }
 
-        // Row-wise and Column-wise gather
+        // Reassemble global internal solution without overriding row 0 on rank 0
         MPI_Gatherv(u_h_local.data() + 1 * data.n, send_elements, MPI_DOUBLE, 
-                    u_h_gathered.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+                    u_h_gathered.data() + (mpi_rank == 0 ? 1 * data.n : 0), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
         
         if (mpi_rank == 0) {
             u_h = u_h_gathered; 
         }
 
-        //Return result
+        // Package output structure
         Result_Struct result;
         result.u_h = u_h;
         result.iterations = iter;
         result.X = meshX;
         result.Y = meshY;
         return result;
-
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>

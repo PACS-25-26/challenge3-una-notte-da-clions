@@ -20,7 +20,7 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
     const unsigned last = data.n - 1;
     
     if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
-        // Like in the contructor
+        // Sequential execution: mesh and u_h share the exact same global dimensions
         for(unsigned i = 0; i < data.n; i++){
             u_h(i, 0) = data.f4(meshX(i, 0), meshY(i, 0)); // Left edge
             u_h(i, last) = data.f2(meshX(i, last), meshY(i, last)); // Right edge
@@ -29,29 +29,32 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
         }
 
     } else if constexpr(execution_mode == ExecutionMode::PARALLEL){
-        // Each process will update the boundary conditions of its own subdomain -> maybe the work is not well balanced?
+        // Parallel execution: mesh spatial variables represent the local subdomain rows
+        const unsigned local_rows = u_h.rows() - 2;
 
-        
-        //Bottom
+        // 1. Bottom physical boundary (Only managed by Rank 0)
         if(mpi_rank == 0) {
             for(unsigned i = 0; i < data.n; i++) {
                 u_h(0, i) = data.f1(meshX(0, i), meshY(0, i));
             }
         }
-        //Top
+        
+        // 2. Top physical boundary (Only managed by the last Rank)
         if(mpi_rank == mpi_size - 1) {
-            const unsigned local_last_row = u_h.rows() - 1;
+            const unsigned local_last_row = u_h.rows() - 1; // Ghost layer index in u_h
+            const unsigned mesh_last_row  = local_rows - 1; // Last available row in local mesh
             for(unsigned i = 0; i < data.n; i++) {
-                u_h(local_last_row, i) = data.f3(meshX(local_last_row, i), meshY(local_last_row, i));
+                u_h(local_last_row, i) = data.f3(meshX(mesh_last_row, i), meshY(mesh_last_row, i));
             }
         }
-        //Left and right edges
-        for(unsigned i = 0; i < u_h.rows(); i++){
-            u_h(i, 0)    = data.f4(meshX(i, 0), meshY(i, 0));
-            u_h(i, last) = data.f2(meshX(i, last), meshY(i, last));
+        
+        // 3. Left and Right physical boundaries
+        // Applied only to real local fluid rows (from 1 to local_rows)
+        // Shifting index by -1 to properly sample the local mesh matrices
+        for(unsigned i = 1; i <= local_rows; i++){
+            u_h(i, 0)    = data.f4(meshX(i - 1, 0), meshY(i - 1, 0));
+            u_h(i, last) = data.f2(meshX(i - 1, last), meshY(i - 1, last));
         }
-
-        std::cout << "test" << std::endl;
     }
 }
 
