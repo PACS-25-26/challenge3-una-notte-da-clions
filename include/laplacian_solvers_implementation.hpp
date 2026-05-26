@@ -246,7 +246,6 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_neumann(){
-        // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Neumann
 
         // Get mpi info
         int mpi_rank, mpi_size;
@@ -289,26 +288,54 @@ namespace laplacian_solvers{
                          u_h_local.data() + (total_rows - 1) * data.n, data.n, MPI_DOUBLE, rank_down, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
             // Send last row and receive first row
-            MPI_Sendrecv(u_h_local.data() + (total_rows - 1) * data.n, data.n, MPI_DOUBLE, rank_down, 1,
+            MPI_Sendrecv(u_h_local.data() + (total_rows - 1 - down_row) * data.n, data.n, MPI_DOUBLE, rank_down, 1,
                          u_h_local.data(), data.n, MPI_DOUBLE, rank_up, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
             // Second - Compute new values, but not the received ones!
-            for(unsigned i = 1; i < total_rows - 1; i++){
+            double max_local_err = -1;
+            for(unsigned i = 1; i < total_rows - 1; i++){ // Remember to add openmp!!!
                 for(unsigned j = 0; j < data.n; j++){
-                    u_h_local(i, j) = 0.25 * 
-                    
+                    u_h_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX_local(i - up_row, j), meshY_local(i - up_row, j)));
+                    const double local_err = std::abs(u_h_local(i, j) - u_h_new_local(i, j));
+                    max_local_err = (local_err > max_local_err) ? local_err : max_local_err;
                 }
             }
 
+            // Third - Compute global error -> shouldn't this be done afte applying boundary conditions?
+            MPI_Allreduce(&max_local_err, &err, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
 
-
+            // Fourth - Apply boundary conditions and swap local matrices
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY); // This is probably wrong
+            u_h_local.swap(u_h_new_local);
+            iter++;
         }
         
-        
+        // Prepare communication 
+        std::vector<int> recv_counts(mpi_size);
+        std::vector<int> displs(mpi_size);
 
+        for(unsigned i = 0; i < mpi_size; i++){
+            recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
+            displs[i] = i == 0? 0: displs[i-1] + recv_counts[i-1];
+        }
 
+        // Assemble global solution and mesh
+        eigenMatrix u_h_global(data.n, data.n); // Maybe initialize result.u_h?
+        eigenMatrix meshX_global(data.n, data.n);
+        eigenMatrix meshY_global(data.n, data.n);
 
-        return Result_Struct(); // Placeholder
+        MPI_Gatherv(u_h_local.data() + up_row * data.n, local_rows * data.n, MPI_DOUBLE, u_h_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Gatherv(meshX_local.data(), local_rows * data.n, MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Gatherv(meshY_local.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+        // Retiurn results
+        result.u_h.swap(u_h_global);
+        result.X.swap(meshX_global);
+        result.Y.swap(meshY_global);
+        result.iterations = iter;
+        result.iterartion_residue = err
+
+        return result;
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
