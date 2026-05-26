@@ -247,6 +247,67 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_neumann(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Neumann
+
+        // Get mpi info
+        int mpi_rank, mpi_size;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+
+        // Compute indexes and communication info
+        const unsigned remainder_rows = data.n % mpi_size;
+        const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+        // Indexes for meshX and meshY
+        const unsigned start_row = mpi_rank * (data.n / mpi_size) + std::min(static_cast<unsigned>(mpi_rank), remainder_rows);
+        const unsigned end_row = start_row + local_rows - 1;
+
+        // Extract local mesh - might be changed in later implelemtations
+        const eigenMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
+        const eigenMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
+
+        // Find process neighbors
+        const int rank_up = (mpi_rank == 0) ? MPI_PROC_NULL : mpi_rank - 1; 
+        const int rank_down = (mpi_rank == mpi_size - 1) ? MPI_PROC_NULL : mpi_rank + 1;
+
+        const unsigned up_row = (mpi_rank == 0? 0: 1);
+        const unsigned down_row = (mpi_rank == mpi_size -1? 0: 1);
+        const unsigned total_rows = local_rows + up_row + down_row;
+
+        // Build local matrixes. It will also host the upper and lower rows for later communication
+        eigenMatrix u_h_local = eigenMatrix::Zero(total_rows, data.n);
+        eigenMatrix u_h_new_local = eigenMatrix::Zero(total_rows, data.n);
+
+        // Initialize loop
+        double err = data.tolerance + 1.0;
+        unsigned iter = 0;
+
+        while(err > data.tolerance && iter < data.max_iterations){
+            // First - Handle communication with other processed
+
+            // Send first row and receive last row
+            MPI_Sendrecv(u_h_local.data() + up_row * data.n, data.n, MPI_DOUBLE, rank_up, 0,
+                         u_h_local.data() + (total_rows - 1) * data.n, data.n, MPI_DOUBLE, rank_down, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+            // Send last row and receive first row
+            MPI_Sendrecv(u_h_local.data() + (total_rows - 1) * data.n, data.n, MPI_DOUBLE, rank_down, 1,
+                         u_h_local.data(), data.n, MPI_DOUBLE, rank_up, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+            // Second - Compute new values, but not the received ones!
+            for(unsigned i = 1; i < total_rows - 1; i++){
+                for(unsigned j = 0; j < data.n; j++){
+                    u_h_local(i, j) = 0.25 * 
+                    
+                }
+            }
+
+
+
+        }
+        
+        
+
+
+
         return Result_Struct(); // Placeholder
     }
 
