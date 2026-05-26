@@ -586,12 +586,6 @@ namespace laplacian_solvers{
         return Result_Struct(); // Placeholder
     }
 
-
-    /* --- CONVERGENCE TEST METHOD --- */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    Convergence_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::convergence_test(){
-        return Convergence_Struct(); // Placeholder
-    }
 }
 
 #endif
