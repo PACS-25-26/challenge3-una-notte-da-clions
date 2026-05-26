@@ -39,9 +39,9 @@ inline void run_test_1_dirichlet_sequential(int mpi_rank) {
     data.u_exact_lambda = [](double x, double y) { return std::sin(M_PI * x) * std::sin(M_PI * y); };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::SEQUENTIAL, funcType> solver(data);
-    // solver.build_mesh();
-    // solver.solve();
-    // solver.print();
+    solver.build_mesh();
+    solver.solve();
+    solver.print();
 }
 
 // =========================================================================
@@ -61,9 +61,9 @@ inline void run_test_2_neumann_sequential(int mpi_rank) {
     data.u_exact_lambda = [](double x, double y) { return std::cos(M_PI * x) * std::cos(M_PI * y); };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::SEQUENTIAL, funcType> solver(data);
-    // solver.build_mesh();
-    // solver.solve();
-    // solver.print();
+    solver.build_mesh();
+    solver.solve();
+    solver.print();
 }
 
 // =========================================================================
@@ -83,9 +83,9 @@ inline void run_test_3_robin_sequential(int mpi_rank) {
     data.u_exact_lambda = [](double x, double y) { return std::exp(x + y); };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::ROBIN, ExecutionMode::SEQUENTIAL, funcType> solver(data);
-    // solver.build_mesh();
-    // solver.solve();
-    // solver.print();
+    solver.build_mesh();
+    solver.solve();
+    solver.print();
 }
 
 // =========================================================================
@@ -106,7 +106,7 @@ inline void run_test_4_dirichlet_parallel(int mpi_rank) {
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::PARALLEL, funcType> solver(data);
     solver.build_mesh();
-    auto res = solver.solve();
+    solver.solve();
     solver.print();
     
     // Puoi anche testare l'esportazione VTK che abbiamo scritto prima:
@@ -130,9 +130,9 @@ inline void run_test_5_neumann_parallel(int mpi_rank) {
     data.u_exact_lambda = [](double x, double y) { return std::cos(M_PI * x) * std::cos(M_PI * y); };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::PARALLEL, funcType> solver(data);
-    // solver.build_mesh();
-    // solver.solve();
-    // solver.print();
+    solver.build_mesh();
+    solver.solve();
+    solver.print();
 }
 
 // =========================================================================
@@ -152,9 +152,9 @@ inline void run_test_6_robin_parallel(int mpi_rank) {
     data.u_exact_lambda = [](double x, double y) { return std::exp(x + y); };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::ROBIN, ExecutionMode::PARALLEL, funcType> solver(data);
-    // solver.build_mesh();
-    // solver.solve();
-    // solver.print();
+    solver.build_mesh();
+    solver.solve();
+    solver.print();
 }
 
 #endif // TESTS_HPP
