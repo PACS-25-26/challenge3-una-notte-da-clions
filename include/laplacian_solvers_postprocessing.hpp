@@ -7,68 +7,117 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print() const{
-        std::cout << "Mesh points (x, y):" << std::endl;
+
         print_mesh();
-        std::cout << "Discrete solution u_h:" << std::endl;
         print_solution();
-        std::cout << "Exact solution u_exact:" << std::endl;
         print_exact_solution();
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_mesh() const{
 
-        if constexpr (execution_mode == ExecutionMode::PARALLEL) {
-            int mpi_rank;
+         eigenMatrix meshX_global(data.n, data.n), meshY_global(data.n, data.n);
+
+        if constexpr (execution_mode == ExecutionMode::PARALLEL) { // Gather data from other processes
+
+            int mpi_rank, mpi_size;
             MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+
+            const unsigned remainder_rows = data.n % mpi_size;
+            const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+            std::vector<int> recv_counts(mpi_size);
+            std::vector<int> displs(mpi_size);
+
+            for(unsigned i = 0; i < mpi_size; i++){
+                recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
+                displs[i] = i == 0? 0: displs[i-1] + recv_counts[i-1];
+            }
+
+            eigenMatrix meshX_global(data.n, data.n), meshY_global(data.n, data.n);
+
+            MPI_Gatherv(meshX.data(), local_rows * data.n, MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshY.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+         
             if(mpi_rank != 0) return; // Only the root process
+
+        } else{
+
+            meshX_global = meshX;
+            meshY_global = meshY;
         }
 
+        std::cout << "Mesh points (x, y):" << std::endl;
+
         for(unsigned i = 0; i < data.n; i++){
-            for(unsigned j = 0; j < data.n; j++) std::cout << "(" << meshX(i, j) << ", " << meshY(i, j) << ") ";
-             std::cout << std::endl;
+            for(unsigned j = 0; j < data.n; j++) std::cout << "(" << result.X(i, j) << ", " << result.Y(i, j) << ") ";
+            std::cout << std::endl;
         }
        
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_solution() const{
+        
+        int mpi_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
 
-        if constexpr (execution_mode == ExecutionMode::PARALLEL) {
-            int mpi_rank;
-            MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-            if(mpi_rank != 0) return; // Only the root process prints
+        if(mpi_rank != 0) return;
+
+        std::cout << "Discrete solution u_h:" << std::endl;
+
+        if(result.iterartion_residue == -1.) {
+          std::cout << "Solver was not called" << std::endl; 
+          return;
         }
-
-
+    
         for(unsigned i = 0; i < data.n; i++){
             for(unsigned j = 0; j < data.n; j++) std::cout << result.u_h(i, j) << " ";
             std::cout << std::endl;
         }   
+
+        std::cout << "Residue error: " << result.iterartion_residue << std::endl;
+        std::cout << "Total iterations: " << result.iterations << std::endl;
     }
     
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_exact_solution() const{
 
-        if constexpr (execution_mode == ExecutionMode::PARALLEL) {
-            int mpi_rank;
+        eigenMatrix exact_solution(data.n, data.n);
+
+        if constexpr (execution_mode == ExecutionMode::PARALLEL) { // Gather data from other processes
+
+            int mpi_rank, mpi_size;
             MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-            if(mpi_rank != 0) return; // Only the root process prints
+            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+
+            const unsigned remainder_rows = data.n % mpi_size;
+            const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+            std::vector<int> recv_counts(mpi_size);
+            std::vector<int> displs(mpi_size);
+
+            for(unsigned i = 0; i < mpi_size; i++){
+                recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
+                displs[i] = i == 0? 0: displs[i-1] + recv_counts[i-1];
+            }
+
+            MPI_Gatherv(u_exact.data(), local_rows * data.n, MPI_DOUBLE, exact_solution.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+         
+            if(mpi_rank != 0) return; // Only the root process
+
+        } else{
+            exact_solution = u_exact;
         }
 
-        if(result.iterartion_residue == -1.){
-          std::cout << "Solver was not called" << std::endl; 
-          return;
-        }
-
+        std::cout << "Exact solution u_exact:" << std::endl;
+        
         for(unsigned i = 0; i < data.n; i++){
-            for(unsigned j = 0; j < data.n; j++) std::cout << u_exact(i, j) << " ";
+            for(unsigned j = 0; j < data.n; j++) std::cout << exact_solution(i, j) << " ";
             std::cout << std::endl;
         }   
-
-        std::cout << "Residue error: " << result.iterartion_residue << std::endl;
-        std::cout << "Total iterations: " << result.iterations << std::endl;
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
