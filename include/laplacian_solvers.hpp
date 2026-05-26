@@ -112,6 +112,9 @@ namespace laplacian_solvers {
             eigenMatrix u_h; ///< Numerical solution matrix 
             Result_Struct result; ///< Struct to hold the final results of the solver.
 
+            int mpi_rank; ///< Rank of the MPI process (used in parallel execution).
+            int mpi_size; ///< Total number of MPI processes (used in parallel execution).
+
             
         public:
         
