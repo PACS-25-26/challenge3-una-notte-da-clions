@@ -37,13 +37,13 @@ namespace laplacian_solvers{
             MPI_Gatherv(meshX.data(), local_rows * data.n, MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
             MPI_Gatherv(meshY.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
          
-            if(mpi_rank != 0) return; // Only the root process
 
         } else{
             meshX_global = meshX;
             meshY_global = meshY;
         }
 
+        if(mpi_rank != 0) return; // Only the root process
         std::cout << "Mesh points (x, y):" << std::endl;
 
         for(unsigned i = 0; i < data.n; i++){
@@ -101,12 +101,12 @@ namespace laplacian_solvers{
             }
 
             MPI_Gatherv(u_exact.data(), local_rows * data.n, MPI_DOUBLE, exact_solution.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
-         
-            if(mpi_rank != 0) return; // Only the root process
 
         } else{
             exact_solution = u_exact;
         }
+
+        if(mpi_rank != 0) return; // Only the root process
 
         std::cout << "Exact solution u_exact:" << std::endl;
         
