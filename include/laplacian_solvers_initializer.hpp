@@ -36,7 +36,7 @@ namespace laplacian_solvers{
         
         for(unsigned i = 0; i < data.n; i++) for(unsigned j = 0; j < data.n; j++) {
             meshX(i, j) = data.x1 + j * h;
-            meshY(i, j) = data.x2 - i * h;
+            meshY(i, j) = data.x1 + i * h;
         }
     }
 
@@ -68,7 +68,7 @@ namespace laplacian_solvers{
         // Thread safety is guaranteed since each process has different rows.
         for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
             local_meshX(i, j) = data.x1 + j * h;
-            local_meshY(i, j) = data.x2 - (i + start_row) * h;
+            local_meshY(i, j) = data.x1 + (i + start_row) * h;
         }
 
         // Gather the local meshes into the global one. Al processes will have a copy of the complete mesh.
