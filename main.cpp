@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::SEQUENTIAL, funcType> solver_dirichlet(data);
     solver_dirichlet.build_mesh();
-    //solver_dirichlet.solve();
-    //solver_dirichlet.print();
+    solver_dirichlet.solve();
+    solver_dirichlet.print();
 
     // =========================================================================
     // TEST 2: NEUMANN
@@ -94,8 +94,8 @@ int main(int argc, char* argv[]) {
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::ROBIN, ExecutionMode::SEQUENTIAL, funcType> solver_robin(data);
     solver_robin.build_mesh();
-    //solver_robin.solve();
-    //solver_robin.print();
+    solver_robin.solve();
+    solver_robin.print();
 
     // =========================================================================
     // TEST 4: DIRICHLET PARALLEL
@@ -117,9 +117,9 @@ int main(int argc, char* argv[]) {
     };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::PARALLEL, funcType> solver_dirichlet_parallel(data);
-    //solver_dirichlet_parallel.build_mesh();
-    //solver_dirichlet_parallel.solve();
-    //solver_dirichlet_parallel.print();
+    solver_dirichlet_parallel.build_mesh();
+    solver_dirichlet_parallel.solve();
+    solver_dirichlet_parallel.print();
 
     // =========================================================================
     // TEST 5: NEUMANN
@@ -148,6 +148,30 @@ int main(int argc, char* argv[]) {
     solver_neumann_parallel.build_mesh();
     solver_neumann_parallel.solve();
     solver_neumann_parallel.print();
+
+    // =========================================================================
+    // TEST 6: ROBIN
+    // Exact solution: u(x,y) = x^2 + y^2
+    // -Laplacian(u) = -4
+    // Robin BC: du/dn + alpha*u = g  (alpha = 1)
+    //   Bottom (y=0, n=[0,-1]): du/dn = -du/dy = 0  -> g = 0 + u(x,0) = x^2
+    //   Right  (x=1, n=[+1,0]): du/dn = +du/dx = 2  -> g = 2 + u(1,y) = 3 + y^2
+    //   Top    (y=1, n=[0,+1]): du/dn = +du/dy = 2  -> g = 2 + u(x,1) = 3 + x^2
+    //   Left   (x=0, n=[-1,0]): du/dn = -du/dx = 0  -> g = 0 + u(0,y) = y^2
+    // Well-posed: Robin term alpha*u breaks the null-space -> unique solution
+    // =========================================================================
+    std::cout << "\n=== Test 6: ROBIN ===" << std::endl;
+    data.f0 = [](double x, double y) { return -2.0 * std::exp(x + y); };
+    data.f1 = [](double x, double y) { return 0.0; };
+    data.f2 = [](double x, double y) { return 2.0 * std::exp(1.0 + y); };
+    data.f3 = [](double x, double y) { return 2.0 * std::exp(x + 1.0); };
+    data.f4 = [](double x, double y) { return 0.0; };
+    data.u_exact_lambda = [](double x, double y) { return std::exp(x + y); };
+
+    laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::ROBIN, ExecutionMode::SEQUENTIAL, funcType> solver_robin_parallel(data);
+    solver_robin_parallel.build_mesh();
+    solver_robin_parallel.solve();
+    solver_robin_parallel.print();
 
     MPI_Finalize();
     return 0;
