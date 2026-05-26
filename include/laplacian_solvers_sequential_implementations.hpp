@@ -120,7 +120,7 @@ namespace laplacian_solvers{
     /**
      * @brief Solves the Laplacian using the sequential Jacobi iterative method with Robin BCs.
      * Implements mixed boundary conditions. The update rule involves a weighted average 
-     * regulated by the 'gamma' parameter to represent the Robin boundary constraint.
+     * regulated by the 'alpha' parameter to represent the Robin boundary constraint.
      */
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
@@ -131,7 +131,7 @@ namespace laplacian_solvers{
         const double h2 = h * h;
         const unsigned last = data.n - 1;
 
-        const double den = 1.0 + data.gamma * h;
+        const double den = 1.0 + data.alpha * h;
 
         while (error > data.tolerance && iter < data.max_iterations) {
             error = 0.0;
