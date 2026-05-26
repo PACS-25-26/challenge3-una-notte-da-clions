@@ -42,7 +42,7 @@ namespace laplacian_solvers{
 
 
         for(unsigned i = 0; i < data.n; i++){
-            for(unsigned j = 0; j < data.n; j++) std::cout << u_h(i, j) << " ";
+            for(unsigned j = 0; j < data.n; j++) std::cout << result.u_h(i, j) << " ";
             std::cout << std::endl;
         }   
     }

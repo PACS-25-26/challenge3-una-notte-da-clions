@@ -61,19 +61,15 @@ namespace laplacian_solvers{
         const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
         const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
 
+        /*
         eigenMatrix local_meshX = eigenMatrix::Zero(end_row - start_row, data.n);
         eigenMatrix local_meshY = eigenMatrix::Zero(end_row - start_row, data.n);
+        */
 
-
-        // Thread safety is guaranteed since each process has different rows.
         for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
-            local_meshX(i, j) = data.x1 + j * h;
-            local_meshY(i, j) = data.x1 + (i + start_row) * h;
+           meshX(i, j) = data.x1 + j * h;
+           meshY(i, j) = data.x1 + (i + start_row) * h;
         }
-
-        // Gather the local meshes into the global one. Al processes will have a copy of the complete mesh.
-        MPI_Allgather(local_meshX.data(), (end_row - start_row) * data.n, MPI_DOUBLE, meshX.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
-        MPI_Allgather(local_meshY.data(), (end_row - start_row) * data.n, MPI_DOUBLE, meshY.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
     }
 
     /**
@@ -117,21 +113,22 @@ namespace laplacian_solvers{
 
         // Distribute rows among processes. If the number of rows is not divided by the number of threads, the remaining ones will be assigned to the
         // fisrt threads, as shown in Figure 1 of the challenge pdf file.
-        const unsigned local_rows = data.n / mpi_size;
-        const unsigned remainder_rows = data.n % mpi_size;
+        const unsigned local_rows = meshX.rows();
 
+        /*
         const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
         const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
+        */
 
-        eigenMatrix local_exact_solution = eigenMatrix::Zero(end_row - start_row, data.n);
+        u_exact = eigenMatrix::Zero(local_rows, data.n);
 
         // Thread safety is guaranteed since each process has different rows.
-        for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
-            local_exact_solution(i, j) = data.u_exact_lambda(meshX(i + start_row, j), meshY(i + start_row, j));
+        for(unsigned i = 0; i < local_rows; i++) for(unsigned j = 0; j < data.n; j++){
+            u_exact(i, j) = data.u_exact_lambda(meshX(i, j), meshY(i, j));
         }
 
         // Gather the local exact solutions into the global one. All processes will have a copy of the complete exact solution.
-        MPI_Allgather(local_exact_solution.data(), (end_row - start_row) * data.n, MPI_DOUBLE, u_exact.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
+        //MPI_Allgather(local_exact_solution.data(), (end_row - start_row) * data.n, MPI_DOUBLE, u_exact.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
     }
 }
 

@@ -117,9 +117,38 @@ int main(int argc, char* argv[]) {
     };
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::PARALLEL, funcType> solver_dirichlet_parallel(data);
-    solver_dirichlet_parallel.build_mesh();
-    solver_dirichlet_parallel.solve();
-    solver_dirichlet_parallel.print();
+    //solver_dirichlet_parallel.build_mesh();
+    //solver_dirichlet_parallel.solve();
+    //solver_dirichlet_parallel.print();
+
+    // =========================================================================
+    // TEST 5: NEUMANN
+    // Exact solution: u(x,y) = cos(pi*x) * cos(pi*y)
+    // -Laplacian(u) = 2*pi^2 * cos(pi*x)*cos(pi*y)
+    // Neumann BC: du/dn = 0 on all edges
+    //   Bottom (y=0, n=[0,-1]): -du/dy = pi*cos(pi*x)*sin(0) = 0       ok
+    //   Top    (y=1, n=[0,+1]): +du/dy = -pi*cos(pi*x)*sin(pi) = 0     ok
+    //   Left   (x=0, n=[-1,0]): -du/dx = pi*sin(0)*cos(pi*y) = 0       ok
+    //   Right  (x=1, n=[+1,0]): +du/dx = -pi*sin(pi)*cos(pi*y) = 0     ok
+    // Compatibility: integral(f) over [0,1]^2 = 2*pi^2 * 0 = 0         ok
+    // Normalization: mean of cos(pi*x)*cos(pi*y) over [0,1]^2 = 0      ok
+    // =========================================================================
+    std::cout << "\n=== Test 5: NEUMANN ===" << std::endl;
+    data.f0 = [](double x, double y) {
+        return 2.0 * M_PI * M_PI * std::cos(M_PI * x) * std::cos(M_PI * y);
+    };
+    data.f1 = [](double x, double y) { return 0.0; };
+    data.f2 = [](double x, double y) { return 0.0; };
+    data.f3 = [](double x, double y) { return 0.0; };
+    data.f4 = [](double x, double y) { return 0.0; };
+    data.u_exact_lambda = [](double x, double y) {
+        return std::cos(M_PI * x) * std::cos(M_PI * y);
+    };
+
+    laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::PARALLEL, funcType> solver_neumann_parallel(data);
+    solver_neumann_parallel.build_mesh();
+    solver_neumann_parallel.solve();
+    solver_neumann_parallel.print();
 
     MPI_Finalize();
     return 0;
