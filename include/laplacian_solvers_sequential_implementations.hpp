@@ -106,7 +106,12 @@ namespace laplacian_solvers{
             }
 
             u_h = u_new;
-            iter++;
+
+        // Normalizing for unicity
+        double mean = u_h.sum() / (double)(data.n * data.n);
+        u_h.array() -= mean;
+
+        iter++;
         }
 
         Result_Struct result;
@@ -120,18 +125,18 @@ namespace laplacian_solvers{
     /**
      * @brief Solves the Laplacian using the sequential Jacobi iterative method with Robin BCs.
      * Implements mixed boundary conditions. The update rule involves a weighted average 
-     * regulated by the 'gamma' parameter to represent the Robin boundary constraint.
+     * regulated by the 'alpha' parameter to represent the Robin boundary constraint.
      */
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_robin(){
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY); //Warm start
+
         eigenMatrix u_new = u_h; // Inizializzata a zeri dal costruttore
         unsigned iter = 0;
         double error = data.tolerance + 1.0;
         const double h2 = h * h;
         const unsigned last = data.n - 1;
-
-        const double den = 1.0 + data.gamma * h;
 
         while (error > data.tolerance && iter < data.max_iterations) {
             error = 0.0;

@@ -247,11 +247,13 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_neumann(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Neumann
+        return Result_Struct(); // Placeholder
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_robin(){
         // Implementazione del metodo di Jacobi parallelo con condizioni al contorno di Robin
+        return Result_Struct(); // Placeholder
     }
 
     /* --- ACTUAL SOLVERS SCHWARZ --- */
@@ -383,18 +385,20 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel_neumann(){
         // Implementazione del metodo di Schwarz parallelo con condizioni al contorno di Neumann
+        return Result_Struct(); // Placeholder
     }
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel_robin(){
         // Implementazione del metodo di Schwarz parallelo con condizioni al contorno di Robin
+        return Result_Struct(); // Placeholder
     }
 
 
     /* --- CONVERGENCE TEST METHOD --- */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Convergence_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::convergence_test(){
-        
+        return Convergence_Struct(); // Placeholder
     }
 }
 
