@@ -138,12 +138,9 @@ namespace laplacian_solvers {
             /**
              * @brief Exports the structured mesh and solution data into legacy VTK format.
              * @details Visualizable using ParaView.
-             * @param meshX Matrix containing coordinates along X axis.
-             * @param meshY Matrix containing coordinates along Y axis.
-             * @param u_h Final discrete simulation results matrix.
              * @param filename Target path/name of the generated file.
              */
-            void export_to_vtk(const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_h, const std::string& filename) const;
+            void export_to_vtk(const std::string& filename) const;
 
             void build_mesh(); //OK
 
