@@ -96,7 +96,7 @@ namespace laplacian_solvers{
             }
             */
 
-            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY);
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY, u_h);
 
             for (unsigned i = 0; i < data.n; ++i) {
                 err = std::max({err, std::abs(u_new(i, 0) - u_h(i, 0)), 
@@ -130,7 +130,7 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_robin(){
-        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY); //Warm start
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY, u_h); //Warm start
 
         eigenMatrix u_new = u_h; // Inizializzata a zeri dal costruttore
         unsigned iter = 0;
@@ -167,7 +167,7 @@ namespace laplacian_solvers{
                 u_new(last, i) = (u_new(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i))) / den;
             }*/
 
-            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY);
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY, u_h);
 
             for (unsigned i = 0; i < data.n; ++i) {
                 err = std::max({err, std::abs(u_new(i, 0) - u_h(i, 0)), 

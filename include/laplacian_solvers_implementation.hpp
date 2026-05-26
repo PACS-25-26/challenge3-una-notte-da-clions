@@ -266,7 +266,6 @@ namespace laplacian_solvers{
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
         MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
         
-
         // Compute indexes and communication info
         const unsigned remainder_rows = data.n % mpi_size;
         const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
@@ -312,13 +311,20 @@ namespace laplacian_solvers{
             }
 
             // Third - Apply boundary conditions 
-            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY); // This is probably wrong
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size); // This is probably wrong
 
-            // Fourth - Compute local error
-            const double local_err = (u_h_new_local - u_h_local).norm();
+            // Fourth - zero-average constraint for Neumann BCs (required to ensure uniqueness of the solution)
+            double avg = 0.0;
+            const double local_sum = u_h_new_local.block(up_row, 0, local_rows, data.n).sum();
+            MPI_Allreduce(&local_sum, &avg, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+            u_h_new_local.array() -= avg / (data.n * data.n);
+
+            // Fourth - Compute local error in L2 norm (frobenius norm) with h
+            const double local_err = (u_h_new_local - u_h_local).squaredNorm();
 
             // Fifth - Compute global error and prepare next iteration
             MPI_Allreduce(&local_err, &err, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);  
+            err = std::sqrt(h * err); // Maybe it is possible to avoid the sqrt?
             iter++;          
             u_h_local.swap(u_h_new_local);
 
@@ -345,17 +351,6 @@ namespace laplacian_solvers{
         MPI_Gatherv(meshY.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
         // Return results - caution: only rank 0 has the correct return structure!
-
-        // debug: let rank 0 print all u_h_global values
-        if (mpi_rank == 0) {
-            for(unsigned i = 0; i < data.n; i++){
-                for(unsigned j = 0; j < data.n; j++){
-                    std::cout << u_h_global(i, j) << " ";
-                }
-                std::cout << std::endl;
-            }
-        }
-
         result.u_h.swap(u_h_global);
         result.X.swap(meshX_global);
         result.Y.swap(meshY_global);

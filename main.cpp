@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::SEQUENTIAL, funcType> solver_dirichlet(data);
     solver_dirichlet.build_mesh();
-    solver_dirichlet.solve();
+    //solver_dirichlet.solve();
     //solver_dirichlet.print();
 
     // =========================================================================
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::SEQUENTIAL, funcType> solver_neumann(data);
     solver_neumann.build_mesh();
     solver_neumann.solve();
-    //solver_neumann.print();
+    solver_neumann.print();
 
     // =========================================================================
     // TEST 3: ROBIN
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
 
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::ROBIN, ExecutionMode::SEQUENTIAL, funcType> solver_robin(data);
     solver_robin.build_mesh();
-    solver_robin.solve();
+    //solver_robin.solve();
     //solver_robin.print();
 
     // =========================================================================
@@ -144,7 +144,6 @@ int main(int argc, char* argv[]) {
     data.u_exact_lambda = [](double x, double y) {
         return std::cos(M_PI * x) * std::cos(M_PI * y);
     };
-
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::PARALLEL, funcType> solver_neumann_parallel(data);
     solver_neumann_parallel.build_mesh();
     solver_neumann_parallel.solve();
