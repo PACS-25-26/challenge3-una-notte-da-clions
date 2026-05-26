@@ -7,7 +7,6 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print() const{
-
         print_mesh();
         print_solution();
         print_exact_solution();
