@@ -107,11 +107,11 @@ namespace laplacian_solvers{
 
             u_h = u_new;
 
-        // Normalizing for unicity
-        double mean = u_h.sum() / (double)(data.n * data.n);
-        u_h.array() -= mean;
+            // Normalizing for unicity
+            double mean = u_h.sum() / (double)(data.n * data.n);
+            u_h.array() -= mean;
 
-        iter++;
+            iter++;
         }
 
         Result_Struct result;

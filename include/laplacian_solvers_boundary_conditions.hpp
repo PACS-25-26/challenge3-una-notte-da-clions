@@ -24,22 +24,30 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
         for(unsigned i = 0; i < data.n; i++){
             u_h(i, 0) = data.f4(meshX(i, 0), meshY(i, 0)); // Left edge
             u_h(i, last) = data.f2(meshX(i, last), meshY(i, last)); // Right edge
-            u_h(0, i) = data.f3(meshX(0, i), meshY(0, i)); // Top edge
-            u_h(last, i) = data.f1(meshX(last, i), meshY(last, i)); // Bottom edge
+            u_h(0, i) = data.f1(meshX(0, i), meshY(0, i)); // Bottom edge
+            u_h(last, i) = data.f3(meshX(last, i), meshY(last, i)); // Top edge
         }
 
     } else if constexpr(execution_mode == ExecutionMode::PARALLEL){
         // Each process will update the boundary conditions of its own subdomain -> maybe the work is not well balanced?
 
-        // Bottom edge
-        if(mpi_rank == 0) for(unsigned i = 0; i < data.n; i++) u_h(last, i) = data.f1(meshX(last, i), meshY(last, i));
         
-        // Top edge
-        if(mpi_rank == mpi_size - 1) for(unsigned i = 0; i < data.n; i++) u_h(0, i) = data.f3(meshX(0, i), meshY(0, i));
-        
-        // Left and right edges - might rewrite the corners
+        //Bottom
+        if(mpi_rank == 0) {
+            for(unsigned i = 0; i < data.n; i++) {
+                u_h(0, i) = data.f1(meshX(0, i), meshY(0, i));
+            }
+        }
+        //Top
+        if(mpi_rank == mpi_size - 1) {
+            const unsigned local_last_row = u_h.rows() - 1;
+            for(unsigned i = 0; i < data.n; i++) {
+                u_h(local_last_row, i) = data.f3(meshX(local_last_row, i), meshY(local_last_row, i));
+            }
+        }
+        //Left and right edges
         for(unsigned i = 0; i < u_h.rows(); i++){
-            u_h(i, 0) = data.f4(meshX(i, 0), meshY(i, 0));
+            u_h(i, 0)    = data.f4(meshX(i, 0), meshY(i, 0));
             u_h(i, last) = data.f2(meshX(i, last), meshY(i, last));
         }
 
@@ -59,33 +67,46 @@ void apply_neumann_condition(eigenMatrix & u_h, const Data_Struct<funcType>& dat
 
     if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
 
-         for (unsigned i = 0; i < data.n; i++) {
-                u_h(i, 0) = u_h(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0)); // left edge
-                u_h(i, last) = u_h(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last)); // right edge
-                u_h(0, i) = u_h(1, i) + h * data.f3(meshX(0, i), meshY(0, i)); // top edge
-                u_h(last, i) = u_h(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i)); // bottom edge 
-            }
+         for (unsigned i = 1; i < last; i++) {
+            u_h(i, 0)    = u_h(i, 1)        + h * data.f4(meshX(i, 0), meshY(i, 0));       // Left edge (f4)
+            u_h(i, last) = u_h(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last)); // Right edge (f2)
+            u_h(0, i)    = u_h(1, i)        + h * data.f1(meshX(0, i), meshY(0, i));       // Bottom edge (f1)
+            u_h(last, i) = u_h(last - 1, i) + h * data.f3(meshX(last, i), meshY(last, i)); // Top edge (f3)
+        }
 
-            //Corners
-            u_h(0, 0)       = 0.5*(u_h(1, 0)        + u_h(0, 1))        + 0.5*h*(data.f3(meshX(0,0),         meshY(0,0))         + data.f4(meshX(0,0),         meshY(0,0)));
-            u_h(0, last)    = 0.5*(u_h(1, last)      + u_h(0, last-1))  + 0.5*h*(data.f3(meshX(0,last),      meshY(0,last))      + data.f2(meshX(0,last),      meshY(0,last)));
-            u_h(last, 0)    = 0.5*(u_h(last-1, 0)   + u_h(last, 1))    + 0.5*h*(data.f1(meshX(last,0),      meshY(last,0))      + data.f4(meshX(last,0),      meshY(last,0)));
-            u_h(last, last) = 0.5*(u_h(last-1, last) + u_h(last,last-1))+ 0.5*h*(data.f1(meshX(last,last),   meshY(last,last))   + data.f2(meshX(last,last),   meshY(last,last)));
+        //Corners
+        u_h(0, 0)       = 0.5*(u_h(1, 0)        + u_h(0, 1))        + 0.5*h*(data.f1(meshX(0,0),         meshY(0,0))         + data.f4(meshX(0,0),         meshY(0,0)));
+        u_h(0, last)    = 0.5*(u_h(1, last)      + u_h(0, last-1))  + 0.5*h*(data.f1(meshX(0,last),      meshY(0,last))      + data.f2(meshX(0,last),      meshY(0,last)));
+        u_h(last, 0)    = 0.5*(u_h(last-1, 0)   + u_h(last, 1))    + 0.5*h*(data.f3(meshX(last,0),      meshY(last,0))      + data.f4(meshX(last,0),      meshY(last,0)));
+        u_h(last, last) = 0.5*(u_h(last-1, last) + u_h(last,last-1))+ 0.5*h*(data.f3(meshX(last,last),   meshY(last,last))   + data.f2(meshX(last,last),   meshY(last,last)));
 
     } else if constexpr(execution_mode == ExecutionMode::PARALLEL){
 
         // As with Dirichlet, each process will update the boundary conditions of its own subdomain -> maybe the work is not well balanced?
 
-        // Bottom edge
-        if(mpi_rank == 0) for(unsigned i = 0; i < data.n; i++) u_h(last, i) = u_h(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i));
-        
-        // Top edge
-        if(mpi_rank == mpi_size - 1) for(unsigned i = 0; i < data.n; i++) u_h(0, i) = u_h(1, i) + h * data.f3(meshX(0, i), meshY(0, i));
-
+        const unsigned local_last_row = u_h.rows() - 1;
         // Left and right edges
         for(unsigned i = 0; i < u_h.rows(); i++){
-            u_h(i, 0) = u_h(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0));
+            u_h(i, 0)    = u_h(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0));
             u_h(i, last) = u_h(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last));
+        }
+        
+        // Bottom edge
+        if(mpi_rank == 0) {
+            for(unsigned i = 1; i < last; i++) {
+                u_h(0, i) = u_h(1, i) + h * data.f1(meshX(0, i), meshY(0, i));
+            }
+            u_h(0, 0)    = 0.5*(u_h(1, 0)    + u_h(0, 1))    + 0.5*h*(data.f1(meshX(0,0),    meshY(0,0))    + data.f4(meshX(0,0),    meshY(0,0)));
+            u_h(0, last) = 0.5*(u_h(1, last) + u_h(0, last-1))+ 0.5*h*(data.f1(meshX(0,last), meshY(0,last)) + data.f2(meshX(0,last), meshY(0,last)));
+        }
+
+        // Top edge
+        if(mpi_rank == mpi_size - 1) {
+            for(unsigned i = 1; i < last; i++) {
+                u_h(local_last_row, i) = u_h(local_last_row - 1, i) + h * data.f3(meshX(local_last_row, i), meshY(local_last_row, i));
+            }
+            u_h(local_last_row, 0)    = 0.5*(u_h(local_last_row-1, 0)    + u_h(local_last_row, 1))    + 0.5*h*(data.f3(meshX(local_last_row,0),    meshY(local_last_row,0))    + data.f4(meshX(local_last_row,0),    meshY(local_last_row,0)));
+            u_h(local_last_row, last) = 0.5*(u_h(local_last_row-1, last) + u_h(local_last_row, last-1))+ 0.5*h*(data.f3(meshX(local_last_row,last), meshY(local_last_row,last)) + data.f2(meshX(local_last_row,last), meshY(local_last_row,last)));
         }
     }
 }
@@ -101,28 +122,48 @@ void apply_robin_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data,
     const double h = abs(data.x2 - data.x1) / (data.n - 1);
     const double den = 1 + h*data.alpha; // Denominator for the Robin condition update formula
 
-    if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
+if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
          for (unsigned i = 0; i < data.n; ++i) {
-                u_h(i, 0) = (u_h(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0))) / den; // Left edge
-                u_h(i, last) = (u_h(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last))) / den;  // Right edge 
-                u_h(0, i) = (u_h(1, i) + h * data.f3(meshX(0, i), meshY(0, i))) / den; // Top edge 
-                u_h(last, i) = (u_h(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i))) / den; // Bottom edge 
+                u_h(i, 0)    = (u_h(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0))) / den;       // Left edge (f4)
+                u_h(i, last) = (u_h(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last))) / den;  // Right edge (f2)
+                u_h(0, i)    = (u_h(1, i) + h * data.f1(meshX(0, i), meshY(0, i))) / den;       // Bottom edge (f1)
+                u_h(last, i) = (u_h(last - 1, i) + h * data.f3(meshX(last, i), meshY(last, i))) / den; // Top edge (f3)
         }
 
+        // Corners
+        u_h(0, 0)       = 0.5 * ((u_h(1, 0) + h * data.f1(meshX(0,0), meshY(0,0))) / den + 
+                                (u_h(0, 1) + h * data.f4(meshX(0,0), meshY(0,0))) / den);
+                                
+        u_h(0, last)    = 0.5 * ((u_h(1, last) + h * data.f1(meshX(0,last), meshY(0,last))) / den + 
+                                (u_h(0, last-1) + h * data.f2(meshX(0,last), meshY(0,last))) / den);
+                                
+        u_h(last, 0)    = 0.5 * ((u_h(last-1, 0) + h * data.f3(meshX(last,0), meshY(last,0))) / den + 
+                                (u_h(last, 1) + h * data.f4(meshX(last,0), meshY(last,0))) / den);
+                                
+        u_h(last, last) = 0.5 * ((u_h(last-1, last) + h * data.f3(meshX(last,last), meshY(last,last))) / den + 
+                                (u_h(last, last-1) + h * data.f2(meshX(last,last), meshY(last,last))) / den);
     }
-
+    
     if constexpr(execution_mode == ExecutionMode::PARALLEL){
         // As with Dirichlet, each process will update the boundary conditions of its own subdomain -> maybe the work is not well balanced?
 
         // Bottom edge
-        if(mpi_rank == 0) for(unsigned i = 0; i < data.n; i++) u_h(last, i) = (u_h(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i))) / den;
+        if(mpi_rank == 0) {
+            for(unsigned i = 0; i < data.n; i++) {
+                u_h(0, i) = (u_h(1, i) + h * data.f1(meshX(0, i), meshY(0, i))) / den;
+            }
+        }
         
-        // Top edge
-        if(mpi_rank == mpi_size - 1) for(unsigned i = 0; i < data.n; i++) u_h(0, i) = (u_h(1, i) + h * data.f3(meshX(0, i), meshY(0, i))) / den;
+        if(mpi_rank == mpi_size - 1) {
+            const unsigned local_last_row = u_h.rows() - 1;
+            for(unsigned i = 0; i < data.n; i++) {
+                u_h(local_last_row, i) = (u_h(local_last_row - 1, i) + h * data.f3(meshX(local_last_row, i), meshY(local_last_row, i))) / den;
+            }
+        }
 
         // Left and right edges
         for(unsigned i = 0; i < u_h.rows(); i++){
-            u_h(i, 0) = (u_h(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0))) / den;
+            u_h(i, 0)    = (u_h(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0))) / den;
             u_h(i, last) = (u_h(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last))) / den;
         }
     }

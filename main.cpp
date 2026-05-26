@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     using funcType = std::function<double(double, double)>;
 
     Data_Struct<funcType> data;
-    data.n = 20;
+    data.n = 10;
     data.x1 = 0.0;
     data.x2 = 1.0;
     data.tolerance = 1e-6;
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::DIRICHLET, ExecutionMode::SEQUENTIAL, funcType> solver_dirichlet(data);
     solver_dirichlet.build_mesh();
     solver_dirichlet.solve();
-    //solver_dirichlet.print();
+    solver_dirichlet.print();
 
     // =========================================================================
     // TEST 2: NEUMANN
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     laplacian_solvers::Laplacian_Solver<SolverType::JACOBI, BoundaryCondition::NEUMANN, ExecutionMode::SEQUENTIAL, funcType> solver_neumann(data);
     solver_neumann.build_mesh();
     solver_neumann.solve();
-    //solver_neumann.print();
+    solver_neumann.print();
 
     // =========================================================================
     // TEST 3: ROBIN
