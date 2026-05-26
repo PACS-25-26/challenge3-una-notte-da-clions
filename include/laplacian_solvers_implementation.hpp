@@ -297,7 +297,7 @@ namespace laplacian_solvers{
                 for(unsigned j = 0; j < data.n; j++){
                     u_h_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX_local(i - up_row, j), meshY_local(i - up_row, j)));
                     const double local_err = std::abs(u_h_local(i, j) - u_h_new_local(i, j));
-                    max_local_err = (local_err > max_local_err) ? local_err : max_local_err;
+                    max_local_err = (local_err > max_local_err) ? local_err : max_local_err;                    
                 }
             }
 
