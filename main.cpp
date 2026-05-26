@@ -20,10 +20,10 @@ int main(int argc, char* argv[]) {
     data.x1 = 0.;
     data.x2 = 1.;
     data.f0 = [](double x, double y) { return 8*M_PI*M_PI*std::sin(2*M_PI*x)*std::sin(2*M_PI*y); }; // Source term
-    data.f1 = [](double x, double y) { return 0.0; }; // BC bottom edge
-    data.f2 = [](double x, double y) { return 0.0; }; // BC right edge
-    data.f3 = [](double x, double y) { return 0.0; }; // BC top edge
-    data.f4 = [](double x, double y) { return 0.0; }; // BC left edge
+    data.f1 = [](double x, double y) { return std::sin(2*M_PI*x)*std::sin(2*M_PI*y); }; // BC bottom edge
+    data.f2 = [](double x, double y) { return std::sin(2*M_PI*x)*std::sin(2*M_PI*y); }; // BC right edge
+    data.f3 = [](double x, double y) { return std::sin(2*M_PI*x)*std::sin(2*M_PI*y); }; // BC top edge
+    data.f4 = [](double x, double y) { return std::sin(2*M_PI*x)*std::sin(2*M_PI*y); }; // BC left edge
     data.u_exact_lambda = [](double x, double y) { return std::sin(2*M_PI*x)*std::sin(2*M_PI*y); }; // Exact solution
     data.tolerance = 1e-6;
     data.max_iterations = 10000;
