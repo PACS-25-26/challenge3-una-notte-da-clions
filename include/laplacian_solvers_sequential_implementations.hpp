@@ -32,12 +32,15 @@ namespace laplacian_solvers{
             for (unsigned j = 1; j < data.n - 1; ++j) {
                 
                 u_new(i, j) = 0.25 * (u_h(i-1, j) + u_h(i+1, j) + u_h(i, j-1) + u_h(i, j+1) + h2 * data.f0(meshX(i, j), meshY(i, j)));
-                
+                /**
                 double local_err = std::abs(u_new(i, j) - u_h(i, j));
                 if (local_err > err) {
                     err = local_err;
-                }
+                }*/
             }
+
+            //compute error modified l2 norm
+            err = std::sqrt(h) * (u_new - u_h).norm();
         }
 
         u_h = u_new; 

@@ -14,12 +14,12 @@ int main(int argc, char* argv[]) {
     // --- Sequential Tests ---
     //laplacian_solvers::run_test_1_dirichlet_sequential(mpi_rank);
     //laplacian_solvers::run_test_2_neumann_sequential(mpi_rank);
-    laplacian_solvers::run_test_3_robin_sequential(mpi_rank);
+    //laplacian_solvers::run_test_3_robin_sequential(mpi_rank);
 
     // --- Parallel Tests Jacobi ---
     //laplacian_solvers::run_test_4_dirichlet_parallel(mpi_rank);
     //laplacian_solvers::run_test_5_neumann_parallel(mpi_rank);
-    laplacian_solvers::run_test_6_robin_parallel(mpi_rank);
+    //laplacian_solvers::run_test_6_robin_parallel(mpi_rank);
 
     // --- Parallel Tests Schwarz ---
     //laplacian_solvers::run_test_7_dirichlet_schwarz(mpi_rank);
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     //laplacian_solvers::run_test_9_robin_schwarz(mpi_rank);
 
     // --- Convergence tests Jacobi ---
-    //laplacian_solvers::run_test_10_dirichlet_sequential_vs_parallel_jacobi(mpi_rank);
+    laplacian_solvers::run_test_10_dirichlet_sequential_vs_parallel_jacobi(mpi_rank);
     //laplacian_solvers::run_test_11_neumann_sequential_vs_parallel_jacobi(mpi_rank);
     //laplacian_solvers::run_test_12_robin_sequential_vs_parallel_jacobi(mpi_rank);
 

@@ -15,7 +15,7 @@ namespace laplacian_solvers {
     // Base data configuration setup helper
     inline Data_Struct<funcType> create_default_data() {
         Data_Struct<funcType> data;
-        data.n = 10;
+        data.n = 8;
         data.x1 = 0.0;
         data.x2 = 1.0;
         data.tolerance = 1e-6;

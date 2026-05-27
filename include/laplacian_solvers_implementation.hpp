@@ -141,7 +141,7 @@ namespace laplacian_solvers{
      */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel_dirichlet(){
-  
+        
         // Get mpi info
         int mpi_rank, mpi_size;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
@@ -171,10 +171,10 @@ namespace laplacian_solvers{
         double err = data.tolerance + 1.0;
         unsigned iter = 0;
         const double h2 = h * h;
-        
+
         // Apply boundary contitions to the initial guess
         apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
-
+        
         while(err > data.tolerance && iter < data.max_iterations){
             // First - Handle communication with other processed
 
@@ -186,6 +186,8 @@ namespace laplacian_solvers{
             MPI_Sendrecv(u_h_local.data() + (total_rows - 1 - down_row) * data.n, data.n, MPI_DOUBLE, rank_down, 1,
                          u_h_local.data(), data.n, MPI_DOUBLE, rank_up, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             
+            
+            
             // Second - Compute new values, but not the received ones!
             #pragma omp parallel for
             for(unsigned i = 1; i < total_rows - 1; i++){
@@ -193,6 +195,8 @@ namespace laplacian_solvers{
                     u_h_new_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX(i - up_row, j), meshY(i - up_row, j)));         
                 }
             }
+
+            
 
             // Third - Apply boundary conditions 
             // apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size); // This is probably wrong
@@ -206,12 +210,14 @@ namespace laplacian_solvers{
 
             // Fourth - Compute local error in L2 norm (frobenius norm) with h
             const double local_err = (u_h_new_local - u_h_local).squaredNorm();
-
+            
             // Fifth - Compute global error and prepare next iteration
             MPI_Allreduce(&local_err, &err, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);  
+            
             err = std::sqrt(h * err); // Maybe it is possible to avoid the sqrt?
             iter++;          
             u_h_local.swap(u_h_new_local);
+            
 
         }
         
