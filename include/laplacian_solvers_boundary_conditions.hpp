@@ -65,53 +65,78 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
      * The template function can select the execution policy (sequential or parallel). Notice that the compatibility condition is not checked
      */
 template <ExecutionMode execution_mode, typename funcType>
-void apply_neumann_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix & meshY, const eigenMatrix& u_old, const unsigned mpi_rank, const unsigned mpi_size){
-    
+void apply_neumann_condition(
+    eigenMatrix& u_h, const Data_Struct<funcType>& data,
+    const eigenMatrix& meshX, const eigenMatrix& meshY,
+    const eigenMatrix& u_old,
+    const unsigned mpi_rank, const unsigned mpi_size)
+{
     const unsigned last = data.n - 1;
-    const double h = abs(data.x2 - data.x1) / (data.n - 1);
+    const double h  = std::abs(data.x2 - data.x1) / (data.n - 1);
+    const double h2 = h * h;
 
-    if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
+    if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) {
 
-         for (unsigned i = 1; i < last; i++) {
-            u_h(i, 0)    = u_old(i, 1)        + h * data.f4(meshX(i, 0), meshY(i, 0));       // Left edge (f4)
-            u_h(i, last) = u_old(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last)); // Right edge (f2)
-            u_h(0, i)    = u_old(1, i)        + h * data.f1(meshX(0, i), meshY(0, i));       // Bottom edge (f1)
-            u_h(last, i) = u_old(last - 1, i) + h * data.f3(meshX(last, i), meshY(last, i)); // Top edge (f3)
+        for (unsigned i = 1; i < last; i++) {
+            // Bottom row (outward normal -y): ghost = u(1,j) + 2h·f1
+            u_h(0, i)    = 0.25*(2*u_old(1,i)        + u_old(0,i-1)      + u_old(0,i+1)      + h2*data.f0(meshX(0,i),    meshY(0,i))    + 2*h*data.f1(meshX(0,i),    meshY(0,i)));
+            // Top row (outward normal +y): ghost = u(last-1,j) + 2h·f3
+            u_h(last, i) = 0.25*(2*u_old(last-1,i)   + u_old(last,i-1)   + u_old(last,i+1)   + h2*data.f0(meshX(last,i), meshY(last,i)) + 2*h*data.f3(meshX(last,i), meshY(last,i)));
+            // Left col (outward normal -x): ghost = u(i,1) + 2h·f4
+            u_h(i, 0)    = 0.25*(u_old(i-1,0)        + u_old(i+1,0)      + 2*u_old(i,1)      + h2*data.f0(meshX(i,0),    meshY(i,0))    + 2*h*data.f4(meshX(i,0),    meshY(i,0)));
+            // Right col (outward normal +x): ghost = u(i,last-1) + 2h·f2
+            u_h(i, last) = 0.25*(u_old(i-1,last)     + u_old(i+1,last)   + 2*u_old(i,last-1) + h2*data.f0(meshX(i,last), meshY(i,last)) + 2*h*data.f2(meshX(i,last), meshY(i,last)));
         }
 
-        //Corners
-        u_h(0, 0)       = 0.5*(u_old(1, 0)        + u_old(0, 1))        + 0.5*h*(data.f1(meshX(0,0),         meshY(0,0))         + data.f4(meshX(0,0),         meshY(0,0)));
-        u_h(0, last)    = 0.5*(u_old(1, last)      + u_old(0, last-1))  + 0.5*h*(data.f1(meshX(0,last),      meshY(0,last))      + data.f2(meshX(0,last),      meshY(0,last)));
-        u_h(last, 0)    = 0.5*(u_old(last-1, 0)   + u_old(last, 1))    + 0.5*h*(data.f3(meshX(last,0),      meshY(last,0))      + data.f4(meshX(last,0),      meshY(last,0)));
-        u_h(last, last) = 0.5*(u_old(last-1, last) + u_old(last,last-1))+ 0.5*h*(data.f3(meshX(last,last),   meshY(last,last))   + data.f2(meshX(last,last),   meshY(last,last)));
+        // Corners: entrambi i ghost points sostituiti simultaneamente
+        u_h(0, 0)       = 0.25*(2*u_old(1,0)         + 2*u_old(0,1)         + h2*data.f0(meshX(0,0),         meshY(0,0))
+                              + 2*h*(data.f1(meshX(0,0),         meshY(0,0))    + data.f4(meshX(0,0),         meshY(0,0))));
+        u_h(0, last)    = 0.25*(2*u_old(1,last)       + 2*u_old(0,last-1)    + h2*data.f0(meshX(0,last),      meshY(0,last))
+                              + 2*h*(data.f1(meshX(0,last),      meshY(0,last)) + data.f2(meshX(0,last),      meshY(0,last))));
+        u_h(last, 0)    = 0.25*(2*u_old(last-1,0)     + 2*u_old(last,1)      + h2*data.f0(meshX(last,0),      meshY(last,0))
+                              + 2*h*(data.f3(meshX(last,0),      meshY(last,0)) + data.f4(meshX(last,0),      meshY(last,0))));
+        u_h(last, last) = 0.25*(2*u_old(last-1,last)  + 2*u_old(last,last-1) + h2*data.f0(meshX(last,last),   meshY(last,last))
+                              + 2*h*(data.f3(meshX(last,last),   meshY(last,last)) + data.f2(meshX(last,last), meshY(last,last))));
 
-    } else if constexpr(execution_mode == ExecutionMode::PARALLEL){
+    } else if constexpr (execution_mode == ExecutionMode::PARALLEL) {
 
-        // As with Dirichlet, each process will update the boundary conditions of its own subdomain -> maybe the work is not well balanced?
+        const unsigned up_row     = (mpi_rank == 0)            ? 0 : 1;
+        const unsigned down_row   = (mpi_rank == mpi_size - 1) ? 0 : 1;
+        const unsigned real_first = up_row;
+        const unsigned real_last  = u_h.rows() - 1 - down_row;
 
-        const unsigned local_last_row = u_h.rows() - 1;
-        // Left and right edges
-        for(unsigned i = 1; i < local_last_row; i++){
-            u_h(i, 0)    = u_old(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0));
-            u_h(i, last) = u_old(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last));
+        // --- Left and right: tutte le righe reali, skip corner globali ---
+        for (unsigned i = real_first; i <= real_last; i++) {
+            const bool is_global_bottom = (mpi_rank == 0            && i == real_first);
+            const bool is_global_top    = (mpi_rank == mpi_size - 1 && i == real_last);
+            if (is_global_bottom || is_global_top) continue;
+
+            const unsigned mi = i - up_row;
+            u_h(i, 0)    = 0.25*(u_old(i-1,0)    + u_old(i+1,0)    + 2*u_old(i,1)      + h2*data.f0(meshX(mi,0),    meshY(mi,0))    + 2*h*data.f4(meshX(mi,0),    meshY(mi,0)));
+            u_h(i, last) = 0.25*(u_old(i-1,last)  + u_old(i+1,last) + 2*u_old(i,last-1) + h2*data.f0(meshX(mi,last), meshY(mi,last)) + 2*h*data.f2(meshX(mi,last), meshY(mi,last)));
         }
-        
-        // Bottom edge
-        if(mpi_rank == 0) {
-            for(unsigned i = 1; i < last; i++) {
-                u_h(0, i) = u_old(1, i) + h * data.f1(meshX(0, i), meshY(0, i));
-            }
-            u_h(0, 0) = 0.5*(u_old(1, 0)    + u_old(0, 1))    + 0.5*h*(data.f1(meshX(0,0),    meshY(0,0))    + data.f4(meshX(0,0),    meshY(0,0)));
-            u_h(0, last) = 0.5*(u_old(1, last) + u_old(0, last-1))+ 0.5*h*(data.f1(meshX(0,last), meshY(0,last)) + data.f2(meshX(0,last), meshY(0,last)));
+
+        // --- Bottom edge: rank 0 ---
+        if (mpi_rank == 0) {
+            for (unsigned j = 1; j < last; j++)
+                u_h(0, j) = 0.25*(2*u_old(1,j)   + u_old(0,j-1)   + u_old(0,j+1)   + h2*data.f0(meshX(0,j), meshY(0,j)) + 2*h*data.f1(meshX(0,j), meshY(0,j)));
+
+            u_h(0, 0)    = 0.25*(2*u_old(1,0)    + 2*u_old(0,1)    + h2*data.f0(meshX(0,0),    meshY(0,0))
+                               + 2*h*(data.f1(meshX(0,0),    meshY(0,0))    + data.f4(meshX(0,0),    meshY(0,0))));
+            u_h(0, last) = 0.25*(2*u_old(1,last) + 2*u_old(0,last-1) + h2*data.f0(meshX(0,last), meshY(0,last))
+                               + 2*h*(data.f1(meshX(0,last), meshY(0,last)) + data.f2(meshX(0,last), meshY(0,last))));
         }
 
-        // Top edge
-        if(mpi_rank == mpi_size - 1) {
-            for(unsigned i = 1; i < last; i++) {
-                u_h(local_last_row, i) = u_old(local_last_row - 1, i) + h * data.f3(meshX(local_last_row, i), meshY(local_last_row, i));
-            }
-            u_h(local_last_row, 0)    = 0.5*(u_old(local_last_row-1, 0)    + u_old(local_last_row, 1))    + 0.5*h*(data.f3(meshX(local_last_row,0),    meshY(local_last_row,0))    + data.f4(meshX(local_last_row,0),    meshY(local_last_row,0)));
-            u_h(local_last_row, last) = 0.5*(u_old(local_last_row-1, last) + u_old(local_last_row, last-1))+ 0.5*h*(data.f3(meshX(local_last_row,last), meshY(local_last_row,last)) + data.f2(meshX(local_last_row,last), meshY(local_last_row,last)));
+        // --- Top edge: rank last ---
+        if (mpi_rank == mpi_size - 1) {
+            const unsigned mt = real_last - up_row;
+            for (unsigned j = 1; j < last; j++)
+                u_h(real_last, j) = 0.25*(2*u_old(real_last-1,j) + u_old(real_last,j-1) + u_old(real_last,j+1) + h2*data.f0(meshX(mt,j), meshY(mt,j)) + 2*h*data.f3(meshX(mt,j), meshY(mt,j)));
+
+            u_h(real_last, 0)    = 0.25*(2*u_old(real_last-1,0)    + 2*u_old(real_last,1)      + h2*data.f0(meshX(mt,0),    meshY(mt,0))
+                                       + 2*h*(data.f3(meshX(mt,0),    meshY(mt,0))    + data.f4(meshX(mt,0),    meshY(mt,0))));
+            u_h(real_last, last) = 0.25*(2*u_old(real_last-1,last) + 2*u_old(real_last,last-1) + h2*data.f0(meshX(mt,last), meshY(mt,last))
+                                       + 2*h*(data.f3(meshX(mt,last), meshY(mt,last)) + data.f2(meshX(mt,last), meshY(mt,last))));
         }
     }
 }

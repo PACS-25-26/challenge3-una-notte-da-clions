@@ -183,6 +183,30 @@ namespace laplacian_solvers {
         solver.export_to_vtk("test_21_robin_parallel.vtk");
     }
 
+    inline void run_test_22_neumann_sequential_vs_parallel_schwarz(int mpi_rank) {
+        if (mpi_rank == 0) {
+            std::cout << "\n=== Running Test 22: NEUMANN SEQUENTIAL vs PARALLEL (Schwarz) ===" << std::endl;
+        }
+
+        auto data = create_default_data();
+        
+        // Exact solution: u(x,y) = x^2*y + x*y^2 + x + y + 1
+        data.u_exact_lambda = [](double x, double y) { return x*x*y + x*y*y + x + y + 1.0; };
+        
+        // Forcing term: f0 = -Laplacian(u) = -2(x+y)
+        data.f0 = [](double x, double y) { return -2.0 * (x + y); };
+        
+        // Neumann boundaries: du/dn = grad(u) * n
+        data.f1 = [](double x, double y) { return -(x*x + 1.0); };                      // Bottom (n =  0, -1) -> -uy
+        data.f2 = [](double x, double y) { return y*y + 2.0*y + 1.0; };                 // Right  (n =  1,  0) ->  ux
+        data.f3 = [](double x, double y) { return x*x + 2.0*x + 1.0; };                 // Top    (n =  0,  1) ->  uy
+        data.f4 = [](double x, double y) { return -(y*y + 1.0); };  
+
+        laplacian_solvers::Convergence_Test<SolverType::SCHWARZ, BoundaryCondition::NEUMANN, funcType> convergence_test(data);
+        auto convergence_results = convergence_test.run_convergence_test();
+        convergence_test.print_convergence_results();
+    }
+
 } // namespace laplacian_solvers
 
 #endif // LAPLACIAN_SOLVERS_TEST_2_HPP

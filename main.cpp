@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     // 2. Execute Tests (Uncomment the ones you want to run)
     
     // --- Sequential Tests ---
-    laplacian_solvers::run_test_1_dirichlet_sequential(mpi_rank);
+    //laplacian_solvers::run_test_1_dirichlet_sequential(mpi_rank);
     //laplacian_solvers::run_test_2_neumann_sequential(mpi_rank);
     //laplacian_solvers::run_test_3_robin_sequential(mpi_rank);
 
@@ -39,13 +39,13 @@ int main(int argc, char* argv[]) {
     //laplacian_solvers::run_test_15_robin_sequential_vs_parallel_schwarz(mpi_rank); 
 
     // --- Additional Tests ---
-    laplacian_solvers::run_test_16_dirichlet_sequential(mpi_rank);
-    laplacian_solvers::run_test_17_neumann_sequential(mpi_rank);
-    laplacian_solvers::run_test_18_robin_sequential(mpi_rank);
-    laplacian_solvers::run_test_19_dirichlet_parallel(mpi_rank);
+    //laplacian_solvers::run_test_16_dirichlet_sequential(mpi_rank);
+    //laplacian_solvers::run_test_17_neumann_sequential(mpi_rank);
+    //laplacian_solvers::run_test_18_robin_sequential(mpi_rank);
+    //laplacian_solvers::run_test_19_dirichlet_parallel(mpi_rank);
     laplacian_solvers::run_test_20_neumann_parallel(mpi_rank);
-    laplacian_solvers::run_test_21_robin_parallel(mpi_rank);
-    
+    //laplacian_solvers::run_test_21_robin_parallel(mpi_rank);
+    //laplacian_solvers::run_test_22_neumann_sequential_vs_parallel_schwarz(mpi_rank);
 
     // 3. Clean up MPI environment
     MPI_Finalize();
