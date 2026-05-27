@@ -8,6 +8,19 @@
 
 namespace laplacian_solvers{
 
+    /* --- CONSTRUCTOR --- */
+
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
+              typename funcType>
+    Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::Laplacian_Solver(const Data_Struct<funcType>& d) : data(d) {
+        
+        build_mesh();
+        build_exact_solution();
+        u_h = eigenMatrix::Zero(data.n, data.n);
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+
+    };
     
     /* --- MESH GENERATION AND INITIALIZATION --- */
 

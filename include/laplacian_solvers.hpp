@@ -191,6 +191,8 @@ namespace laplacian_solvers {
 #include "laplacian_solvers_postprocessing.hpp"
 #include "laplacian_solvers_initializer.hpp"
 #include "laplacian_solvers_sequential_implementations.hpp"
+#include "laplacian_solvers_parallel_jacobi_implementation.hpp"
 #include "laplacian_solvers_parallel_schwarz_implementation.hpp"
+
 
 #endif 
