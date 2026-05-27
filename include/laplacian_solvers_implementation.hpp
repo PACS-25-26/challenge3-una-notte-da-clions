@@ -490,8 +490,8 @@ namespace laplacian_solvers{
         eigenMatrix meshX_local = meshX.block(start_row, 0, local_rows, data.n);
         eigenMatrix meshY_local = meshY.block(start_row, 0, local_rows, data.n);
 
-        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, mpi_rank, mpi_size);
-
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(
+            u_h_local, data, meshX, meshY, {}, mpi_rank, mpi_size);
         u_h_local.block(1, 0, local_rows, data.n) = u_h.block(start_row, 0, local_rows, data.n);
         
         if (mpi_rank == 0) {

@@ -148,26 +148,55 @@ if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
     }
     
     if constexpr(execution_mode == ExecutionMode::PARALLEL){
-        // As with Dirichlet, each process will update the boundary conditions of its own subdomain -> maybe the work is not well balanced?
+        // Recompute the number of actual local physical rows (excluding ghost layers) to map the mesh
+        const unsigned remainder_rows = data.n % mpi_size;
+        const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0);
 
-        // Bottom edge
+        // Identify the presence of upper and lower ghost layers based on rank placement
+        const unsigned up_row = (mpi_rank == 0 ? 0 : 1);
+        const unsigned down_row = (mpi_rank == mpi_size - 1 ? 0 : 1);
+        
+        // Define boundaries of the local physical domain inside the extended local matrix
+        const unsigned first_real_row = up_row;
+        const unsigned last_real_row = u_h.rows() - 1 - down_row;
+
+        // 1. Lateral Boundaries (Left and Right edges)
+        // Only loop over the physical rows owned by this process. Ghost rows are skipped.
+        for(unsigned i = first_real_row; i <= last_real_row; i++){
+            // Shift index to correctly query the local mesh coordinates, which lack ghost layers
+            unsigned mesh_i = i - up_row; 
+            
+            u_h(i, 0)    = (u_old(i, 1) + h * data.f4(meshX(mesh_i, 0), meshY(mesh_i, 0))) / den;
+            u_h(i, last) = (u_old(i, last - 1) + h * data.f2(meshX(mesh_i, last), meshY(mesh_i, last))) / den;
+        }
+
+        // 2. Global Bottom Boundary + its 2 corners (only processed by rank 0)
         if(mpi_rank == 0) {
-            for(unsigned i = 0; i < data.n; i++) {
-                u_h(0, i) = (u_old(1, i) + h * data.f1(meshX(0, i), meshY(0, i))) / den;
+            for(unsigned j = 1; j < last; j++) {
+                u_h(0, j) = (u_old(1, j) + h * data.f1(meshX(0, j), meshY(0, j))) / den;
             }
+            // Bottom-Left corner (0, 0)
+            u_h(0, 0) = 0.5 * ((u_old(1, 0) + h * data.f1(meshX(0,0), meshY(0,0))) / den + 
+                               (u_old(0, 1) + h * data.f4(meshX(0,0), meshY(0,0))) / den);
+            // Bottom-Right corner (0, last)
+            u_h(0, last) = 0.5 * ((u_old(1, last) + h * data.f1(meshX(0,last), meshY(0,last))) / den + 
+                                  (u_old(0, last-1) + h * data.f2(meshX(0,last), meshY(0,last))) / den);
         }
         
+        // 3. Global Top Boundary + its 2 corners (only processed by the last rank)
         if(mpi_rank == mpi_size - 1) {
             const unsigned local_last_row = u_h.rows() - 1;
-            for(unsigned i = 0; i < data.n; i++) {
-                u_h(local_last_row, i) = (u_old(local_last_row - 1, i) + h * data.f3(meshX(local_last_row, i), meshY(local_last_row, i))) / den;
-            }
-        }
+            const unsigned mesh_last_row = local_rows - 1; // Map to the last valid row of the mesh
 
-        // Left and right edges
-        for(unsigned i = 0; i < u_h.rows(); i++){
-            u_h(i, 0)    = (u_old(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0))) / den;
-            u_h(i, last) = (u_old(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last))) / den;
+            for(unsigned j = 1; j < last; j++) {
+                u_h(local_last_row, j) = (u_old(local_last_row - 1, j) + h * data.f3(meshX(mesh_last_row, j), meshY(mesh_last_row, j))) / den;
+            }
+            // Top-Left corner (local_last_row, 0)
+            u_h(local_last_row, 0) = 0.5 * ((u_old(local_last_row-1, 0) + h * data.f3(meshX(mesh_last_row,0), meshY(mesh_last_row,0))) / den + 
+                                            (u_old(local_last_row, 1) + h * data.f4(meshX(mesh_last_row,0), meshY(mesh_last_row,0))) / den);
+            // Top-Right corner (local_last_row, last)
+            u_h(local_last_row, last) = 0.5 * ((u_old(local_last_row-1, last) + h * data.f3(meshX(mesh_last_row,last), meshY(mesh_last_row,last))) / den + 
+                                               (u_old(local_last_row, last-1) + h * data.f2(meshX(mesh_last_row,last), meshY(mesh_last_row,last))) / den);
         }
     }
 }
