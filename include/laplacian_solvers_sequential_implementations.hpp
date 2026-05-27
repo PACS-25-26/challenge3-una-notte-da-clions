@@ -24,7 +24,7 @@ namespace laplacian_solvers{
         double err = data.tolerance + 1.0; 
         const double h2 = h * h;    
 
-        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY);
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY); //Warm start with BCs
 
         while (err > data.tolerance && iter < data.max_iterations) {
         for (unsigned i = 1; i < data.n - 1; ++i) {
@@ -169,7 +169,7 @@ namespace laplacian_solvers{
 
         // Dirichlet and Robin BCs must be one the initial guess
         if constexpr(boundary_condition == BoundaryCondition::DIRICHLET || boundary_condition == BoundaryCondition::ROBIN) 
-            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY, u_h); //Warm start
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY); 
         
         // Main iteration loop
         while (err > data.tolerance && iter < data.max_iterations) {

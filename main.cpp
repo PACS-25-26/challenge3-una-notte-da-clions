@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     //laplacian_solvers::run_test_3_robin_sequential(mpi_rank);
 
     // --- Parallel Tests Jacobi ---
-    laplacian_solvers::run_test_4_dirichlet_parallel(mpi_rank);
+    //laplacian_solvers::run_test_4_dirichlet_parallel(mpi_rank);
     //laplacian_solvers::run_test_5_neumann_parallel(mpi_rank);
     //laplacian_solvers::run_test_6_robin_parallel(mpi_rank);
 
