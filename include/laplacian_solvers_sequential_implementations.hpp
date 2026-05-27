@@ -79,23 +79,6 @@ namespace laplacian_solvers{
                 }
             }
 
-            /*
-            //BC NEUMANN
-            for (unsigned i = 0; i < data.n; ++i) {
-                // left edge
-                u_new(i, 0) = u_new(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0));
-                
-                // right edge
-                u_new(i, last) = u_new(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last));
-                
-                // top edge 
-                u_new(0, i) = u_new(1, i) + h * data.f3(meshX(0, i), meshY(0, i));
-                
-                // bottom edge 
-                u_new(last, i) = u_new(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i));
-            }
-            */
-
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY, u_h);
 
             for (unsigned i = 0; i < data.n; ++i) {
@@ -152,21 +135,6 @@ namespace laplacian_solvers{
                     if (diff > err) err = diff;
                 }
             }
-
-            /*
-            for (unsigned i = 0; i < data.n; ++i) {
-                // Left edge
-                u_new(i, 0) = (u_new(i, 1) + h * data.f4(meshX(i, 0), meshY(i, 0))) / den;
-                
-                // Right edge 
-                u_new(i, last) = (u_new(i, last - 1) + h * data.f2(meshX(i, last), meshY(i, last))) / den;
-                
-                // Top edge 
-                u_new(0, i) = (u_new(1, i) + h * data.f3(meshX(0, i), meshY(0, i))) / den;
-                
-                // Bottom edge 
-                u_new(last, i) = (u_new(last - 1, i) + h * data.f1(meshX(last, i), meshY(last, i))) / den;
-            }*/
 
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY, u_h);
 
