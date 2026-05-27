@@ -447,6 +447,8 @@ namespace laplacian_solvers{
         result.iterations = iter;
         result.iterartion_residue = err;
 
+        
+
         return result;
     }
 
