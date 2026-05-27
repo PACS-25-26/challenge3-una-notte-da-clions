@@ -62,11 +62,7 @@ namespace laplacian_solvers{
      */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::sequential_solve(){
-        if constexpr (solver_type == SolverType::JACOBI) {
-            return jacobi_sequential();
-        } else {
-            throw std::runtime_error("ERROR:Schwarz is a parallel solver.");
-        }
+       return jacobi_sequential();
     }
 
     /**

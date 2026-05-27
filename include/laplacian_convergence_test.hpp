@@ -60,7 +60,7 @@ namespace laplacian_solvers {
             // Serial Run
             auto start_serial = std::chrono::steady_clock::now();
 
-            Laplacian_Solver<solver_type, boundary_condition, ExecutionMode::SEQUENTIAL, funcType> solver_dirichlet_sequential(data_original);
+            Laplacian_Solver<solver_type::JACOBI, boundary_condition, ExecutionMode::SEQUENTIAL, funcType> solver_dirichlet_sequential(data_original);
             solver_dirichlet_sequential.build_mesh();
             auto result_serial = solver_dirichlet_sequential.solve();
 

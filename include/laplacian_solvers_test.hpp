@@ -162,7 +162,7 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 7: DIRICHLET PARALLEL (Schwarz)
     // =========================================================================
-    inline void run_test_7_dirichlet_parallel(int mpi_rank) {
+    inline void run_test_7_dirichlet_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 7: DIRICHLET PARALLEL (Schwarz) ===" << std::endl;
         }
@@ -186,7 +186,7 @@ namespace laplacian_solvers {
         // =========================================================================
         // TEST 8: NEUMANN PARALLEL (Schwarz)
         // =========================================================================
-    inline void run_test_8_neumann_parallel(int mpi_rank) {
+    inline void run_test_8_neumann_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 8: NEUMANN PARALLEL (Schwarz) ===" << std::endl;
         }
@@ -208,7 +208,7 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 9: ROBIN PARALLEL (Schwarz)
     // =========================================================================
-    inline void run_test_9_robin_parallel(int mpi_rank) {
+    inline void run_test_9_robin_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 9: ROBIN PARALLEL (Schwarz) ===" << std::endl;
         }
