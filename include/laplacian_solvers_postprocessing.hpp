@@ -2,6 +2,7 @@
 #define LAPLACIAN_SOLVERS_POSTPROCESSING_HPP
 
 #include "laplacian_solvers.hpp"
+#include <filesystem>
 
 namespace laplacian_solvers{
 
@@ -118,13 +119,47 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const std::string& filename) const {
-        std::ofstream vtk_file(filename);
         
-        if(!vtk_file.is_open()) {
-            throw std::runtime_error("Could not open / create file for writing: " + filename);
+        int mpi_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        
+        // Only the root process will write the VTK file.
+        if (mpi_rank != 0) {
+            return; 
         }
 
-        // 1. VTK Standard Header
+        // 1. Folder path where to save the file
+        std::filesystem::path output_dir = "vtk_files_folder";
+        
+        // 2. Create the directory if it doesn't exist (no error if it already exists)
+        std::filesystem::create_directories(output_dir);
+        
+        // 3. join the directory path and the filename to get the full path of the output file
+        std::filesystem::path full_path = output_dir / filename;
+
+        // 4. Check if a file with the same name already exists, and if so, modify the filename to avoid overwriting
+        if (std::filesystem::exists(full_path)) {
+        
+            std::string stem = full_path.stem().string(); 
+            std::string extension = full_path.extension().string(); 
+            
+            unsigned counter = 1;
+            o
+            while (std::filesystem::exists(full_path)) {
+                std::string new_filename = stem + "_" + std::to_string(counter) + extension;
+                full_path = output_dir / new_filename;
+                counter++;
+            }
+        }
+        
+        // 5. Open the file for writing
+        std::ofstream vtk_file(full_path);
+        
+        if(!vtk_file.is_open()) {
+            throw std::runtime_error("Could not open / create file for writing: " + full_path.string());
+        }
+
+        // 6. VTK Standard Header
         vtk_file << "# vtk DataFile Version 3.0\n";
         vtk_file << "Laplacian Solver Output\n";
         vtk_file << "ASCII\n";
@@ -132,7 +167,7 @@ namespace laplacian_solvers{
         // Using STRUCTURED_GRID because coordinates are explicitly stored in meshX and meshY
         vtk_file << "DATASET STRUCTURED_GRID\n";
 
-        // 2. Grid Topology Definition
+        // 7. Grid Topology Definition
         vtk_file << "DIMENSIONS " << data.n << " " << data.n << " 1\n";
         
         size_t total_points = data.n * data.n;
@@ -148,7 +183,7 @@ namespace laplacian_solvers{
             }
         }
 
-        // 3. Point-Data Section (Datasets associated with nodes)
+        // 8. Point-Data Section (Datasets associated with nodes)
         vtk_file << "POINT_DATA " << total_points << "\n";
         
         // Field 1: Computed Numerical Solution (u_h)

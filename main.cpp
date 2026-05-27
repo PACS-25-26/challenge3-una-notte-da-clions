@@ -13,14 +13,14 @@ int main(int argc, char* argv[]) {
     // 2. Execute Tests (Uncomment the ones you want to run)
     
     // --- Sequential Tests ---
-    //laplacian_solvers::run_test_1_dirichlet_sequential(mpi_rank);
+    laplacian_solvers::run_test_1_dirichlet_sequential(mpi_rank);
     //laplacian_solvers::run_test_2_neumann_sequential(mpi_rank);
     //laplacian_solvers::run_test_3_robin_sequential(mpi_rank);
 
     // --- Parallel Tests Jacobi ---
     //laplacian_solvers::run_test_4_dirichlet_parallel(mpi_rank);
     //laplacian_solvers::run_test_5_neumann_parallel(mpi_rank);
-    laplacian_solvers::run_test_6_robin_parallel(mpi_rank);
+    //laplacian_solvers::run_test_6_robin_parallel(mpi_rank);
 
     // --- Parallel Tests Schwarz ---
     //laplacian_solvers::run_test_7_dirichlet_parallel_schwarz(mpi_rank);

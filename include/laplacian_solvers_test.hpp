@@ -44,6 +44,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
+        solver.export_to_vtk("test_1_dirichlet_sequential.vtk");
     }
 
     // =========================================================================
@@ -66,6 +67,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
+        solver.export_to_vtk("test_2_neumann_sequential.vtk");
     }
 
     // =========================================================================
@@ -88,6 +90,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
+        solver.export_to_vtk("test_3_robin_sequential.vtk");
     }
 
     // =========================================================================
@@ -110,8 +113,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
-        
-        // solver.export_to_vtk("test_4_output.vtk");
+        solver.export_to_vtk("test_4_dirichlet_parallel_jacobi.vtk");
     }
 
     // =========================================================================
@@ -134,6 +136,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
+        solver.export_to_vtk("test_5_neumann_parallel_jacobi.vtk");
     }
 
     // =========================================================================
@@ -156,7 +159,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
-
+        solver.export_to_vtk("test_6_robin_parallel_jacobi.vtk");
     }
 
     // =========================================================================
@@ -179,8 +182,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
-        
-        // solver.export_to_vtk("test_7_output.vtk");
+        solver.export_to_vtk("test_7_dirichlet_parallel_schwarz.vtk");
     }
 
         // =========================================================================
@@ -203,6 +205,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
+        solver.export_to_vtk("test_8_neumann_parallel_schwarz.vtk");
     }
 
     // =========================================================================
@@ -225,7 +228,7 @@ namespace laplacian_solvers {
         solver.build_mesh();
         solver.solve();
         solver.print();
-
+        solver.export_to_vtk("test_9_robin_parallel_schwarz.vtk");
     }
 
     // =========================================================================
