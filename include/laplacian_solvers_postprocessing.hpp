@@ -144,7 +144,7 @@ namespace laplacian_solvers{
             std::string extension = full_path.extension().string(); 
             
             unsigned counter = 1;
-            o
+            
             while (std::filesystem::exists(full_path)) {
                 std::string new_filename = stem + "_" + std::to_string(counter) + extension;
                 full_path = output_dir / new_filename;

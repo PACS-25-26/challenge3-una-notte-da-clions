@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <omp.h>
-#include "laplacian_solvers_test.hpp"
+#include "laplacian_solvers_test_1.hpp"
+#include "laplacian_solvers_test_2.hpp"
 
 int main(int argc, char* argv[]) {
     // 1. Initialize MPI environment
@@ -36,6 +37,14 @@ int main(int argc, char* argv[]) {
     //laplacian_solvers::run_test_13_dirichlet_sequential_vs_parallel_schwarz(mpi_rank);
     //laplacian_solvers::run_test_14_neumann_sequential_vs_parallel_schwarz(mpi_rank);
     //laplacian_solvers::run_test_15_robin_sequential_vs_parallel_schwarz(mpi_rank); 
+
+    // --- Additional Tests ---
+    laplacian_solvers::run_test_16_dirichlet_sequential(mpi_rank);
+    laplacian_solvers::run_test_17_neumann_sequential(mpi_rank);
+    laplacian_solvers::run_test_18_robin_sequential(mpi_rank);
+    laplacian_solvers::run_test_19_dirichlet_parallel(mpi_rank);
+    laplacian_solvers::run_test_20_neumann_parallel(mpi_rank);
+    laplacian_solvers::run_test_21_robin_parallel(mpi_rank);
     
 
     // 3. Clean up MPI environment

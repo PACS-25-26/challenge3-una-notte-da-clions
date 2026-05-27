@@ -1,5 +1,5 @@
-#ifndef laplacian_solvers_test_hpp
-#define laplacian_solvers_test_hpp
+#ifndef LAPLACIAN_SOLVERS_TEST_1_HPP
+#define LAPLACIAN_SOLVERS_TEST_1_HPP
 
 #include <iostream>
 #include <cmath>
@@ -7,6 +7,7 @@
 #include <mpi.h>
 #include "laplacian_solvers.hpp"
 #include "laplacian_convergence_test.hpp"
+#include "laplacian_solvers_postprocessing.hpp"
 
 namespace laplacian_solvers {
     // Define the function type alias for readability
