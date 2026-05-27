@@ -168,6 +168,7 @@ namespace laplacian_solvers {
             Result_Struct sequential_solve(); //OK
             Result_Struct parallel_solve(); //OK
 
+            Result_Struct jacobi_sequential_merged();
             Result_Struct jacobi_sequential(); //OK
             Result_Struct jacobi_parallel(); //OK
             Result_Struct schwarz_parallel(); //OK
