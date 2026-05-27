@@ -16,10 +16,15 @@ int main(int argc, char* argv[]) {
     //run_test_2_neumann_sequential(mpi_rank);
     run_test_3_robin_sequential(mpi_rank);
 
-    // --- Parallel Tests ---
+    // --- Parallel Tests Jacobi ---
     //run_test_4_dirichlet_parallel(mpi_rank);
     //run_test_5_neumann_parallel(mpi_rank);
     run_test_6_robin_parallel(mpi_rank);
+
+    // --- Parallel Tests Schwarz ---
+    //run_test_7_dirichlet_schwarz(mpi_rank);
+    //run_test_8_neumann_schwarz(mpi_rank);
+    //run_test_9_robin_schwarz(mpi_rank);
 
     // 3. Clean up MPI environment
     MPI_Finalize();
