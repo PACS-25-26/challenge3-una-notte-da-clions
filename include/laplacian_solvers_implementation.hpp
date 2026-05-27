@@ -174,10 +174,11 @@ namespace laplacian_solvers{
             const double h2 = h * h;
 
             // Apply boundary contitions to the initial guess
-            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
+
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
             
             while(err > data.tolerance && iter < data.max_iterations){
-                // First - Handle communication with other processed
+                // First - Handle communication with other processes
 
                 // Send first row and receive last row
                 MPI_Sendrecv(u_h_local.data() + up_row * data.n, data.n, MPI_DOUBLE, rank_up, 0,
@@ -196,8 +197,6 @@ namespace laplacian_solvers{
                         u_h_new_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX(i - up_row, j), meshY(i - up_row, j)));         
                     }
                 }
-
-                
 
                 // Third - Apply boundary conditions 
                 // apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size); // This is probably wrong
@@ -386,7 +385,7 @@ namespace laplacian_solvers{
         const double h2 = h * h;
         
         // Apply boundary contitions to the initial guess
-        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
+        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
 
         while(err > data.tolerance && iter < data.max_iterations){
             // First - Handle communication with other processed

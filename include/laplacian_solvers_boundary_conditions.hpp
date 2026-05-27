@@ -32,8 +32,8 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
         // Parallel execution: mesh spatial variables represent the local subdomain rows
         const unsigned up_row = (mpi_rank == 0? 0: 1);
         const unsigned down_row = (mpi_rank == mpi_size -1? 0: 1);
-        const unsigned local_rows = u_h.rows() - up_row - down_row;
-
+        const unsigned local_rows = u_h.rows() - 2;
+        
         // 1. Bottom physical boundary (Only managed by Rank 0)
         if(mpi_rank == 0) {
             for(unsigned i = 0; i < data.n; i++) {
@@ -44,16 +44,16 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
         // 2. Top physical boundary (Only managed by the last Rank)
         if(mpi_rank == mpi_size - 1) {
             const unsigned local_last_row = u_h.rows() - 1; // Ghost layer index in u_h
-            const unsigned mesh_last_row  = local_rows - 1; // Last available row in local mesh
+            const unsigned mesh_last_row = meshY.rows() - 1; // Last row index in the local mesh (without ghost layer)
             for(unsigned i = 0; i < data.n; i++) {
                 u_h(local_last_row, i) = data.f3(meshX(mesh_last_row, i), meshY(mesh_last_row, i));
             }
         }
         
         // 3. Left and Right physical boundaries
-        // Applied only to real local fluid rows (from 1 to local_rows)
-        // Shifting index by -1 to properly sample the local mesh matrices
+        // Aways exclude first and last rows
         for(unsigned i = 1; i <= local_rows; i++){
+            //std::cout << i << " " << u_h.rows() <<std::endl;
             u_h(i, 0)    = data.f4(meshX(i - 1, 0), meshY(i - 1, 0));
             u_h(i, last) = data.f2(meshX(i - 1, last), meshY(i - 1, last));
         }
