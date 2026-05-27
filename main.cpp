@@ -11,6 +11,7 @@ int main(int argc, char* argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
 
     // 2. Execute Tests (Uncomment the ones you want to run)
+    
     // --- Sequential Tests ---
     //laplacian_solvers::run_test_1_dirichlet_sequential(mpi_rank);
     //laplacian_solvers::run_test_2_neumann_sequential(mpi_rank);
@@ -22,14 +23,14 @@ int main(int argc, char* argv[]) {
     //laplacian_solvers::run_test_6_robin_parallel(mpi_rank);
 
     // --- Parallel Tests Schwarz ---
-    laplacian_solvers::run_test_7_dirichlet_parallel(mpi_rank);
+    //laplacian_solvers::run_test_7_dirichlet_parallel(mpi_rank);
     //laplacian_solvers::run_test_8_neumann_schwarz(mpi_rank);
     //laplacian_solvers::run_test_9_robin_schwarz(mpi_rank);
 
     // --- Convergence tests Jacobi ---
     //laplacian_solvers::run_test_10_dirichlet_sequential_vs_parallel_jacobi(mpi_rank);
     //laplacian_solvers::run_test_11_neumann_sequential_vs_parallel_jacobi(mpi_rank);
-    //laplacian_solvers::run_test_12_robin_sequential_vs_parallel_jacobi(mpi_rank);
+    laplacian_solvers::run_test_12_robin_sequential_vs_parallel_jacobi(mpi_rank);
 
     // --- Convergence tests Schwarz ---
     //laplacian_solvers::run_test_13_dirichlet_sequential_vs_parallel_schwarz(mpi_rank);

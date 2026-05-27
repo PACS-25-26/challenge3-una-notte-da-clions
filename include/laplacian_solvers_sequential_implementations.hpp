@@ -159,7 +159,6 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_merged(){
-
         // Initialize the solver
         eigenMatrix u_new = u_h; 
         unsigned iter = 0;
@@ -169,8 +168,10 @@ namespace laplacian_solvers{
 
         // Dirichlet and Robin BCs must be one the initial guess
         if constexpr(boundary_condition == BoundaryCondition::DIRICHLET || boundary_condition == BoundaryCondition::ROBIN) 
-            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY); 
-        
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY, u_h); 
+
+
+       
         // Main iteration loop
         while (err > data.tolerance && iter < data.max_iterations) {
             
@@ -179,7 +180,8 @@ namespace laplacian_solvers{
                 for (unsigned j = 1; j < last; ++j) {
                     u_new(i, j) = 0.25 * (u_h(i-1, j) + u_h(i+1, j) + u_h(i, j-1) + u_h(i, j+1) + h2 * data.f0(meshX(i, j), meshY(i, j)));
                 }
-            }
+            }   
+
 
             // Neumann and Robin BCs must be applied at each iteration
             if constexpr(boundary_condition == BoundaryCondition::NEUMANN || boundary_condition == BoundaryCondition::ROBIN) 
