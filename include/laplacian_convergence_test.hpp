@@ -32,13 +32,17 @@ namespace laplacian_solvers {
     class Convergence_Test {  
         private:
         Data_Struct<funcType> data_original;
-        std::vector<unsigned> refinement_levels = {16, 32, 64, 128, 256}; 
+        std::vector<unsigned> refinement_levels = {8, 16, 32, 64, 128}; // Example refinement levels. Adjust as needed.
         double compute_error(const eigenMatrix& u_h, const eigenMatrix& X, const eigenMatrix& Y, funcType u_exact_lambda);
         Convergence_Struct convergence_data_struct;
         bool is_test_done = false;
+        int mpi_rank; ///< Rank of the MPI process (used in parallel execution).
 
         public:
-        Convergence_Test(const Data_Struct<funcType>& data) : data_original(data) {}
+        Convergence_Test(const Data_Struct<funcType>& data) : data_original(data) {
+            // Initialize MPI rank for potential use in parallel mesh building or solver execution
+            MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        }
         Convergence_Struct run_convergence_test();
         void print_convergence_results() const;
 
@@ -47,6 +51,7 @@ namespace laplacian_solvers {
     template <SolverType solver_type, BoundaryCondition boundary_condition, typename funcType>
     Convergence_Struct Convergence_Test<solver_type, boundary_condition, funcType>::run_convergence_test() {
 
+        
         for(unsigned n_val : refinement_levels) {
             convergence_data_struct.n.push_back(n_val);
             
@@ -63,11 +68,16 @@ namespace laplacian_solvers {
 
             std::chrono::duration<double, std::milli> elapsed_serial = end_serial - start_serial;
             convergence_data_struct.times_serial.push_back(elapsed_serial.count());
+
         
             double error_serial = compute_error(result_serial.u_h, result_serial.X, result_serial.Y, data_original.u_exact_lambda);
             convergence_data_struct.errors_serial.push_back(error_serial);
             convergence_data_struct.iterations_serial.push_back(result_serial.iterations);
-
+        }
+        unsigned i = 0;
+        for(unsigned n_val : refinement_levels) {
+            data_original.n = n_val; 
+            
             // Parallel Run
             auto start_parallel = std::chrono::steady_clock::now();
 
@@ -84,6 +94,7 @@ namespace laplacian_solvers {
             convergence_data_struct.errors_parallel.push_back(error_parallel);
             convergence_data_struct.iterations_parallel.push_back(result_parallel.iterations);
             convergence_data_struct.speedups.push_back(convergence_data_struct.times_serial[i] / convergence_data_struct.times_parallel[i]);
+            i++;
         }
 
         is_test_done = true;
@@ -107,6 +118,11 @@ namespace laplacian_solvers {
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, typename funcType>
     void Convergence_Test<solver_type, boundary_condition, funcType>::print_convergence_results() const {
+        if (mpi_rank != 0) {
+            // Only the master process should print results to avoid clutter
+            return;
+        }
+        
         if (!is_test_done) {
             std::cerr << "Convergence test has not been run yet. Please run run_convergence_test() before printing results." << std::endl;
             return;
