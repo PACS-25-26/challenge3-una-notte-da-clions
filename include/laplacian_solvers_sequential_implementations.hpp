@@ -27,21 +27,16 @@ namespace laplacian_solvers{
         apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY);
 
         while (err > data.tolerance && iter < data.max_iterations) {
-            err = 0.0;
         for (unsigned i = 1; i < data.n - 1; ++i) {
             for (unsigned j = 1; j < data.n - 1; ++j) {
                 
                 u_new(i, j) = 0.25 * (u_h(i-1, j) + u_h(i+1, j) + u_h(i, j-1) + u_h(i, j+1) + h2 * data.f0(meshX(i, j), meshY(i, j)));
-                /**
-                double local_err = std::abs(u_new(i, j) - u_h(i, j));
-                if (local_err > err) {
-                    err = local_err;
-                }*/
+              
             }
-
-            //compute error modified l2 norm
-            err = std::sqrt(h) * (u_new - u_h).norm();
         }
+
+        //compute error modified l2 norm
+        err = std::sqrt(h) * (u_new - u_h).norm();
 
         u_h = u_new; 
         iter++;
@@ -192,6 +187,56 @@ namespace laplacian_solvers{
         return result;
     }
 
+
+
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_merged(){
+
+        // Initialize the solver
+        eigenMatrix u_new = u_h; 
+        unsigned iter = 0;
+        double err = data.tolerance + 1.0;
+        const double h2 = h * h;
+        const unsigned last = data.n - 1;
+
+        // Dirichlet and Robin BCs must be one the initial guess
+        if constexpr(boundary_condition == BoundaryCondition::DIRICHLET || boundary_condition == BoundaryCondition::ROBIN) 
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY, u_h); //Warm start
+        
+        // Main iteration loop
+        while (err > data.tolerance && iter < data.max_iterations) {
+            
+            // Compute next iteration
+            for (unsigned i = 1; i < last; ++i) {
+                for (unsigned j = 1; j < last; ++j) {
+                    u_new(i, j) = 0.25 * (u_h(i-1, j) + u_h(i+1, j) + u_h(i, j-1) + u_h(i, j+1) + h2 * data.f0(meshX(i, j), meshY(i, j)));
+                }
+            }
+
+            // Neumann and Robin BCs must be applied at each iteration
+            if constexpr(boundary_condition == BoundaryCondition::NEUMANN || boundary_condition == BoundaryCondition::ROBIN) 
+                apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_new, data, meshX, meshY, u_h);
+            
+            // Neumann requires normalization to ensure unicity of the solution
+            if constexpr(boundary_condition == BoundaryCondition::NEUMANN){
+                const double mean = u_h.sum() / (double)(data.n * data.n);
+                u_h.array() -= mean;
+            }
+            
+            // Compute error using modified l2 norm and prepare for next iteration
+            err = std::sqrt(h) * (u_new - u_h).norm();
+            u_h = u_new;
+            iter++;
+        }
+
+        // Update result struct with final solution and iteration info
+        result.u_h = u_h;
+        result.iterations = iter;
+        result.X = meshX;
+        result.Y = meshY;
+        result.iterartion_residue = err; 
+        return result;
+    }
 }
 
 #endif

@@ -98,6 +98,7 @@ namespace laplacian_solvers{
         } else {
             return jacobi_sequential_robin();
         }
+        return jacobi_sequential_merged();
     }
 
     /**
