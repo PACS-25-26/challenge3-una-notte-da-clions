@@ -370,28 +370,32 @@ namespace laplacian_solvers{
         double err = data.tolerance + 1.0;
         unsigned iter = 0;
         const double h2 = h * h;
-
+        #pragma omp parallel
+        {
         while(err > data.tolerance && iter < data.max_iterations){
             // First - Handle communication with other processed
 
             // Send first row and receive last row
+            #pragma omp single
+            {
             MPI_Sendrecv(u_h_local.data() + up_row * data.n, data.n, MPI_DOUBLE, rank_up, 0,
                          u_h_local.data() + (total_rows - 1) * data.n, data.n, MPI_DOUBLE, rank_down, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
             // Send last row and receive first row
             MPI_Sendrecv(u_h_local.data() + (total_rows - 1 - down_row) * data.n, data.n, MPI_DOUBLE, rank_down, 1,
                          u_h_local.data(), data.n, MPI_DOUBLE, rank_up, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            
+            }
             // Second - Compute new values, but not the received ones!
-            #pragma omp parallel for
+            #pragma omp for collapse(2)
             for(unsigned i = 1; i < total_rows - 1; i++){
                 for(unsigned j = 1; j < data.n - 1; j++){
                     u_h_new_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX(i - up_row, j), meshY(i - up_row, j)));         
                 }
             }
 
-            // Third - Apply boundary conditions 
-
+            // Third - Apply boundary conditions  
+            #pragma omp single
+            {
             if constexpr(boundary_condition == BoundaryCondition::NEUMANN || boundary_condition == BoundaryCondition::ROBIN) 
                 apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
 
@@ -412,8 +416,10 @@ namespace laplacian_solvers{
             err = std::sqrt(h * err); // Maybe it is possible to avoid the sqrt?
             iter++;          
             u_h_local.swap(u_h_new_local);
+        } // single
 
-        }
+        } // while
+        } // parallel
         
         // Prepare communication 
         std::vector<int> recv_counts(mpi_size);
