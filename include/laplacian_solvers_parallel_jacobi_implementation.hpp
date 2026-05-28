@@ -360,16 +360,16 @@ namespace laplacian_solvers{
 
         // Build local matrixes. It will also host the upper and lower rows for later communication
         eigenMatrix u_h_local = eigenMatrix::Zero(total_rows, data.n);
-        eigenMatrix u_h_new_local = eigenMatrix::Zero(total_rows, data.n);
-
-        // Initialize loop
-        double err = data.tolerance + 1.0;
-        unsigned iter = 0;
-        const double h2 = h * h;
-        
+     
         // Apply boundary contitions to the initial guess
         if constexpr(boundary_condition == BoundaryCondition::DIRICHLET || boundary_condition == BoundaryCondition::ROBIN) 
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
+
+        // Initialize loop
+        eigenMatrix u_h_new_local(u_h_local);
+        double err = data.tolerance + 1.0;
+        unsigned iter = 0;
+        const double h2 = h * h;
 
         while(err > data.tolerance && iter < data.max_iterations){
             // First - Handle communication with other processed

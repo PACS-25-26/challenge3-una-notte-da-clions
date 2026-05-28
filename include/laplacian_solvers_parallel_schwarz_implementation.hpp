@@ -7,6 +7,8 @@
 #include <cmath>
 #include <vector>
 
+#define MAX_SCHWARZ_ITERATIONS 10
+
 namespace laplacian_solvers{
 
     /*
@@ -393,20 +395,17 @@ namespace laplacian_solvers{
 
         // Build local matrixes
         eigenMatrix u_h_local = eigenMatrix::Zero(total_rows, data.n);
-        eigenMatrix u_h_new_local = eigenMatrix::Zero(total_rows, data.n);
-
-        // Initialize loop variables
-        double global_err = data.tolerance + 1.0;
-        unsigned global_iter = 0;
-        const double h2 = h * h;
-
-        // Schwarz max local iterations
-        const unsigned max_local_iters = 10; 
 
         // Apply boundary conditions to the initial guess
         if constexpr(boundary_condition == BoundaryCondition::DIRICHLET || boundary_condition == BoundaryCondition::ROBIN) 
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
-        
+
+        // Initialize loop variables
+        eigenMatrix u_h_new_local(u_h_local);
+        double global_err = data.tolerance + 1.0;
+        unsigned global_iter = 0;
+        const double h2 = h * h;
+            
         // Global Schwarz iteration loop
         while(global_err > data.tolerance && global_iter < data.max_iterations){
             
@@ -421,7 +420,7 @@ namespace laplacian_solvers{
             eigenMatrix u_h_old_global_step = u_h_local;
 
             // Local Schwarz iterations
-            for(unsigned local_iter = 0; local_iter < max_local_iters; ++local_iter) {
+            for(unsigned local_iter = 0; local_iter < MAX_SCHWARZ_ITERATIONS; ++local_iter) {
                 
                 #pragma omp parallel for collapse(2)
                 for(unsigned i = 1; i < total_rows - 1; i++){

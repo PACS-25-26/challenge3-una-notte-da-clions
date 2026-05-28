@@ -50,8 +50,6 @@ namespace laplacian_solvers{
               typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh(){
 
-        meshX = eigenMatrix::Zero(data.n, data.n);
-        meshY = eigenMatrix::Zero(data.n, data.n);
         h = abs(data.x2 - data.x1) / (data.n - 1); // Uniform grid spacing. Works even if x2 < x1. 
 
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) build_mesh_sequential();
@@ -65,6 +63,9 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_sequential(){
+
+        meshX = eigenMatrix::Zero(data.n, data.n);
+        meshY = eigenMatrix::Zero(data.n, data.n);
         
         for(unsigned i = 0; i < data.n; i++) for(unsigned j = 0; j < data.n; j++) {
             meshX(i, j) = data.x1 + j * h;
@@ -93,10 +94,8 @@ namespace laplacian_solvers{
         const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
         const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
 
-        /*
-        eigenMatrix local_meshX = eigenMatrix::Zero(end_row - start_row, data.n);
-        eigenMatrix local_meshY = eigenMatrix::Zero(end_row - start_row, data.n);
-        */
+        meshX = eigenMatrix::Zero(end_row - start_row, data.n);
+        meshY = eigenMatrix::Zero(end_row - start_row, data.n);  
 
         for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
            meshX(i, j) = data.x1 + j * h;

@@ -1,5 +1,6 @@
 # Custom
 /executables
+/vtk_files_folder
 
 # Prerequisites
 *.d

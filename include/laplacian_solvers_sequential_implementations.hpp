@@ -164,16 +164,16 @@ namespace laplacian_solvers{
         
         // Initialize the solver
         eigenMatrix u_h = eigenMatrix::Zero(data.n, data.n);
-        eigenMatrix u_new = u_h; 
-        unsigned iter = 0;
-        double err = data.tolerance + 1.0;
-        const double h2 = h * h;
-        const unsigned last = data.n - 1;
 
         // Dirichlet and Robin BCs must be one the initial guess
         if constexpr(boundary_condition == BoundaryCondition::DIRICHLET || boundary_condition == BoundaryCondition::ROBIN) 
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY, u_h); 
 
+        eigenMatrix u_new(u_h); 
+        unsigned iter = 0;
+        double err = data.tolerance + 1.0;
+        const double h2 = h * h;
+        const unsigned last = data.n - 1;
 
         // Main iteration loop
         while (err > data.tolerance && iter < data.max_iterations) {
