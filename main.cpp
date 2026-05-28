@@ -56,12 +56,12 @@ int main(int argc, char* argv[]) {
     //laplacian_solvers::run_test_9_robin_parallel_schwarz(mpi_rank);
 
     // --- Convergence tests Jacobi ---
-    laplacian_solvers::run_test_10_dirichlet_sequential_vs_parallel_jacobi(mpi_rank);
+    //laplacian_solvers::run_test_10_dirichlet_sequential_vs_parallel_jacobi(mpi_rank);
     //laplacian_solvers::run_test_11_neumann_sequential_vs_parallel_jacobi(mpi_rank);
     //laplacian_solvers::run_test_12_robin_sequential_vs_parallel_jacobi(mpi_rank);
 
     // --- Convergence tests Schwarz ---
-    //laplacian_solvers::run_test_13_dirichlet_sequential_vs_parallel_schwarz(mpi_rank);
+    laplacian_solvers::run_test_13_dirichlet_sequential_vs_parallel_schwarz(mpi_rank);
     //laplacian_solvers::run_test_14_neumann_sequential_vs_parallel_schwarz(mpi_rank);
     //laplacian_solvers::run_test_15_robin_sequential_vs_parallel_schwarz(mpi_rank); 
     
