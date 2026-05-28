@@ -33,8 +33,8 @@ namespace laplacian_solvers{
         if(mpi_rank >= mpi_size) return result;
         
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) {
-            if(mpi_rank == 0) return jacobi_sequential();
-            else return result;
+            if(mpi_rank != 0) return result; // Only rank 0 will run the sequential solver
+            return jacobi_sequential();
         } else {
             return parallel_solve();
         }
@@ -43,7 +43,7 @@ namespace laplacian_solvers{
 
     // Jacobi or Schwarz?
 
-    /**
+    /** 
      * @brief Dispatcher for sequential solver logic.
      * Routes to the Jacobi sequential implementation. Throws a std::runtime_error if Schwarz 
      * is selected, as it requires distributed-memory parallelism (MPI).

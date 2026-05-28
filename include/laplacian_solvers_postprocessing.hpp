@@ -124,13 +124,13 @@ namespace laplacian_solvers{
         eigenMatrix meshX_global(data.n, data.n), meshY_global(data.n, data.n);
         eigenMatrix exact_solution_global(data.n, data.n);
         
-        int mpi_rank = 0; 
+        //int mpi_rank;
+        //MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
 
         // 2. Gather data from all processes if in parallel mode, otherwise just copy local to global matrices
         if constexpr (execution_mode == ExecutionMode::PARALLEL) { 
-            int mpi_size;
-            MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+            //int mpi_size;
+            //MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
 
             const unsigned remainder_rows = data.n % mpi_size;
             const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
