@@ -21,13 +21,12 @@ OPTIMIZATION = -O1
 
 # OpenMP settings
 USE_OPENMP ?= true
-AVAILABLE_THREADS ?= 10
+AVAILABLE_THREADS ?= 10 
+# Andrea: 10 for high performance, 20 for hardware limit
 
 ifeq ($(USE_OPENMP), true)
 CXXFLAGS += -fopenmp -DAVAILABLE_THREADS=$(AVAILABLE_THREADS)
 endif
-
-# ----------------------
 
 # Builds the sequence of files to be compiled together with main
 SRC += $(wildcard $(SRCDIR)/*.cpp)
