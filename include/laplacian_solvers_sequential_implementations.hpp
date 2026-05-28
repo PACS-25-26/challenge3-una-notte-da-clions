@@ -207,6 +207,7 @@ namespace laplacian_solvers{
         result.X = meshX;
         result.Y = meshY;
         result.iterartion_residue = err; 
+        result.valid = true;
         return result;
     }
 }

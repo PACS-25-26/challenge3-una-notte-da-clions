@@ -440,6 +440,7 @@ namespace laplacian_solvers{
         result.Y.swap(meshY_global);
         result.iterations = iter;
         result.iterartion_residue = err;
+        if(mpi_rank == 0) result.valid = true;
 
         return result;
     

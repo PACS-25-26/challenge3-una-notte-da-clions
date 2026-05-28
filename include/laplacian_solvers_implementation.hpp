@@ -33,7 +33,8 @@ namespace laplacian_solvers{
         if(mpi_rank >= mpi_size) return result;
         
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) {
-            return jacobi_sequential();
+            if(mpi_rank == 0) return jacobi_sequential();
+            else return result;
         } else {
             return parallel_solve();
         }

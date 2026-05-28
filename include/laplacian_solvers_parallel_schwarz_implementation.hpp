@@ -492,6 +492,7 @@ namespace laplacian_solvers{
         result.Y.swap(meshY_global);
         result.iterations = global_iter;
         result.iterartion_residue = global_err;
+        if(mpi_rank == 0) result.valid = true;
 
         return result;
     }

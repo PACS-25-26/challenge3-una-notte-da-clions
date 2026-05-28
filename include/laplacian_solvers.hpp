@@ -83,7 +83,8 @@ struct Result_Struct {
     eigenMatrix Y;
     eigenMatrix u_h; 
     unsigned iterations;
-    double iterartion_residue = -1.; // Initial value. If the residue is -1 the solver was not called
+    double iterartion_residue;
+    bool valid = false;  // Since only rank 0 should gather all results, only rank 0 will set this to true
 };
 
 namespace laplacian_solvers {

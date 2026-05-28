@@ -14,13 +14,11 @@ namespace laplacian_solvers{
               typename funcType>
     Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::Laplacian_Solver(const Data_Struct<funcType>& d) : data(d) {
         
+        // Controls process availability, builds mesh and exact solution
         process_filter();
         build_mesh();
         build_exact_solution();
-        std::cout << "rank: " << mpi_rank << " size" << mpi_size << std::endl;
-        //u_h = eigenMatrix::Zero(data.n, data.n);
-        
-
+    
     };
 
     //

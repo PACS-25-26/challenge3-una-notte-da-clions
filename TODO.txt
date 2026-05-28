@@ -18,3 +18,4 @@ COSE DA IMPLEMENTARE E MIGLIORIE
  - Magari conviene dividere il file di implementazione in altri file .hpp, dato che questo è già bello grande ed incasinato. Si potrebbe fare un file
 per le cose sequenziali e uno per le parallele, oppure dividere in base al contenuto (solver, utilities, inizializzazione, etc...)
 
+- forse funcType è inutile
