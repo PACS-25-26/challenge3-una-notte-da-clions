@@ -19,6 +19,8 @@ CXXFLAGS = -std=c++23 -O1 -I /usr/include/eigen3
 
 # Select alpha policy
 EXECUTION ?= PARALLEL
+OPENMP = -fopenmp
+
 
 # ----------------------
 
@@ -34,11 +36,11 @@ OBJ = $(SRC:.cpp=.o)
 # Linking: creates an executable file from the object files. It also creates a directory for it
 $(TARGET): $(OBJ)
 	mkdir -p $(EXEDIR) 
-	$(CXX) $(CXXFLAGS) -o $(EXEDIR)/$@ $^ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(OPENMP) -o $(EXEDIR)/$@ $^ $(LDFLAGS)
 
 # Compilation: builds .o file from the correspoinding .cpp 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -I$(HHDIR) -c $< -o $@ -DEXECUTION=$(EXECUTION) -DCOLOR=$(COLOR)
+	$(CXX) $(CXXFLAGS) -I$(HHDIR) -c $< -o $@ -DEXECUTION=$(EXECUTION) -DCOLOR=$(COLOR) $(OPENMP)
 
 # Clears current .o files to allow a new compilation. Used when building a debug o release version
 clean:
