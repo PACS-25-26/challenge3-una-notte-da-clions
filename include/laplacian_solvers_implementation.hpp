@@ -31,7 +31,7 @@ namespace laplacian_solvers{
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::solve(){
 
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) {
-            return sequential_solve();
+            return jacobi_sequential();
         } else {
             return parallel_solve();
         }
@@ -45,10 +45,11 @@ namespace laplacian_solvers{
      * Routes to the Jacobi sequential implementation. Throws a std::runtime_error if Schwarz 
      * is selected, as it requires distributed-memory parallelism (MPI).
      */
+    /*
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::sequential_solve(){
        return jacobi_sequential();
-    }
+    }*/
 
     /**
      * @brief Dispatcher for parallel solver logic.
@@ -70,8 +71,9 @@ namespace laplacian_solvers{
      * @brief Dispatches the sequential Jacobi solver to the specific boundary condition implementation.
      * Maps the 'boundary_condition' template parameter to Dirichlet, Neumann, or Robin methods.
      */
-    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential(){
+    
+    //template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    //Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential(){
         /*if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return jacobi_sequential_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
@@ -79,28 +81,34 @@ namespace laplacian_solvers{
         } else {
             return jacobi_sequential_robin();
         }*/
-        return jacobi_sequential_merged();
-    }
+        //return jacobi_sequential_merged();
+    //}
+    
 
     /**
      * @brief Dispatches the parallel Jacobi solver to the specific boundary condition implementation.
      * Maps the 'boundary_condition' template parameter to Dirichlet, Neumann, or Robin methods.
      */
+
+    /*
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel(){
-        if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
+        /*if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
             return jacobi_parallel_dirichlet();
         } else if constexpr (boundary_condition == BoundaryCondition::NEUMANN) {
             return jacobi_parallel_neumann();
         } else {
             return jacobi_parallel_robin();
         }
-    }
+        //return jacobi_parallel();
+    }*/
 
     /**
      * @brief Dispatches the parallel Schwarz solver to the specific boundary condition implementation.
      * Routes the execution flow to the appropriate domain decomposition implementation.
      */
+
+     /**
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel(){
         if constexpr (boundary_condition == BoundaryCondition::DIRICHLET) {
@@ -110,7 +118,8 @@ namespace laplacian_solvers{
         } else {
             return schwarz_parallel_robin();
         }
-    } 
+        //return schwarz_parallel_merged();
+    } */
 
 }
 

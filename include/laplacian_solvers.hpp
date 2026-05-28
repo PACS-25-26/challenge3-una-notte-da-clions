@@ -165,23 +165,33 @@ namespace laplacian_solvers {
             void print_exact_solution() const; //OK
 
             //SOLVER STRUCTURE: sequential / parallel -> jacobi / schwarz -> dirichlet / neumann / robin
-            Result_Struct sequential_solve(); //OK
+            //Result_Struct sequential_solve(); //OK
             Result_Struct parallel_solve(); //OK
 
-            Result_Struct jacobi_sequential_merged();
+            //Result_Struct jacobi_sequential_merged();
             Result_Struct jacobi_sequential(); //OK
             Result_Struct jacobi_parallel(); //OK
             Result_Struct schwarz_parallel(); //OK
- 
+
+            /*
             Result_Struct jacobi_sequential_dirichlet(); //OK
             Result_Struct jacobi_sequential_neumann(); //OK
             Result_Struct jacobi_sequential_robin(); //OK
+            */
+
+            //Result_Struct jacobi_parallel();
+
+            /*
             Result_Struct jacobi_parallel_dirichlet();//OK
-            Result_Struct jacobi_parallel_neumann();
-            Result_Struct jacobi_parallel_robin();
+            Result_Struct jacobi_parallel_neumann();//OK
+            Result_Struct jacobi_parallel_robin();//OK
+            */
+
+            Result_Struct schwarz_parallel_merged();
+
             Result_Struct schwarz_parallel_dirichlet();//OK
-            Result_Struct schwarz_parallel_neumann();
-            Result_Struct schwarz_parallel_robin();
+            Result_Struct schwarz_parallel_neumann();//Ok
+            Result_Struct schwarz_parallel_robin();//OK
 
     };
 

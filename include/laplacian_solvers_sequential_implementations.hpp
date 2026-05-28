@@ -16,6 +16,7 @@ namespace laplacian_solvers{
      * The method updates the entire domain grid iteratively by averaging neighbors until 
      * the residual error falls below the specified tolerance or max iterations are reached.
      */
+    /*
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_dirichlet(){
 
@@ -56,6 +57,7 @@ namespace laplacian_solvers{
      * Implements finite difference approximations for the derivative boundary conditions.
      * The edge values are updated based on the gradient function (f1-f4) and the nearest inner node.
      */
+    /*
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_neumann(){
         
@@ -101,14 +103,14 @@ namespace laplacian_solvers{
         result.Y = meshY;
         result.iterartion_residue = err; 
         return result;
-    }
+    }*/
 
     /**
      * @brief Solves the Laplacian using the sequential Jacobi iterative method with Robin BCs.
      * Implements mixed boundary conditions. The update rule involves a weighted average 
      * regulated by the 'alpha' parameter to represent the Robin boundary constraint.
      */
-
+    /*
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_robin(){
         
@@ -154,11 +156,11 @@ namespace laplacian_solvers{
         result.iterartion_residue = err; 
         return result;
     }
-
+    */
 
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential_merged(){
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential(){
         // Initialize the solver
         eigenMatrix u_new = u_h; 
         unsigned iter = 0;
@@ -171,7 +173,6 @@ namespace laplacian_solvers{
             apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h, data, meshX, meshY, u_h); 
 
 
-       
         // Main iteration loop
         while (err > data.tolerance && iter < data.max_iterations) {
             
@@ -181,7 +182,6 @@ namespace laplacian_solvers{
                     u_new(i, j) = 0.25 * (u_h(i-1, j) + u_h(i+1, j) + u_h(i, j-1) + u_h(i, j+1) + h2 * data.f0(meshX(i, j), meshY(i, j)));
                 }
             }   
-
 
             // Neumann and Robin BCs must be applied at each iteration
             if constexpr(boundary_condition == BoundaryCondition::NEUMANN || boundary_condition == BoundaryCondition::ROBIN) 
