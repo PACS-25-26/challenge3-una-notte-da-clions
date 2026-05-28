@@ -109,11 +109,13 @@ namespace laplacian_solvers {
             eigenMatrix meshY;    ///< Matrix containing the Y coordinates of the structured grid.
             double h;             ///< Uniform grid spacing parameter h.
             eigenMatrix u_exact;  ///< Analytical solution over the mesh points matrix.
-            eigenMatrix u_h; ///< Numerical solution matrix 
+            //eigenMatrix u_h; ///< Numerical solution matrix 
             Result_Struct result; ///< Struct to hold the final results of the solver.
 
             int mpi_rank; ///< Rank of the MPI process (used in parallel execution).
-            int mpi_size; ///< Total number of MPI processes (used in parallel execution).
+            int mpi_size; ///< Number of participating MPI processes (used in parallel execution).
+            int mpi_used_size; ///< Actual MPI_COMM_WORLD size (for reference).
+            bool participating = true; ///< True if this rank participates in computation (rank < mpi_size)
 
             
         public:
@@ -150,16 +152,17 @@ namespace laplacian_solvers {
             private:
             // PRIVATE HELPER METHODS
 
-            // Mesh and exact solution builders
+            // INITIALIZERS
             
             void build_mesh_sequential(); //OK
             void build_mesh_parallel(); //OK
-            
+            void process_filter();
+
             void build_exact_solution(); //OK
             void build_exact_solution_sequential(); //OK
             void build_exact_solution_parallel(); //OK
 
-            // Print and postprocessing
+            // PRINT AND POSTPROCESSING
             void print_mesh() const; //OK
             void print_solution() const; //OK
             void print_exact_solution() const; //OK
@@ -179,20 +182,17 @@ namespace laplacian_solvers {
             Result_Struct jacobi_sequential_robin(); //OK
             */
 
-            //Result_Struct jacobi_parallel();
-
             /*
             Result_Struct jacobi_parallel_dirichlet();//OK
             Result_Struct jacobi_parallel_neumann();//OK
             Result_Struct jacobi_parallel_robin();//OK
             */
 
-            Result_Struct schwarz_parallel_merged();
-
+            /*
             Result_Struct schwarz_parallel_dirichlet();//OK
             Result_Struct schwarz_parallel_neumann();//Ok
             Result_Struct schwarz_parallel_robin();//OK
-
+            */
     };
 
 } // namespace laplacian_solvers
@@ -200,6 +200,7 @@ namespace laplacian_solvers {
 #include "laplacian_solvers_implementation.hpp"
 #include "laplacian_solvers_postprocessing.hpp"
 #include "laplacian_solvers_initializer.hpp"
+
 #include "laplacian_solvers_sequential_implementations.hpp"
 #include "laplacian_solvers_parallel_jacobi_implementation.hpp"
 #include "laplacian_solvers_parallel_schwarz_implementation.hpp"

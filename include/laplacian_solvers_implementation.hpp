@@ -30,6 +30,8 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::solve(){
 
+        if(mpi_rank >= mpi_size) return result;
+        
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) {
             return jacobi_sequential();
         } else {

@@ -338,9 +338,9 @@ namespace laplacian_solvers{
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel(){
         
         // Get mpi info
-        int mpi_rank, mpi_size;
+        /*int mpi_rank, mpi_size;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
         
         // Compute indexes and communication info
         const unsigned remainder_rows = data.n % mpi_size;

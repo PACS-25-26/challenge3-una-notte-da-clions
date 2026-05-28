@@ -20,9 +20,9 @@ namespace laplacian_solvers{
         
         if constexpr (execution_mode == ExecutionMode::PARALLEL) { // Gather data from other processes
 
-            int mpi_rank, mpi_size;
+            /*int mpi_rank, mpi_size;
             MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
             const unsigned remainder_rows = data.n % mpi_size;
             const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
@@ -86,9 +86,9 @@ namespace laplacian_solvers{
 
         if constexpr (execution_mode == ExecutionMode::PARALLEL) { // Gather data from other processes
 
-            int mpi_rank, mpi_size;
+            /*int mpi_rank, mpi_size;
             MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
             const unsigned remainder_rows = data.n % mpi_size;
             const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 

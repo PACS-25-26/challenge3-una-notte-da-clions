@@ -161,7 +161,9 @@ namespace laplacian_solvers{
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential(){
+        
         // Initialize the solver
+        eigenMatrix u_h = eigenMatrix::Zero(data.n, data.n);
         eigenMatrix u_new = u_h; 
         unsigned iter = 0;
         double err = data.tolerance + 1.0;

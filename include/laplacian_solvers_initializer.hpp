@@ -14,13 +14,32 @@ namespace laplacian_solvers{
               typename funcType>
     Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::Laplacian_Solver(const Data_Struct<funcType>& d) : data(d) {
         
+        process_filter();
         build_mesh();
         build_exact_solution();
-        u_h = eigenMatrix::Zero(data.n, data.n);
+        std::cout << "rank: " << mpi_rank << " size" << mpi_size << std::endl;
+        //u_h = eigenMatrix::Zero(data.n, data.n);
+        
+
+    };
+
+    //
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    inline void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::process_filter(){
+
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
         MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
 
-    };
+        // If more processes are available than rows throw error
+        
+        if constexpr(execution_mode == ExecutionMode::PARALLEL){
+            if(mpi_size > data.n) {
+                if (mpi_rank == 0) std::cerr << "Error: program launched with " << mpi_size << " processors, but number of rows is " << data.n << ". Aborting..." << std::endl;
+                MPI_Abort(MPI_COMM_WORLD, 1);                
+            }
+        }
+
+    }
     
     /* --- MESH GENERATION AND INITIALIZATION --- */
 
@@ -64,9 +83,9 @@ namespace laplacian_solvers{
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_parallel(){
         
         // Get rank information
-        int mpi_rank, mpi_size;
+        /*int mpi_rank, mpi_size;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
         // Distribute rows among processes. If the number of rows is not divided by the number of threads, the remaining ones will be assigned to the
         // fisrt threads, as shown in Figure 1 of the challenge pdf file.
@@ -122,9 +141,9 @@ namespace laplacian_solvers{
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_parallel(){
         
         // Get rank information
-        int mpi_rank, mpi_size;
+        /*int mpi_rank, mpi_size;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
         // Distribute rows among processes. If the number of rows is not divided by the number of threads, the remaining ones will be assigned to the
         // fisrt threads, as shown in Figure 1 of the challenge pdf file.
