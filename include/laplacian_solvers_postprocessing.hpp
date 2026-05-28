@@ -120,31 +120,55 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const std::string& filename) const {
         
-        int mpi_rank;
-        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        // 1. Global matrices to gather data from all processes 
+        eigenMatrix meshX_global(data.n, data.n), meshY_global(data.n, data.n);
+        eigenMatrix exact_solution_global(data.n, data.n);
         
-        // Only the root process will write the VTK file.
+        int mpi_rank = 0; 
+
+        // 2. Gather data from all processes if in parallel mode, otherwise just copy local to global matrices
+        if constexpr (execution_mode == ExecutionMode::PARALLEL) { 
+            int mpi_size;
+            MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+            MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+
+            const unsigned remainder_rows = data.n % mpi_size;
+            const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+            std::vector<int> recv_counts(mpi_size);
+            std::vector<int> displs(mpi_size);
+
+            for(unsigned i = 0; i < mpi_size; i++){
+                recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
+                displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
+            }
+
+            MPI_Gatherv(meshX.data(), local_rows * data.n, MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshY.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(u_exact.data(), local_rows * data.n, MPI_DOUBLE, exact_solution_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+        } else {
+            // Caso sequenziale: le matrici globali copiano direttamente quelle locali
+            meshX_global = meshX;
+            meshY_global = meshY;
+            exact_solution_global = u_exact;
+        }
+
+        // 3. Root process handles file writing, while others return immediately
         if (mpi_rank != 0) {
             return; 
         }
 
-        // 1. Folder path where to save the file
+        // 4. Ensure output directory exists and handle filename conflicts
         std::filesystem::path output_dir = "vtk_files_folder";
-        
-        // 2. Create the directory if it doesn't exist (no error if it already exists)
         std::filesystem::create_directories(output_dir);
-        
-        // 3. join the directory path and the filename to get the full path of the output file
         std::filesystem::path full_path = output_dir / filename;
 
-        // 4. Check if a file with the same name already exists, and if so, modify the filename to avoid overwriting
         if (std::filesystem::exists(full_path)) {
-        
             std::string stem = full_path.stem().string(); 
             std::string extension = full_path.extension().string(); 
             
             unsigned counter = 1;
-            
             while (std::filesystem::exists(full_path)) {
                 std::string new_filename = stem + "_" + std::to_string(counter) + extension;
                 full_path = output_dir / new_filename;
@@ -152,38 +176,30 @@ namespace laplacian_solvers{
             }
         }
         
-        // 5. Open the file for writing
         std::ofstream vtk_file(full_path);
-        
         if(!vtk_file.is_open()) {
             throw std::runtime_error("Could not open / create file for writing: " + full_path.string());
         }
 
-        // 6. VTK Standard Header
+        // 5. VTK Standard Header
         vtk_file << "# vtk DataFile Version 3.0\n";
         vtk_file << "Laplacian Solver Output\n";
         vtk_file << "ASCII\n";
-        
-        // Using STRUCTURED_GRID because coordinates are explicitly stored in meshX and meshY
         vtk_file << "DATASET STRUCTURED_GRID\n";
 
-        // 7. Grid Topology Definition
+        // 6. Grid Topology Definition
         vtk_file << "DIMENSIONS " << data.n << " " << data.n << " 1\n";
         
         size_t total_points = data.n * data.n;
         vtk_file << "POINTS " << total_points << " double\n";
 
-        // Write grid coordinates.
-        // Iterating row by row (j) and then column by column (i).
-        // Since matrices are Row-Major, this layout ensures contiguous memory access 
-        // and matches the VTK format requirements (X coordinate varies fastest).
-        for (unsigned j = 0; j < data.n; ++j) {       // Row index (Y-direction)
-            for (unsigned i = 0; i < data.n; ++i) {   // Column index (X-direction)
-                vtk_file << meshX(j, i) << " " << meshY(j, i) << " 0.0\n";
+        for (unsigned j = 0; j < data.n; ++j) {       
+            for (unsigned i = 0; i < data.n; ++i) {   
+                vtk_file << meshX_global(j, i) << " " << meshY_global(j, i) << " 0.0\n";
             }
         }
 
-        // 8. Point-Data Section (Datasets associated with nodes)
+        // 7. Point-Data Section
         vtk_file << "POINT_DATA " << total_points << "\n";
         
         // Field 1: Computed Numerical Solution (u_h)
@@ -191,7 +207,7 @@ namespace laplacian_solvers{
         vtk_file << "LOOKUP_TABLE default\n";
         for (unsigned j = 0; j < data.n; ++j) {
             for (unsigned i = 0; i < data.n; ++i) {
-                vtk_file << u_h(j, i) << "\n";
+                vtk_file << result.u_h(j, i) << "\n";
             }
         }
 
@@ -200,7 +216,7 @@ namespace laplacian_solvers{
         vtk_file << "LOOKUP_TABLE default\n";
         for (unsigned j = 0; j < data.n; ++j) {
             for (unsigned i = 0; i < data.n; ++i) {
-                vtk_file << u_exact(j, i) << "\n";
+                vtk_file << exact_solution_global(j, i) << "\n";
             }
         }
 

@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     
     // --- Sequential Tests ---
     //laplacian_solvers::run_test_1_dirichlet_sequential(mpi_rank);
-    laplacian_solvers::run_test_2_neumann_sequential(mpi_rank);
+    //laplacian_solvers::run_test_2_neumann_sequential(mpi_rank);
     //laplacian_solvers::run_test_3_robin_sequential(mpi_rank);
 
     // --- Parallel Tests Jacobi ---
