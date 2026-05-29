@@ -17,6 +17,7 @@
 template <ExecutionMode execution_mode, typename funcType>
 void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix & meshY, const unsigned mpi_rank, const unsigned mpi_size){
     
+    
     const unsigned last = data.n - 1;
     
     if constexpr(execution_mode == ExecutionMode::SEQUENTIAL){
@@ -29,8 +30,11 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
         }
 
     } else if constexpr(execution_mode == ExecutionMode::PARALLEL){
-        // Parallel execution: mesh spatial variables represent the local subdomain rows
-        const unsigned local_rows = u_h.rows() - 2;
+
+        const unsigned up_row = (mpi_rank == 0 ? 0 : 1);
+        const unsigned down_row = (mpi_rank == mpi_size - 1 ? 0 : 1);
+        
+        //const unsigned real_subdomain_rows = u_h.rows() - up_row - down_row;
         
         // Bottom side
         if(mpi_rank == 0) {
@@ -39,7 +43,7 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
             }
         }
         
-        // Top side
+        // Top side 
         if(mpi_rank == mpi_size - 1) {
             const unsigned local_last_row = u_h.rows() - 1; 
             const unsigned mesh_last_row = meshY.rows() - 1; 
@@ -48,12 +52,14 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
             }
         }
         
-        // Left - right sides
-        // Aways exclude first and last rows
-        for(unsigned i = 1; i <= local_rows; i++){
-            //std::cout << i << " " << u_h.rows() <<std::endl;
-            u_h(i, 0) = data.f4(meshX(i - 1, 0), meshY(i - 1, 0));
-            u_h(i, last) = data.f2(meshX(i - 1, last), meshY(i - 1, last));
+        // Left - Right sides (
+        const unsigned start_loop = up_row;
+        const unsigned end_loop = u_h.rows() - down_row;
+
+        for(unsigned i = start_loop; i < end_loop; i++){
+            unsigned mesh_i = i - up_row; 
+            u_h(i, 0)    = data.f4(meshX(mesh_i, 0), meshY(mesh_i, 0));
+            u_h(i, last) = data.f2(meshX(mesh_i, last), meshY(mesh_i, last));
         }
     }
 }
