@@ -171,12 +171,14 @@ namespace laplacian_solvers{
 
         eigenMatrix u_new(u_h); 
         unsigned iter = 0;
-        double err = data.tolerance + 1.0;
+        const double tol_squared = data.tolerance * data.tolerance;
+        double err = tol_squared + 1.0;
         const double h2 = h * h;
         const unsigned last = data.n - 1;
+        
 
         // Main iteration loop
-        while (err > data.tolerance && iter < data.max_iterations) {
+        while (err > tol_squared && iter < data.max_iterations) {
             
             // Compute next iteration
             for (unsigned i = 1; i < last; ++i) {
@@ -196,7 +198,7 @@ namespace laplacian_solvers{
             }
             
             // Compute error using modified l2 norm and prepare for next iteration
-            err = std::sqrt(h) * (u_new - u_h).norm();
+            err = h * (u_new - u_h).squaredNorm();
             u_h = u_new;
             iter++;
         }
@@ -206,7 +208,7 @@ namespace laplacian_solvers{
         result.iterations = iter;
         result.X = meshX;
         result.Y = meshY;
-        result.iterartion_residue = err; 
+        result.iterartion_residue = std::sqrt(err); 
         result.valid = true;
         return result;
     }

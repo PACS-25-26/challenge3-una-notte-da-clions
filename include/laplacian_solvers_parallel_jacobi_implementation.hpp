@@ -367,12 +367,13 @@ namespace laplacian_solvers{
 
         // Initialize loop
         eigenMatrix u_h_new_local(u_h_local);
-        double err = data.tolerance + 1.0;
+        const double tol_squared = data.tolerance * data.tolerance;
+        double err = tol_squared + 1.0;
         unsigned iter = 0;
         const double h2 = h * h;
         #pragma omp parallel
         {
-            while(err > data.tolerance && iter < data.max_iterations){
+            while(err > tol_squared && iter < data.max_iterations){
                 // First - Handle communication with other processes
                 #pragma omp single
                 {
@@ -410,7 +411,7 @@ namespace laplacian_solvers{
 
                     // Fifth - Compute global error and prepare next iteration
                     MPI_Allreduce(&local_err, &err, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);  
-                    err = std::sqrt(h * err); // Maybe it is possible to avoid the sqrt?
+                    err = h * err;
                     iter++;          
                     u_h_local.swap(u_h_new_local);
                 } // single
@@ -441,7 +442,7 @@ namespace laplacian_solvers{
         result.X.swap(meshX_global);
         result.Y.swap(meshY_global);
         result.iterations = iter;
-        result.iterartion_residue = err;
+        result.iterartion_residue = std::sqrt(err);
         if(mpi_rank == 0) result.valid = true;
 
         return result;
