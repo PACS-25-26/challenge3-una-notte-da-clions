@@ -84,42 +84,50 @@ Each test constructs a known analytical solution \( u_{\text{exact}}(x,y) \), de
 **Group 1** (tests 1, 4, 7, 10, 13)
 
 Exact solution:
-$$ u(x,y) = \sin(\pi x)\,\sin(\pi y) $$
+$$u(x,y) = \sin(\pi x) \sin(\pi y)$$
 
 Source term:
-$$ f_0(x,y) = -\Delta u = 2\pi^2 \sin(\pi x)\,\sin(\pi y) $$
+$$f_0(x,y) = -\Delta u = 2\pi^2 \sin(\pi x) \sin(\pi y)$$
+
+---
 
 **Group 2** (tests 2, 5, 8, 11, 14)
 
 Exact solution:
-$$ u(x,y) = \cos(\pi x)\,\cos(\pi y) $$
+$$u(x,y) = \cos(\pi x) \cos(\pi y)$$
 
 Source term:
-$$ f_0(x,y) = 2\pi^2 \cos(\pi x)\,\cos(\pi y) $$
+$$f_0(x,y) = 2\pi^2 \cos(\pi x) \cos(\pi y)$$
+
+---
 
 **Group 3** (tests 3, 6, 9, 12, 15)
 
 Exact solution:
-$$ u(x,y) = e^{\,x+y} $$
+$$u(x,y) = e^{x+y}$$
 
 Source term:
-$$ f_0(x,y) = -2\,e^{\,x+y} $$
+$$f_0(x,y) = -2e^{x+y}$$
+
+---
 
 **Group 4** (tests 16, 17, 19, 20, 22)
 
 Exact solution:
-$$ u(x,y) = x^2y + xy^2 + x + y + 1 $$
+$$u(x,y) = x^2y + xy^2 + x + y + 1$$
 
 Source term:
-$$ f_0(x,y) = -2(x+y) $$
+$$f_0(x,y) = -2(x+y)$$
+
+---
 
 **Group 5** (tests 18, 21)
 
 Exact solution:
-$$ u(x,y) = \sin(x+y) + 2x + 3y $$
+$$u(x,y) = \sin(x+y) + 2x + 3y$$
 
 Source term:
-$$ f_0(x,y) = 2\sin(x+y) $$
+$$f_0(x,y) = 2\sin(x+y)$$
 
 ## Boundary conditions
 
