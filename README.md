@@ -87,25 +87,15 @@ This file implements the core validation cases for homogeneous boundary conditio
 
 The mathematical model solved in these tests is:
 
-```tex
--\Delta u(x,y) = f(x,y), \qquad (x,y) \in (0,1)^2
-```
+- `-Δ u(x, y) = f(x, y),  (x, y) ∈ (0, 1)^2`
 
 with boundary conditions of the form:
 
-```tex
-u|_{\partial\Omega} = g_D \quad \text{(Dirichlet)}
-```
+- Dirichlet: `u|∂Ω = g_D`
+- Neumann: `∂u/∂n |∂Ω = g_N`
+- Robin: `α u + β ∂u/∂n |∂Ω = g_R`
 
-```tex
-\frac{\partial u}{\partial n}\Big|_{\partial\Omega} = g_N \quad \text{(Neumann)}
-```
-
-```tex
-\alpha\,u + \beta\,\frac{\partial u}{\partial n}\Big|_{\partial\Omega} = g_R \quad \text{(Robin)}
-```
-
-The tests use manufactured solutions to derive the source term `f(x,y)` and the boundary values, enabling direct comparison between the numerical and analytical solutions.
+The tests use manufactured solutions to derive the source term `f(x, y)` and the boundary values, enabling direct comparison between the numerical and analytical solutions.
 
 ### `include/laplacian_solvers_test_2.hpp`
 
