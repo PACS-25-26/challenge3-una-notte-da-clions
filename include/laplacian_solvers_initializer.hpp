@@ -96,7 +96,8 @@ namespace laplacian_solvers{
 
         meshX = eigenMatrix::Zero(end_row - start_row, data.n);
         meshY = eigenMatrix::Zero(end_row - start_row, data.n);  
-
+        
+        #pragma omp prallel for
         for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
            meshX(i, j) = data.x1 + j * h;
            meshY(i, j) = data.x1 + (i + start_row) * h;
@@ -153,7 +154,7 @@ namespace laplacian_solvers{
 
         u_exact = eigenMatrix::Zero(local_rows, data.n);
 
-        // Thread safety is guaranteed since each process has different rows.
+        #pragma omp parallel for
         for(unsigned i = 0; i < local_rows; i++) for(unsigned j = 0; j < data.n; j++){
             u_exact(i, j) = data.u_exact_lambda(meshX(i, j), meshY(i, j));
         }

@@ -23,6 +23,7 @@
 // Use row major eigen matrixes for better performance in parallelism
 using eigenMatrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
+#define MAX_SCHWARZ_ITERATIONS 10
 
 /**
  * @enum SolverType
@@ -72,6 +73,7 @@ struct Data_Struct {
     double tolerance;
     unsigned max_iterations;
     double alpha; // Parameter for Robin boundary condition: gamma*u + du/dn = g
+    unsigned max_schwarz_iterations = 10;
 };
 
 /**
