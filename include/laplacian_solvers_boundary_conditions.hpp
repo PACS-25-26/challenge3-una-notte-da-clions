@@ -109,7 +109,7 @@ void apply_neumann_condition(eigenMatrix& u_h, const Data_Struct<funcType>& data
         // Bottom side + corner
         if (mpi_rank == 0) {
             for (unsigned j = 1; j < last; j++)
-                u_h(0, j) = 0.25*(2*u_old(1,j)   + u_old(0,j-1)   + u_old(0,j+1)   + h2*data.f0(meshX(0,j), meshY(0,j)) + 2*h*data.f1(meshX(0,j), meshY(0,j)));
+                u_h(0, j) = 0.25*(2*u_old(1,j) + u_old(0,j-1) + u_old(0,j+1) + h2*data.f0(meshX(0,j), meshY(0,j)) + 2*h*data.f1(meshX(0,j), meshY(0,j)));
 
             u_h(0, 0) = 0.25*(2*u_old(1,0) + 2*u_old(0,1) + h2*data.f0(meshX(0,0), meshY(0,0)) + 2*h*(data.f1(meshX(0,0), meshY(0,0)) + data.f4(meshX(0,0), meshY(0,0))));
             u_h(0, last) = 0.25*(2*u_old(1,last) + 2*u_old(0,last-1) + h2*data.f0(meshX(0,last), meshY(0,last)) + 2*h*(data.f1(meshX(0,last), meshY(0,last)) + data.f2(meshX(0,last), meshY(0,last))));
@@ -219,7 +219,7 @@ void apply_robin_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data,
      */
 
 template <BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
-void apply_boundary_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix &meshY, const eigenMatrix & u_old = {}, unsigned mpi_rank = -1, unsigned mpi_size = -1){
+void apply_boundary_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix &meshY, const eigenMatrix & u_old = {}, unsigned mpi_rank = 0, unsigned mpi_size = 1){
     if constexpr(boundary_condition == BoundaryCondition::DIRICHLET) apply_dirichlet_condition<execution_mode, funcType>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
     if constexpr(boundary_condition == BoundaryCondition::NEUMANN) apply_neumann_condition<execution_mode, funcType>(u_h, data, meshX, meshY, u_old, mpi_rank, mpi_size);
     if constexpr(boundary_condition == BoundaryCondition::ROBIN) apply_robin_condition<execution_mode, funcType>(u_h, data, meshX, meshY, u_old, mpi_rank, mpi_size);

@@ -32,7 +32,7 @@ namespace laplacian_solvers{
 
         // Main iteration loop
         while (err > tol_squared && iter < data.max_iterations) {
-            
+    
             // Compute next iteration
             for (unsigned i = 1; i < last; ++i) {
                 for (unsigned j = 1; j < last; ++j) {
