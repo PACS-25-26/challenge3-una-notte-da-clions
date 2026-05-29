@@ -1,0 +1,21 @@
+COSE DA IMPLEMENTARE E MIGLIORIE
+
+
+ - Costruzione parallela di mesh e soluzione iniziale 
+ - Aggiungere const in giro
+ - Funzione generale per le BC
+ - Forse la mesh può essere ottimizzata. Alla fine meshX(i, j) = meshX(k, j) sempre, quindi si può evitare di "calcolare" e salvare tutta la matrice? 
+ (Forse però viene usata a volte come matrice...) -> Si potrebbe avere un oggetto che può funzionare sia con la mesh salvata che non
+ - In generale, conviene conservare in memoria la mesh o la soluzione esatta? Alla fine si possono calcolare quando servono... Nel caso, meshX, meshY e
+ u_exact potrebbero essere degli oggetti che se valutati in (i, j) calcolano il risultato e lo restituiscono!
+ - Attenzione con MPI. TUTTI i processi chiamano le stesse funzioni, e tutti hanno una copia diversa della classe
+ - Nei solver bisognerebbe prima imporre le condizioni al contorno e poi si calcolare l'errore 
+ - Controllare che il parallelismo sia effettivamente ibrido (mi sono scordato openmp nella mesh e soluzione esatta...)
+ - Forse la funzioe che calcola l'errore può essere resa template?
+ - Nel testo il parametro di robin è alpha, non gamma
+ - L'errore è la norma di frobenius * sqrt(h) -> usiamo le funzioni di eigen
+
+ - Magari conviene dividere il file di implementazione in altri file .hpp, dato che questo è già bello grande ed incasinato. Si potrebbe fare un file
+per le cose sequenziali e uno per le parallele, oppure dividere in base al contenuto (solver, utilities, inizializzazione, etc...)
+
+- forse funcType è inutile

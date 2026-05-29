@@ -1,0 +1,227 @@
+\indexentry{README@{README}|hyperpage}{1}
+\indexentry{results@{results}|hyperpage}{3}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}|hyperpage}{17}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!funcType@{funcType}|hyperpage}{18}
+\indexentry{funcType@{funcType}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{18}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!create\_default\_data@{create\_default\_data}|hyperpage}{19}
+\indexentry{create\_default\_data@{create\_default\_data}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{19}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_10\_dirichlet\_sequential\_vs\_parallel\_jacobi@{run\_test\_10\_dirichlet\_sequential\_vs\_parallel\_jacobi}|hyperpage}{19}
+\indexentry{run\_test\_10\_dirichlet\_sequential\_vs\_parallel\_jacobi@{run\_test\_10\_dirichlet\_sequential\_vs\_parallel\_jacobi}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{19}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_11\_neumann\_sequential\_vs\_parallel\_jacobi@{run\_test\_11\_neumann\_sequential\_vs\_parallel\_jacobi}|hyperpage}{19}
+\indexentry{run\_test\_11\_neumann\_sequential\_vs\_parallel\_jacobi@{run\_test\_11\_neumann\_sequential\_vs\_parallel\_jacobi}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{19}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_12\_robin\_sequential\_vs\_parallel\_jacobi@{run\_test\_12\_robin\_sequential\_vs\_parallel\_jacobi}|hyperpage}{19}
+\indexentry{run\_test\_12\_robin\_sequential\_vs\_parallel\_jacobi@{run\_test\_12\_robin\_sequential\_vs\_parallel\_jacobi}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{19}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_13\_dirichlet\_sequential\_vs\_parallel\_schwarz@{run\_test\_13\_dirichlet\_sequential\_vs\_parallel\_schwarz}|hyperpage}{20}
+\indexentry{run\_test\_13\_dirichlet\_sequential\_vs\_parallel\_schwarz@{run\_test\_13\_dirichlet\_sequential\_vs\_parallel\_schwarz}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{20}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_14\_neumann\_sequential\_vs\_parallel\_schwarz@{run\_test\_14\_neumann\_sequential\_vs\_parallel\_schwarz}|hyperpage}{20}
+\indexentry{run\_test\_14\_neumann\_sequential\_vs\_parallel\_schwarz@{run\_test\_14\_neumann\_sequential\_vs\_parallel\_schwarz}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{20}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_15\_robin\_sequential\_vs\_parallel\_schwarz@{run\_test\_15\_robin\_sequential\_vs\_parallel\_schwarz}|hyperpage}{20}
+\indexentry{run\_test\_15\_robin\_sequential\_vs\_parallel\_schwarz@{run\_test\_15\_robin\_sequential\_vs\_parallel\_schwarz}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{20}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_16\_dirichlet\_sequential@{run\_test\_16\_dirichlet\_sequential}|hyperpage}{20}
+\indexentry{run\_test\_16\_dirichlet\_sequential@{run\_test\_16\_dirichlet\_sequential}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{20}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_17\_neumann\_sequential@{run\_test\_17\_neumann\_sequential}|hyperpage}{21}
+\indexentry{run\_test\_17\_neumann\_sequential@{run\_test\_17\_neumann\_sequential}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{21}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_18\_robin\_sequential@{run\_test\_18\_robin\_sequential}|hyperpage}{21}
+\indexentry{run\_test\_18\_robin\_sequential@{run\_test\_18\_robin\_sequential}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{21}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_19\_dirichlet\_parallel@{run\_test\_19\_dirichlet\_parallel}|hyperpage}{21}
+\indexentry{run\_test\_19\_dirichlet\_parallel@{run\_test\_19\_dirichlet\_parallel}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{21}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_1\_dirichlet\_sequential@{run\_test\_1\_dirichlet\_sequential}|hyperpage}{22}
+\indexentry{run\_test\_1\_dirichlet\_sequential@{run\_test\_1\_dirichlet\_sequential}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{22}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_20\_neumann\_parallel@{run\_test\_20\_neumann\_parallel}|hyperpage}{22}
+\indexentry{run\_test\_20\_neumann\_parallel@{run\_test\_20\_neumann\_parallel}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{22}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_21\_robin\_parallel@{run\_test\_21\_robin\_parallel}|hyperpage}{22}
+\indexentry{run\_test\_21\_robin\_parallel@{run\_test\_21\_robin\_parallel}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{22}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_22\_neumann\_sequential\_vs\_parallel\_schwarz@{run\_test\_22\_neumann\_sequential\_vs\_parallel\_schwarz}|hyperpage}{23}
+\indexentry{run\_test\_22\_neumann\_sequential\_vs\_parallel\_schwarz@{run\_test\_22\_neumann\_sequential\_vs\_parallel\_schwarz}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{23}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_2\_neumann\_sequential@{run\_test\_2\_neumann\_sequential}|hyperpage}{23}
+\indexentry{run\_test\_2\_neumann\_sequential@{run\_test\_2\_neumann\_sequential}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{23}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_3\_robin\_sequential@{run\_test\_3\_robin\_sequential}|hyperpage}{23}
+\indexentry{run\_test\_3\_robin\_sequential@{run\_test\_3\_robin\_sequential}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{23}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_4\_dirichlet\_parallel@{run\_test\_4\_dirichlet\_parallel}|hyperpage}{23}
+\indexentry{run\_test\_4\_dirichlet\_parallel@{run\_test\_4\_dirichlet\_parallel}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{23}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_5\_neumann\_parallel@{run\_test\_5\_neumann\_parallel}|hyperpage}{24}
+\indexentry{run\_test\_5\_neumann\_parallel@{run\_test\_5\_neumann\_parallel}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{24}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_6\_robin\_parallel@{run\_test\_6\_robin\_parallel}|hyperpage}{24}
+\indexentry{run\_test\_6\_robin\_parallel@{run\_test\_6\_robin\_parallel}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{24}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_7\_dirichlet\_parallel\_schwarz@{run\_test\_7\_dirichlet\_parallel\_schwarz}|hyperpage}{24}
+\indexentry{run\_test\_7\_dirichlet\_parallel\_schwarz@{run\_test\_7\_dirichlet\_parallel\_schwarz}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{24}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_8\_neumann\_parallel\_schwarz@{run\_test\_8\_neumann\_parallel\_schwarz}|hyperpage}{25}
+\indexentry{run\_test\_8\_neumann\_parallel\_schwarz@{run\_test\_8\_neumann\_parallel\_schwarz}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{25}
+\indexentry{laplacian\_solvers@{laplacian\_solvers}!run\_test\_9\_robin\_parallel\_schwarz@{run\_test\_9\_robin\_parallel\_schwarz}|hyperpage}{25}
+\indexentry{run\_test\_9\_robin\_parallel\_schwarz@{run\_test\_9\_robin\_parallel\_schwarz}!laplacian\_solvers@{laplacian\_solvers}|hyperpage}{25}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{27}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!errors\_parallel@{errors\_parallel}|hyperpage}{28}
+\indexentry{errors\_parallel@{errors\_parallel}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!errors\_serial@{errors\_serial}|hyperpage}{28}
+\indexentry{errors\_serial@{errors\_serial}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!iterations\_parallel@{iterations\_parallel}|hyperpage}{28}
+\indexentry{iterations\_parallel@{iterations\_parallel}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!iterations\_serial@{iterations\_serial}|hyperpage}{28}
+\indexentry{iterations\_serial@{iterations\_serial}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!n@{n}|hyperpage}{28}
+\indexentry{n@{n}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!speedups@{speedups}|hyperpage}{28}
+\indexentry{speedups@{speedups}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!times\_parallel@{times\_parallel}|hyperpage}{28}
+\indexentry{times\_parallel@{times\_parallel}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!times\_serial@{times\_serial}|hyperpage}{28}
+\indexentry{times\_serial@{times\_serial}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}|hyperpage}{28}
+\indexentry{laplacian\_solvers::Convergence\_Test$<$ solver\_type, boundary\_condition, funcType $>$@{laplacian\_solvers::Convergence\_Test$<$ solver\_type, boundary\_condition, funcType $>$}|hyperpage}{29}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{29}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!alpha@{alpha}|hyperpage}{30}
+\indexentry{alpha@{alpha}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{30}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f0@{f0}|hyperpage}{30}
+\indexentry{f0@{f0}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{30}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f1@{f1}|hyperpage}{30}
+\indexentry{f1@{f1}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{30}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f2@{f2}|hyperpage}{30}
+\indexentry{f2@{f2}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{30}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f3@{f3}|hyperpage}{30}
+\indexentry{f3@{f3}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{30}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f4@{f4}|hyperpage}{30}
+\indexentry{f4@{f4}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{30}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!max\_iterations@{max\_iterations}|hyperpage}{31}
+\indexentry{max\_iterations@{max\_iterations}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{31}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!max\_schwarz\_iterations@{max\_schwarz\_iterations}|hyperpage}{31}
+\indexentry{max\_schwarz\_iterations@{max\_schwarz\_iterations}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{31}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!n@{n}|hyperpage}{31}
+\indexentry{n@{n}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{31}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!tolerance@{tolerance}|hyperpage}{31}
+\indexentry{tolerance@{tolerance}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{31}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!u\_exact\_lambda@{u\_exact\_lambda}|hyperpage}{31}
+\indexentry{u\_exact\_lambda@{u\_exact\_lambda}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{31}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!x1@{x1}|hyperpage}{31}
+\indexentry{x1@{x1}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{31}
+\indexentry{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!x2@{x2}|hyperpage}{31}
+\indexentry{x2@{x2}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}|hyperpage}{31}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{32}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!Laplacian\_Solver@{Laplacian\_Solver}|hyperpage}{34}
+\indexentry{Laplacian\_Solver@{Laplacian\_Solver}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{34}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_exact\_solution@{build\_exact\_solution}|hyperpage}{34}
+\indexentry{build\_exact\_solution@{build\_exact\_solution}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{34}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_exact\_solution\_parallel@{build\_exact\_solution\_parallel}|hyperpage}{35}
+\indexentry{build\_exact\_solution\_parallel@{build\_exact\_solution\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{35}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_exact\_solution\_sequential@{build\_exact\_solution\_sequential}|hyperpage}{35}
+\indexentry{build\_exact\_solution\_sequential@{build\_exact\_solution\_sequential}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{35}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_mesh@{build\_mesh}|hyperpage}{35}
+\indexentry{build\_mesh@{build\_mesh}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{35}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_mesh\_parallel@{build\_mesh\_parallel}|hyperpage}{35}
+\indexentry{build\_mesh\_parallel@{build\_mesh\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{35}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_mesh\_sequential@{build\_mesh\_sequential}|hyperpage}{36}
+\indexentry{build\_mesh\_sequential@{build\_mesh\_sequential}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{36}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!export\_to\_vtk@{export\_to\_vtk}|hyperpage}{36}
+\indexentry{export\_to\_vtk@{export\_to\_vtk}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{36}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!jacobi\_parallel@{jacobi\_parallel}|hyperpage}{37}
+\indexentry{jacobi\_parallel@{jacobi\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{37}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!jacobi\_sequential@{jacobi\_sequential}|hyperpage}{37}
+\indexentry{jacobi\_sequential@{jacobi\_sequential}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{37}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!parallel\_solve@{parallel\_solve}|hyperpage}{38}
+\indexentry{parallel\_solve@{parallel\_solve}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{38}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print@{print}|hyperpage}{38}
+\indexentry{print@{print}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{38}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print\_exact\_solution@{print\_exact\_solution}|hyperpage}{38}
+\indexentry{print\_exact\_solution@{print\_exact\_solution}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{38}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print\_mesh@{print\_mesh}|hyperpage}{38}
+\indexentry{print\_mesh@{print\_mesh}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{38}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print\_solution@{print\_solution}|hyperpage}{39}
+\indexentry{print\_solution@{print\_solution}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{39}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!process\_filter@{process\_filter}|hyperpage}{39}
+\indexentry{process\_filter@{process\_filter}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{39}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!schwarz\_parallel@{schwarz\_parallel}|hyperpage}{39}
+\indexentry{schwarz\_parallel@{schwarz\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{39}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!solve@{solve}|hyperpage}{40}
+\indexentry{solve@{solve}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{40}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!data@{data}|hyperpage}{40}
+\indexentry{data@{data}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{40}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!h@{h}|hyperpage}{41}
+\indexentry{h@{h}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{41}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!meshX@{meshX}|hyperpage}{41}
+\indexentry{meshX@{meshX}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{41}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!meshY@{meshY}|hyperpage}{41}
+\indexentry{meshY@{meshY}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{41}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!mpi\_rank@{mpi\_rank}|hyperpage}{41}
+\indexentry{mpi\_rank@{mpi\_rank}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{41}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!mpi\_size@{mpi\_size}|hyperpage}{41}
+\indexentry{mpi\_size@{mpi\_size}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{41}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!mpi\_used\_size@{mpi\_used\_size}|hyperpage}{41}
+\indexentry{mpi\_used\_size@{mpi\_used\_size}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{41}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!participating@{participating}|hyperpage}{42}
+\indexentry{participating@{participating}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{42}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!result@{result}|hyperpage}{42}
+\indexentry{result@{result}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{42}
+\indexentry{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!u\_exact@{u\_exact}|hyperpage}{42}
+\indexentry{u\_exact@{u\_exact}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}|hyperpage}{42}
+\indexentry{Result\_Struct@{Result\_Struct}|hyperpage}{42}
+\indexentry{Result\_Struct@{Result\_Struct}!iteration\_residue@{iteration\_residue}|hyperpage}{43}
+\indexentry{iteration\_residue@{iteration\_residue}!Result\_Struct@{Result\_Struct}|hyperpage}{43}
+\indexentry{Result\_Struct@{Result\_Struct}!iterations@{iterations}|hyperpage}{43}
+\indexentry{iterations@{iterations}!Result\_Struct@{Result\_Struct}|hyperpage}{43}
+\indexentry{Result\_Struct@{Result\_Struct}!u\_h@{u\_h}|hyperpage}{43}
+\indexentry{u\_h@{u\_h}!Result\_Struct@{Result\_Struct}|hyperpage}{43}
+\indexentry{Result\_Struct@{Result\_Struct}!valid@{valid}|hyperpage}{43}
+\indexentry{valid@{valid}!Result\_Struct@{Result\_Struct}|hyperpage}{43}
+\indexentry{Result\_Struct@{Result\_Struct}!X@{X}|hyperpage}{43}
+\indexentry{X@{X}!Result\_Struct@{Result\_Struct}|hyperpage}{43}
+\indexentry{Result\_Struct@{Result\_Struct}!Y@{Y}|hyperpage}{44}
+\indexentry{Y@{Y}!Result\_Struct@{Result\_Struct}|hyperpage}{44}
+\indexentry{include/laplacian\_convergence\_test.hpp@{include/laplacian\_convergence\_test.hpp}|hyperpage}{45}
+\indexentry{include/laplacian\_convergence\_test.hpp@{include/laplacian\_convergence\_test.hpp}|hyperpage}{46}
+\indexentry{include/laplacian\_solvers.hpp@{include/laplacian\_solvers.hpp}|hyperpage}{47}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}|hyperpage}{49}
+\indexentry{MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!eigenMatrix@{eigenMatrix}|hyperpage}{49}
+\indexentry{eigenMatrix@{eigenMatrix}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!BoundaryCondition@{BoundaryCondition}|hyperpage}{49}
+\indexentry{BoundaryCondition@{BoundaryCondition}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{DIRICHLET@{DIRICHLET}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!DIRICHLET@{DIRICHLET}|hyperpage}{49}
+\indexentry{NEUMANN@{NEUMANN}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!NEUMANN@{NEUMANN}|hyperpage}{49}
+\indexentry{ROBIN@{ROBIN}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!ROBIN@{ROBIN}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!ExecutionMode@{ExecutionMode}|hyperpage}{49}
+\indexentry{ExecutionMode@{ExecutionMode}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{SEQUENTIAL@{SEQUENTIAL}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!SEQUENTIAL@{SEQUENTIAL}|hyperpage}{49}
+\indexentry{PARALLEL@{PARALLEL}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!PARALLEL@{PARALLEL}|hyperpage}{49}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!SolverType@{SolverType}|hyperpage}{49}
+\indexentry{SolverType@{SolverType}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{49}
+\indexentry{JACOBI@{JACOBI}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{50}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!JACOBI@{JACOBI}|hyperpage}{50}
+\indexentry{SCHWARZ@{SCHWARZ}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}|hyperpage}{50}
+\indexentry{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!SCHWARZ@{SCHWARZ}|hyperpage}{50}
+\indexentry{include/laplacian\_solvers.hpp@{include/laplacian\_solvers.hpp}|hyperpage}{50}
+\indexentry{include/laplacian\_solvers\_boundary\_conditions.hpp@{include/laplacian\_solvers\_boundary\_conditions.hpp}|hyperpage}{51}
+\indexentry{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_boundary\_condition@{apply\_boundary\_condition}|hyperpage}{52}
+\indexentry{apply\_boundary\_condition@{apply\_boundary\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}|hyperpage}{52}
+\indexentry{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_dirichlet\_condition@{apply\_dirichlet\_condition}|hyperpage}{53}
+\indexentry{apply\_dirichlet\_condition@{apply\_dirichlet\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}|hyperpage}{53}
+\indexentry{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_neumann\_condition@{apply\_neumann\_condition}|hyperpage}{53}
+\indexentry{apply\_neumann\_condition@{apply\_neumann\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}|hyperpage}{53}
+\indexentry{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_robin\_condition@{apply\_robin\_condition}|hyperpage}{54}
+\indexentry{apply\_robin\_condition@{apply\_robin\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}|hyperpage}{54}
+\indexentry{include/laplacian\_solvers\_boundary\_conditions.hpp@{include/laplacian\_solvers\_boundary\_conditions.hpp}|hyperpage}{55}
+\indexentry{include/laplacian\_solvers\_implementation.hpp@{include/laplacian\_solvers\_implementation.hpp}|hyperpage}{58}
+\indexentry{include/laplacian\_solvers\_implementation.hpp@{include/laplacian\_solvers\_implementation.hpp}|hyperpage}{58}
+\indexentry{include/laplacian\_solvers\_initializer.hpp@{include/laplacian\_solvers\_initializer.hpp}|hyperpage}{59}
+\indexentry{include/laplacian\_solvers\_initializer.hpp@{include/laplacian\_solvers\_initializer.hpp}|hyperpage}{60}
+\indexentry{include/laplacian\_solvers\_parallel\_jacobi\_implementation.hpp@{include/laplacian\_solvers\_parallel\_jacobi\_implementation.hpp}|hyperpage}{61}
+\indexentry{include/laplacian\_solvers\_parallel\_jacobi\_implementation.hpp@{include/laplacian\_solvers\_parallel\_jacobi\_implementation.hpp}|hyperpage}{62}
+\indexentry{include/laplacian\_solvers\_parallel\_schwarz\_implementation.hpp@{include/laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}|hyperpage}{64}
+\indexentry{laplacian\_solvers\_parallel\_schwarz\_implementation.hpp@{laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}!MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}|hyperpage}{64}
+\indexentry{MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}!laplacian\_solvers\_parallel\_schwarz\_implementation.hpp@{laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}|hyperpage}{64}
+\indexentry{include/laplacian\_solvers\_parallel\_schwarz\_implementation.hpp@{include/laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}|hyperpage}{64}
+\indexentry{include/laplacian\_solvers\_postprocessing.hpp@{include/laplacian\_solvers\_postprocessing.hpp}|hyperpage}{66}
+\indexentry{include/laplacian\_solvers\_postprocessing.hpp@{include/laplacian\_solvers\_postprocessing.hpp}|hyperpage}{67}
+\indexentry{include/laplacian\_solvers\_sequential\_implementations.hpp@{include/laplacian\_solvers\_sequential\_implementations.hpp}|hyperpage}{70}
+\indexentry{include/laplacian\_solvers\_sequential\_implementations.hpp@{include/laplacian\_solvers\_sequential\_implementations.hpp}|hyperpage}{70}
+\indexentry{include/laplacian\_solvers\_test\_1.hpp@{include/laplacian\_solvers\_test\_1.hpp}|hyperpage}{71}
+\indexentry{include/laplacian\_solvers\_test\_1.hpp@{include/laplacian\_solvers\_test\_1.hpp}|hyperpage}{72}
+\indexentry{include/laplacian\_solvers\_test\_2.hpp@{include/laplacian\_solvers\_test\_2.hpp}|hyperpage}{77}
+\indexentry{include/laplacian\_solvers\_test\_2.hpp@{include/laplacian\_solvers\_test\_2.hpp}|hyperpage}{78}
+\indexentry{main.cpp@{main.cpp}|hyperpage}{81}
+\indexentry{main.cpp@{main.cpp}!main@{main}|hyperpage}{81}
+\indexentry{main@{main}!main.cpp@{main.cpp}|hyperpage}{81}
+\indexentry{README.md@{README.md}|hyperpage}{82}
+\indexentry{results.md@{results.md}|hyperpage}{82}

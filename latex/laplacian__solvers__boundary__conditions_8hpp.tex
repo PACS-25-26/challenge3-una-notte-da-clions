@@ -1,0 +1,176 @@
+\doxysection{include/laplacian\+\_\+solvers\+\_\+boundary\+\_\+conditions.hpp File Reference}
+\hypertarget{laplacian__solvers__boundary__conditions_8hpp}{}\label{laplacian__solvers__boundary__conditions_8hpp}\index{include/laplacian\_solvers\_boundary\_conditions.hpp@{include/laplacian\_solvers\_boundary\_conditions.hpp}}
+
+
+Functions to apply Dirichlet, Neumann, and Robin boundary conditions.  
+
+
+{\ttfamily \#include "{}laplacian\+\_\+solvers.\+hpp"{}}\newline
+Include dependency graph for laplacian\+\_\+solvers\+\_\+boundary\+\_\+conditions.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, typename func\+Type $>$ }\\void \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{apply\+\_\+dirichlet\+\_\+condition}} (\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&u\+\_\+h, const \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&data, const \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshX, const \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshY, const unsigned mpi\+\_\+rank, const unsigned mpi\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Applies Dirichlet boundary conditions (homogeneous or non-\/homogeneous). \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ }\\\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a13b50b1022f76b77d6964685d6493ae3}{apply\+\_\+neumann\+\_\+condition}} (\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&u\+\_\+h, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&data, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshX, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshY, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{u\+\_\+old}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} mpi\+\_\+rank, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} mpi\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Applies Neumann boundary conditions using a second-\/order central difference scheme. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ }\\\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a3e1203236c92e68dadc20831e4d90124}{apply\+\_\+robin\+\_\+condition}} (\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&u\+\_\+h, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&data, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshX, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshY, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{u\+\_\+old}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} mpi\+\_\+rank, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} mpi\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Applies Robin boundary conditions (mixed conditions matching value and normal derivative). \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ }\\\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a46d4265f6b6d68242b81ca6033cbe0a8}{apply\+\_\+boundary\+\_\+condition}} (\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&u\+\_\+h, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&data, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshX, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&meshY, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{u\+\_\+old}}=\{\}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} mpi\+\_\+rank=0, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} mpi\+\_\+size=1)
+\begin{DoxyCompactList}\small\item\em Interface function to route execution to the selected boundary condition type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Functions to apply Dirichlet, Neumann, and Robin boundary conditions. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{laplacian__solvers__boundary__conditions_8hpp_a46d4265f6b6d68242b81ca6033cbe0a8}\label{laplacian__solvers__boundary__conditions_8hpp_a46d4265f6b6d68242b81ca6033cbe0a8} 
+\index{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_boundary\_condition@{apply\_boundary\_condition}}
+\index{apply\_boundary\_condition@{apply\_boundary\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}}
+\doxysubsubsection{\texorpdfstring{apply\_boundary\_condition()}{apply\_boundary\_condition()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} apply\+\_\+boundary\+\_\+condition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{u\+\_\+h,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&}]{data,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshX,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshY,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{u\+\_\+old = {\ttfamily \{\}},  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}}}]{mpi\+\_\+rank = {\ttfamily 0},  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}}}]{mpi\+\_\+size = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+
+
+Interface function to route execution to the selected boundary condition type. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em boundary\+\_\+condition} & Dirichlet, Neumann, or Robin selector. \\
+\hline
+{\em execution\+\_\+mode} & Sequential or parallel policy backend. \\
+\hline
+{\em func\+Type} & Callable type for boundary and source terms. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u\+\_\+h} & Solution matrix to update. \\
+\hline
+{\em data} & Struct containing configuration settings and data callbacks. \\
+\hline
+{\em meshX} & Matrix of X grid coordinates. \\
+\hline
+{\em meshY} & Matrix of Y grid coordinates. \\
+\hline
+{\em u\+\_\+old} & Previous iteration solution matrix (default is empty for Dirichlet). \\
+\hline
+{\em mpi\+\_\+rank} & Rank of the current MPI process (default 0). \\
+\hline
+{\em mpi\+\_\+size} & Total number of MPI processes (default 1). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}\label{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec} 
+\index{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_dirichlet\_condition@{apply\_dirichlet\_condition}}
+\index{apply\_dirichlet\_condition@{apply\_dirichlet\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}}
+\doxysubsubsection{\texorpdfstring{apply\_dirichlet\_condition()}{apply\_dirichlet\_condition()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, typename func\+Type $>$ \\
+void apply\+\_\+dirichlet\+\_\+condition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{u\+\_\+h,  }\item[{const \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&}]{data,  }\item[{const \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshX,  }\item[{const \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshY,  }\item[{const unsigned}]{mpi\+\_\+rank,  }\item[{const unsigned}]{mpi\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Applies Dirichlet boundary conditions (homogeneous or non-\/homogeneous). 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em execution\+\_\+mode} & Sequential or parallel execution policy. \\
+\hline
+{\em func\+Type} & Callable type for boundary functions. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u\+\_\+h} & Matrix containing the current solution to update. \\
+\hline
+{\em data} & Struct containing domain and boundary function definitions. \\
+\hline
+{\em meshX} & Matrix of X grid coordinates. \\
+\hline
+{\em meshY} & Matrix of Y grid coordinates. \\
+\hline
+{\em mpi\+\_\+rank} & Rank of the current MPI process. \\
+\hline
+{\em mpi\+\_\+size} & Total number of MPI processes. \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 2
+\Hypertarget{laplacian__solvers__boundary__conditions_8hpp_a13b50b1022f76b77d6964685d6493ae3}\label{laplacian__solvers__boundary__conditions_8hpp_a13b50b1022f76b77d6964685d6493ae3} 
+\index{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_neumann\_condition@{apply\_neumann\_condition}}
+\index{apply\_neumann\_condition@{apply\_neumann\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}}
+\doxysubsubsection{\texorpdfstring{apply\_neumann\_condition()}{apply\_neumann\_condition()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} apply\+\_\+neumann\+\_\+condition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{u\+\_\+h,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&}]{data,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshX,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshY,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{u\+\_\+old,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}}}]{mpi\+\_\+rank,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}}}]{mpi\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Applies Neumann boundary conditions using a second-\/order central difference scheme. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em execution\+\_\+mode} & Sequential or parallel execution policy. \\
+\hline
+{\em func\+Type} & Callable type for boundary functions. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u\+\_\+h} & Matrix containing the solution to update. \\
+\hline
+{\em data} & Struct containing domain, source term, and flux definitions. \\
+\hline
+{\em meshX} & Matrix of X grid coordinates. \\
+\hline
+{\em meshY} & Matrix of Y grid coordinates. \\
+\hline
+{\em u\+\_\+old} & Solution matrix from the previous iteration step. \\
+\hline
+{\em mpi\+\_\+rank} & Rank of the current MPI process. \\
+\hline
+{\em mpi\+\_\+size} & Total number of MPI processes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Compatibility condition for pure Neumann problems is not checked by this function. 
+\end{DoxyNote}
+\Hypertarget{laplacian__solvers__boundary__conditions_8hpp_a3e1203236c92e68dadc20831e4d90124}\label{laplacian__solvers__boundary__conditions_8hpp_a3e1203236c92e68dadc20831e4d90124} 
+\index{laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}!apply\_robin\_condition@{apply\_robin\_condition}}
+\index{apply\_robin\_condition@{apply\_robin\_condition}!laplacian\_solvers\_boundary\_conditions.hpp@{laplacian\_solvers\_boundary\_conditions.hpp}}
+\doxysubsubsection{\texorpdfstring{apply\_robin\_condition()}{apply\_robin\_condition()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} apply\+\_\+robin\+\_\+condition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{u\+\_\+h,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$ \&}]{data,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshX,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{meshY,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \&}]{u\+\_\+old,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}}}]{mpi\+\_\+rank,  }\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}}}]{mpi\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Applies Robin boundary conditions (mixed conditions matching value and normal derivative). 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em execution\+\_\+mode} & Sequential or parallel execution policy. \\
+\hline
+{\em func\+Type} & Callable type for boundary functions. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u\+\_\+h} & Matrix containing the solution to update. \\
+\hline
+{\em data} & Struct containing domain, source term, alpha coefficient, and boundary functions. \\
+\hline
+{\em meshX} & Matrix of X grid coordinates. \\
+\hline
+{\em meshY} & Matrix of Y grid coordinates. \\
+\hline
+{\em u\+\_\+old} & Solution matrix from the previous iteration step. \\
+\hline
+{\em mpi\+\_\+rank} & Rank of the current MPI process. \\
+\hline
+{\em mpi\+\_\+size} & Total number of MPI processes. \\
+\hline
+\end{DoxyParams}

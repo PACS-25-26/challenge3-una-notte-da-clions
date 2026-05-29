@@ -1,0 +1,139 @@
+\doxysection{laplacian\+\_\+solvers.\+hpp}
+\hypertarget{laplacian__solvers_8hpp_source}{}\label{laplacian__solvers_8hpp_source}\index{include/laplacian\_solvers.hpp@{include/laplacian\_solvers.hpp}}
+\mbox{\hyperlink{laplacian__solvers_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ LAPLACIAN\_SOLVERS\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ LAPLACIAN\_SOLVERS\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <Eigen/Dense>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <mpi.h>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <omp.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{using\ }\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ =\ Eigen::Matrix<double,\ Eigen::Dynamic,\ Eigen::Dynamic,\ Eigen::RowMajor>;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ MAX\_SCHWARZ\_ITERATIONS\ 10}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{SolverType}}\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ecadad0f4ccf1b8ed048ded063c2844611f}{JACOBI}},\ }
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306eca21183eaa87d60ae623102c0fa79bc411}{SCHWARZ}}\ }
+\DoxyCodeLine{00031\ \};\ \ }
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{BoundaryCondition}}\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555ae151350b63efc6c3bbe2e3f0d27863ba}{DIRICHLET}},\ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555a2f2dd8d12511598975b5475371963bd4}{NEUMANN}},\ }
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555abcd811f0b658b589b503a44dcde68c46}{ROBIN}}\ }
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{ExecutionMode}}\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{SEQUENTIAL}},\ }
+\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb}{PARALLEL}}\ }
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00058\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structData__Struct}{Data\_Struct}}\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}};\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structData__Struct_af70f0559e90b88882e913748941ea0e1}{x1}},\ \mbox{\hyperlink{structData__Struct_a88e4af144a38021903bd928debac53fa}{x2}};\ }
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ funcType\ \mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}};\ \ }
+\DoxyCodeLine{00063\ \ \ \ \ funcType\ \mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}};\ \ }
+\DoxyCodeLine{00064\ \ \ \ \ funcType\ \mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}};\ \ }
+\DoxyCodeLine{00065\ \ \ \ \ funcType\ \mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}};\ \ }
+\DoxyCodeLine{00066\ \ \ \ \ funcType\ \mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}};\ \ }
+\DoxyCodeLine{00067\ \ \ \ \ funcType\ \mbox{\hyperlink{structData__Struct_a9b03289c505beadb05f1ea4883824e2e}{u\_exact\_lambda}};\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structData__Struct_a19a44803e618dbb11a650d8152e3e61b}{tolerance}};\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{structData__Struct_a996f3b55776e4badcc6e52d4a46d26ae}{max\_iterations}};\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structData__Struct_a51b73788011a9a858838ea64f5bb0353}{alpha}};\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{structData__Struct_a18dd42d914cea7eee5015e376881e69f}{max\_schwarz\_iterations}}\ =\ 10;\ }
+\DoxyCodeLine{00072\ \};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \mbox{\hyperlink{structResult__Struct_aa7f9851029266f3b4bc0445044cef28b}{X}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \mbox{\hyperlink{structResult__Struct_acb218ec9c64771de752fd8e30766beca}{Y}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \mbox{\hyperlink{structResult__Struct_a5d4bb93d577d98a06faf8743d5ae5d46}{u\_h}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{structResult__Struct_ae3deb59528c23db8b0cf22649307202c}{iterations}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structResult__Struct_a115a9215010d085d164fa6bfe8a5f517}{iteration\_residue}};\ \ \ \ \ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structResult__Struct_a73811d0cc7a15419b8cf2af041c57639}{valid}}\ =\ \textcolor{keyword}{false};\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00085\ \};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\_solvers}}\ \{}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{Laplacian\_Solver}}\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a524c6e537ce1db6815d029ffdbc82965}{data}};\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a97e27b24bd4fa4c9213ba42631cbadb2}{meshX}};\ \ \ \ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_af44850ba823b7afecd5bc86a88158fc1}{meshY}};\ \ \ \ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a534ff523be71a43e94858f204249a280}{h}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a3629e5081b801a0b9fd60b884462209c}{u\_exact}};\ \ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a2a6972a29124af507d06f64c429b9b1f}{result}};\ }
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ab0f5574363b6f45361d478871014a0f1}{mpi\_rank}};\ }
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_aab2717e95ae6600a902de930d7748e4e}{mpi\_size}};\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ad0404e1bd6884fef2fbf31a2f243c45d}{mpi\_used\_size}};\ }
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a60ea20036e69bee111b81bfa6f3d5ab0}{participating}}\ =\ \textcolor{keyword}{true};\ }
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{Laplacian\_Solver}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\&\ d);\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a050cbed7a1be81395096708c97f3dc1d}{solve}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a388322e5abde88112808a061d0ddd676}{print}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a9a01023c583379332c80653741a1e353}{export\_to\_vtk}}(\textcolor{keyword}{const}\ std::string\&\ filename)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2}{build\_mesh}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ PRIVATE\ HELPER\ METHODS}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ INITIALIZERS}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ae426ef5d2dbe2f9088b1538d29e6a7aa}{build\_mesh\_sequential}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_af1b0d3c06e34a7f5779717795c0219e5}{build\_mesh\_parallel}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a3c631728ff640f5b4e5769ac55c35d18}{process\_filter}}();}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a6001bf6394700ce9ddaf3bbbd8e4417a}{build\_exact\_solution}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a58d8b13081550972a1885ef531e93e2d}{build\_exact\_solution\_sequential}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a8a17936272e5a10069c434203b093077}{build\_exact\_solution\_parallel}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ PRINT\ AND\ POSTPROCESSING}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a0aa5d72e85c1bc13a9badca765ef2888}{print\_mesh}}()\ \textcolor{keyword}{const};\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_af5b2a6e6f0b59fd207560887ebe2bc9b}{print\_solution}}()\ \textcolor{keyword}{const};\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a832bb77ca5a7076da17bbeb1fe1dfb92}{print\_exact\_solution}}()\ \textcolor{keyword}{const};\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//SOLVER\ STRUCTURE:\ sequential\ /\ parallel\ -\/>\ jacobi\ /\ schwarz\ -\/>\ dirichlet\ /\ neumann\ /\ robin}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a28f69b0dd54c09c790bca575d8108ffe}{parallel\_solve}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ad8888be50670afbc3bdb0d1bd5ce9ee9}{jacobi\_sequential}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_aee80a6ca379eea564e4f8f64097938ba}{jacobi\_parallel}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_aac6e442f2fdaaaf71665a38c6193a2aa}{schwarz\_parallel}}();\ \textcolor{comment}{//OK}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00161\ \ \ \ \ \};}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \}\ \textcolor{comment}{//\ namespace\ laplacian\_solvers}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__implementation_8hpp}{laplacian\_solvers\_implementation.hpp}}"{}}}
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__postprocessing_8hpp}{laplacian\_solvers\_postprocessing.hpp}}"{}}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__initializer_8hpp}{laplacian\_solvers\_initializer.hpp}}"{}}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__sequential__implementations_8hpp}{laplacian\_solvers\_sequential\_implementations.hpp}}"{}}}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__parallel__jacobi__implementation_8hpp}{laplacian\_solvers\_parallel\_jacobi\_implementation.hpp}}"{}}}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__parallel__schwarz__implementation_8hpp}{laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}}"{}}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#endif\ }}
+
+\end{DoxyCode}

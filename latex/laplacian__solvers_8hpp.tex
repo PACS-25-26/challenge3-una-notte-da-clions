@@ -1,0 +1,160 @@
+\doxysection{include/laplacian\+\_\+solvers.hpp File Reference}
+\hypertarget{laplacian__solvers_8hpp}{}\label{laplacian__solvers_8hpp}\index{include/laplacian\_solvers.hpp@{include/laplacian\_solvers.hpp}}
+
+
+Definition of the Laplacian/\+Poisson equation solver with multi-\/backend support (MPI, Open\+MP, Sequential).  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$mpi.\+h$>$}\newline
+{\ttfamily \#include $<$omp.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+implementation.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+postprocessing.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+initializer.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+sequential\+\_\+implementations.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+parallel\+\_\+jacobi\+\_\+implementation.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+parallel\+\_\+schwarz\+\_\+implementation.\+hpp"{}}\newline
+Include dependency graph for laplacian\+\_\+solvers.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct$<$ func\+Type $>$}}
+\begin{DoxyCompactList}\small\item\em Holds all geometric, physical, and numerical configuration parameters for the problem. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}}
+\begin{DoxyCompactList}\small\item\em Data structure to store the final computational results computed by the solver. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver$<$ solver\+\_\+type, boundary\+\_\+condition, execution\+\_\+mode, func\+Type $>$}}
+\begin{DoxyCompactList}\small\item\em Core class for solving the Laplace/\+Poisson equation on structured grids. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\+\_\+solvers}}
+\begin{DoxyCompactList}\small\item\em Namespace dedicated to the computation and numerical resolution of the Laplacian operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{define}} \mbox{\hyperlink{laplacian__solvers_8hpp_ab78e4a04e3fc13a96a7b6864038ed094}{MAX\+\_\+\+SCHWARZ\+\_\+\+ITERATIONS}}~10
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{using}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} = \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Matrix}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Dynamic}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Dynamic}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Row\+Major}} $>$
+\begin{DoxyCompactList}\small\item\em Alias for Eigen matrices optimized in Row\+Major to ensure better memory alignment during parallel access. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} \{ \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ecadad0f4ccf1b8ed048ded063c2844611f}{JACOBI}}
+, \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306eca21183eaa87d60ae623102c0fa79bc411}{SCHWARZ}}
+ \}
+\begin{DoxyCompactList}\small\item\em Specifies the iterative numerical algorithm used to solve the linear system. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} \{ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555ae151350b63efc6c3bbe2e3f0d27863ba}{DIRICHLET}}
+, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555a2f2dd8d12511598975b5475371963bd4}{NEUMANN}}
+, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555abcd811f0b658b589b503a44dcde68c46}{ROBIN}}
+ \}
+\begin{DoxyCompactList}\small\item\em Specifies the physical boundary condition type applied to the domain edges. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} \{ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{SEQUENTIAL}}
+, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb}{PARALLEL}}
+ \}
+\begin{DoxyCompactList}\small\item\em Specifies the execution policy of the solver (sequential or parallel). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definition of the Laplacian/\+Poisson equation solver with multi-\/backend support (MPI, Open\+MP, Sequential). 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{laplacian__solvers_8hpp_ab78e4a04e3fc13a96a7b6864038ed094}\label{laplacian__solvers_8hpp_ab78e4a04e3fc13a96a7b6864038ed094} 
+\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}}
+\index{MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}
+\doxysubsubsection{\texorpdfstring{MAX\_SCHWARZ\_ITERATIONS}{MAX\_SCHWARZ\_ITERATIONS}}
+{\footnotesize\ttfamily \#\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{define}} MAX\+\_\+\+SCHWARZ\+\_\+\+ITERATIONS~10}
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}\label{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e} 
+\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!eigenMatrix@{eigenMatrix}}
+\index{eigenMatrix@{eigenMatrix}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}
+\doxysubsubsection{\texorpdfstring{eigenMatrix}{eigenMatrix}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{using}} \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} =  \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Matrix}}$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Dynamic}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Dynamic}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{Eigen\+::\+Row\+Major}}$>$}
+
+
+
+Alias for Eigen matrices optimized in Row\+Major to ensure better memory alignment during parallel access. 
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}\label{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555} 
+\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!BoundaryCondition@{BoundaryCondition}}
+\index{BoundaryCondition@{BoundaryCondition}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}
+\doxysubsubsection{\texorpdfstring{BoundaryCondition}{BoundaryCondition}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{enum}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{class}} \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Specifies the physical boundary condition type applied to the domain edges. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DIRICHLET@{DIRICHLET}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!DIRICHLET@{DIRICHLET}}}\Hypertarget{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555ae151350b63efc6c3bbe2e3f0d27863ba}\label{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555ae151350b63efc6c3bbe2e3f0d27863ba} 
+DIRICHLET&Prescribed value on the boundary. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NEUMANN@{NEUMANN}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!NEUMANN@{NEUMANN}}}\Hypertarget{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555a2f2dd8d12511598975b5475371963bd4}\label{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555a2f2dd8d12511598975b5475371963bd4} 
+NEUMANN&Prescribed flux (normal derivative) on the boundary. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ROBIN@{ROBIN}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!ROBIN@{ROBIN}}}\Hypertarget{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555abcd811f0b658b589b503a44dcde68c46}\label{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555abcd811f0b658b589b503a44dcde68c46} 
+ROBIN&Mixed condition (linear combination of value and normal derivative). \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}\label{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd} 
+\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!ExecutionMode@{ExecutionMode}}
+\index{ExecutionMode@{ExecutionMode}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}
+\doxysubsubsection{\texorpdfstring{ExecutionMode}{ExecutionMode}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{enum}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{class}} \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Specifies the execution policy of the solver (sequential or parallel). 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SEQUENTIAL@{SEQUENTIAL}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!SEQUENTIAL@{SEQUENTIAL}}}\Hypertarget{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}\label{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb} 
+SEQUENTIAL&Sequential execution policy. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PARALLEL@{PARALLEL}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!PARALLEL@{PARALLEL}}}\Hypertarget{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb}\label{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb} 
+PARALLEL&Parallel execution policy using MPI and Open\+MP. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}\label{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec} 
+\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!SolverType@{SolverType}}
+\index{SolverType@{SolverType}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}
+\doxysubsubsection{\texorpdfstring{SolverType}{SolverType}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{enum}} \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{class}} \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Specifies the iterative numerical algorithm used to solve the linear system. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{JACOBI@{JACOBI}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!JACOBI@{JACOBI}}}\Hypertarget{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ecadad0f4ccf1b8ed048ded063c2844611f}\label{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ecadad0f4ccf1b8ed048ded063c2844611f} 
+JACOBI&Jacobi iterative method. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SCHWARZ@{SCHWARZ}!laplacian\_solvers.hpp@{laplacian\_solvers.hpp}}\index{laplacian\_solvers.hpp@{laplacian\_solvers.hpp}!SCHWARZ@{SCHWARZ}}}\Hypertarget{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306eca21183eaa87d60ae623102c0fa79bc411}\label{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306eca21183eaa87d60ae623102c0fa79bc411} 
+SCHWARZ&Schwarz iterative method. \\
+\hline
+
+\end{DoxyEnumFields}

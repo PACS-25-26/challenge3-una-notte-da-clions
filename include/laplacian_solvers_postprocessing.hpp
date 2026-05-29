@@ -1,0 +1,247 @@
+#ifndef LAPLACIAN_SOLVERS_POSTPROCESSING_HPP
+#define LAPLACIAN_SOLVERS_POSTPROCESSING_HPP
+
+#include "laplacian_solvers.hpp"
+#include <filesystem>
+
+/**
+ * @file laplacian_solvers_postprocessing.hpp
+ * @brief Post-processing, console printing, and VTK export routines.
+ */
+
+namespace laplacian_solvers{
+
+    /**
+     * @brief Wrapper method to print the mesh, numerical solution, and exact solution.
+     */
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print() const{
+        print_mesh();
+        print_solution();
+        print_exact_solution();
+    }
+
+    /**
+     * @brief Gathers and prints the grid mesh coordinates across all active nodes.
+     * * If operating in parallel execution mode, a collective @c MPI_Gatherv operation collects 
+     * the partitioned matrix layout components back into Rank 0 before rendering console output.
+     */
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_mesh() const{
+
+        eigenMatrix meshX_global(data.n, data.n), meshY_global(data.n, data.n);
+        
+        if constexpr (execution_mode == ExecutionMode::PARALLEL) { // Gather data from other processes
+
+
+            const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+            const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+            std::vector<int> recv_counts(mpi_size);
+            std::vector<int> displs(mpi_size);
+
+            for(int i = 0; i < mpi_size; i++){
+                recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
+                displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
+            }
+
+            MPI_Gatherv(meshX.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshY.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+         
+
+        } else{
+            meshX_global = meshX;
+            meshY_global = meshY;
+        }
+
+        if(mpi_rank != 0) return; // Only the root process
+        std::cout << "Mesh points (x, y):" << std::endl;
+
+        for(unsigned i = 0; i < data.n; i++){
+            for(unsigned j = 0; j < data.n; j++) std::cout << "(" << meshX_global(i, j) << ", " << meshY_global(i, j) << ") ";
+             std::cout << std::endl;
+        }
+       
+    }
+
+    /**
+     * @brief Prints the final discrete numerical solution array along with execution metadata.
+     * * Outputs metrics such as residual errors and convergence loop iteration counts. 
+     * Execution output is restricted solely to the root rank (Rank 0).
+     */
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_solution() const{
+        
+        int mpi_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+
+        if(mpi_rank != 0) return;
+
+        std::cout << "Discrete solution u_h:" << std::endl;
+
+        if(result.iteration_residue == -1.) {
+          std::cout << "Solver was not called" << std::endl; 
+          return;
+        }
+    
+        for(unsigned i = 0; i < data.n; i++){
+            for(unsigned j = 0; j < data.n; j++) std::cout << result.u_h(i, j) << " ";
+            std::cout << std::endl;
+        }   
+
+        std::cout << "Residue error: " << result.iteration_residue << std::endl;
+        std::cout << "Total iterations: " << result.iterations << std::endl;
+    }
+    
+
+    /**
+     * @brief Gathers and prints the exact analytical benchmark evaluation solution array.
+     */
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_exact_solution() const{
+
+        eigenMatrix exact_solution(data.n, data.n);
+
+        if constexpr (execution_mode == ExecutionMode::PARALLEL) { // Gather data from other processes
+
+            const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+            const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+            std::vector<int> recv_counts(mpi_size);
+            std::vector<int> displs(mpi_size);
+
+            for(int i = 0; i < mpi_size; i++){
+                recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
+                displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
+            }
+
+            MPI_Gatherv(u_exact.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, exact_solution.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+        } else{
+            exact_solution = u_exact;
+        }
+
+        if(mpi_rank != 0) return; // Only the root process
+
+        std::cout << "Exact solution u_exact:" << std::endl;
+        
+        for(unsigned i = 0; i < data.n; i++){
+            for(unsigned j = 0; j < data.n; j++) std::cout << exact_solution(i, j) << " ";
+            std::cout << std::endl;
+        }   
+    }
+
+    /**
+     * @brief Exports global solver results to a structured ASCII VTK file format legacy format.
+     * * Gathers mesh positions and scalar field solutions from all active compute allocations 
+     * via point-to-point gathering routines. Enforces directory tree setups and implements incremental 
+     * filename counter adjustments to avoid unwanted file overrides. Output operations are pinned to Rank 0.
+     * * @param filename Target base name designation string for the exported VTK structure.
+     */
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const std::string& filename) const {
+        
+        // 1. Global matrices to gather data from all processes 
+        eigenMatrix meshX_global(data.n, data.n), meshY_global(data.n, data.n);
+        eigenMatrix exact_solution_global(data.n, data.n);
+        
+
+        // 2. Gather data from all processes if in parallel mode, otherwise just copy local to global matrices
+        if constexpr (execution_mode == ExecutionMode::PARALLEL) { 
+            //int mpi_size;
+            //MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+
+            const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+            const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+            std::vector<int> recv_counts(mpi_size);
+            std::vector<int> displs(mpi_size);
+
+            for(int i = 0; i < mpi_size; i++){
+                recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
+                displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
+            }
+
+            MPI_Gatherv(meshX.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshY.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(u_exact.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, exact_solution_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+        } else {
+            // Caso sequenziale: le matrici globali copiano direttamente quelle locali
+            meshX_global = meshX;
+            meshY_global = meshY;
+            exact_solution_global = u_exact;
+        }
+
+        // 3. Root process handles file writing, while others return immediately
+        if (mpi_rank != 0) {
+            return; 
+        }
+
+        // 4. Ensure output directory exists and handle filename conflicts
+        std::filesystem::path output_dir = "vtk_files_folder";
+        std::filesystem::create_directories(output_dir);
+        std::filesystem::path full_path = output_dir / filename;
+
+        if (std::filesystem::exists(full_path)) {
+            std::string stem = full_path.stem().string(); 
+            std::string extension = full_path.extension().string(); 
+            
+            unsigned counter = 1;
+            while (std::filesystem::exists(full_path)) {
+                std::string new_filename = stem + "_" + std::to_string(counter) + extension;
+                full_path = output_dir / new_filename;
+                counter++;
+            }
+        }
+        
+        std::ofstream vtk_file(full_path);
+        if(!vtk_file.is_open()) {
+            throw std::runtime_error("Could not open / create file for writing: " + full_path.string());
+        }
+
+        // 5. VTK Standard Header
+        vtk_file << "# vtk DataFile Version 3.0\n";
+        vtk_file << "Laplacian Solver Output\n";
+        vtk_file << "ASCII\n";
+        vtk_file << "DATASET STRUCTURED_GRID\n";
+
+        // 6. Grid Topology Definition
+        vtk_file << "DIMENSIONS " << data.n << " " << data.n << " 1\n";
+        
+        size_t total_points = data.n * data.n;
+        vtk_file << "POINTS " << total_points << " double\n";
+
+        for (unsigned j = 0; j < data.n; ++j) {       
+            for (unsigned i = 0; i < data.n; ++i) {   
+                vtk_file << meshX_global(j, i) << " " << meshY_global(j, i) << " 0.0\n";
+            }
+        }
+
+        // 7. Point-Data Section
+        vtk_file << "POINT_DATA " << total_points << "\n";
+        
+        // Field 1: Computed Numerical Solution (u_h)
+        vtk_file << "SCALARS Numerical_Solution float 1\n";
+        vtk_file << "LOOKUP_TABLE default\n";
+        for (unsigned j = 0; j < data.n; ++j) {
+            for (unsigned i = 0; i < data.n; ++i) {
+                vtk_file << result.u_h(j, i) << "\n";
+            }
+        }
+
+        // Field 2: Analytical / Exact Solution (u_exact)
+        vtk_file << "SCALARS Exact_Solution float 1\n";
+        vtk_file << "LOOKUP_TABLE default\n";
+        for (unsigned j = 0; j < data.n; ++j) {
+            for (unsigned i = 0; i < data.n; ++i) {
+                vtk_file << exact_solution_global(j, i) << "\n";
+            }
+        }
+
+        vtk_file.close();
+    }
+
+} // namespace laplacian_solvers
+
+#endif // LAPLACIAN_SOLVERS_POSTPROCESSING_HPP

@@ -1,0 +1,8 @@
+\_form#0:$ N $
+\_form#1:$ h = \frac{|x_2 - x_1|}{N - 1} $
+\_form#2:$ x_2 < x_1 $
+\_form#3:$ N \times N $
+\_form#4:$ L^2 $
+\_form#5:$ u(x,y) = x^2y + xy^2 + x + y + 1 $
+\_form#6:$ \frac{\partial u}{\partial n} = \nabla u \cdot \mathbf{n} $
+\_form#7:$ u + \frac{\partial u}{\partial n} = g $

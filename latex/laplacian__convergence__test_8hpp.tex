@@ -1,0 +1,33 @@
+\doxysection{include/laplacian\+\_\+convergence\+\_\+test.hpp File Reference}
+\hypertarget{laplacian__convergence__test_8hpp}{}\label{laplacian__convergence__test_8hpp}\index{include/laplacian\_convergence\_test.hpp@{include/laplacian\_convergence\_test.hpp}}
+
+
+Convergence test suite for verifying solver accuracy and performance speedup.  
+
+
+{\ttfamily \#include "{}laplacian\+\_\+solvers.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+implementation.\+hpp"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+Include dependency graph for laplacian\+\_\+convergence\+\_\+test.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct}{laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct}}
+\begin{DoxyCompactList}\small\item\em Stores collected benchmark metrics across multiple grid refinement levels. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test}{laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Test$<$ solver\+\_\+type, boundary\+\_\+condition, func\+Type $>$}}
+\begin{DoxyCompactList}\small\item\em Benchmark coordinator running serial and parallel execution comparison groups. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\+\_\+solvers}}
+\begin{DoxyCompactList}\small\item\em Namespace dedicated to the computation and numerical resolution of the Laplacian operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Convergence test suite for verifying solver accuracy and performance speedup. 
+

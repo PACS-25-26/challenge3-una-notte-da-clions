@@ -1,0 +1,138 @@
+#ifndef LAPLACIAN_SOLVERS_PARALLEL_JACOBI_IMPLEMENTATION_HPP
+#define LAPLACIAN_SOLVERS_PARALLEL_JACOBI_IMPLEMENTATION_HPP
+
+#include "laplacian_solvers.hpp"
+#include "laplacian_solvers_boundary_conditions.hpp"
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <fstream>
+
+/**
+ * @file laplacian_solvers_parallel_jacobi_implementation.hpp
+ * @brief Hybrid MPI+OpenMP parallel implementation of the Jacobi solver.
+ */
+
+namespace laplacian_solvers{
+
+    /**
+     * @brief Solves the Laplacian problem using a parallel hybrid Jacobi method.
+     * * Splits the domain among MPI processes along rows. Each process allocates ghost/halo 
+     * rows for neighbor data exchange. Within each process, calculations are threaded using 
+     * OpenMP, and ghost layers are synchronized via non-blocking or point-to-point MPI primitives.
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam execution_mode Parallel execution policy backend.
+     * @tparam funcType Callable type for boundary and source terms.
+     * * @return A @ref Result_Struct containing the gathered solution on Rank 0, or partial local structs on other ranks.
+     */
+    template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
+    Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel(){
+        
+        // Compute indexes and communication info
+        const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+        const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+
+        // Find process neighbors
+        const int rank_up = (mpi_rank == 0) ? MPI_PROC_NULL : mpi_rank - 1; 
+        const int rank_down = (mpi_rank == mpi_size - 1) ? MPI_PROC_NULL : mpi_rank + 1;
+
+        const int up_row = (mpi_rank == 0 ? 0 : 1);
+        const int down_row = (mpi_rank == mpi_size - 1 ? 0 : 1);
+        const int total_rows = local_rows + up_row + down_row;
+
+        // Build local matrixes. It will also host the upper and lower rows for later communication
+        eigenMatrix u_h_local = eigenMatrix::Zero(total_rows, data.n);
+     
+        // Apply boundary contitions to the initial guess
+        if constexpr(boundary_condition == BoundaryCondition::DIRICHLET || boundary_condition == BoundaryCondition::ROBIN) 
+            apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
+
+        // Initialize loop
+        eigenMatrix u_h_new_local(u_h_local);
+        const double tol_squared = data.tolerance * data.tolerance;
+        double err = tol_squared + 1.0;
+        unsigned iter = 0;
+        const double h2 = h * h;
+        #pragma omp parallel
+        {
+            while(err > tol_squared && iter < data.max_iterations){
+                // First - Handle communication with other processes
+                #pragma omp single
+                {
+                    MPI_Sendrecv(u_h_local.data() + up_row * data.n, data.n, MPI_DOUBLE, rank_up, 0,
+                                 u_h_local.data() + (total_rows - 1) * data.n, data.n, MPI_DOUBLE, rank_down, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+                    MPI_Sendrecv(u_h_local.data() + (total_rows - 1 - down_row) * data.n, data.n, MPI_DOUBLE, rank_down, 1,
+                                 u_h_local.data(), data.n, MPI_DOUBLE, rank_up, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                }
+
+                // Second - Compute new values, but not the received ones!
+                #pragma omp for collapse(2)
+                for(int i = 1; i < total_rows - 1; i++){
+                    for(unsigned j = 1; j < data.n - 1; j++){
+                        u_h_new_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX(i - up_row, j), meshY(i - up_row, j)));         
+                    }
+                }
+
+                // Third - Apply boundary conditions
+                #pragma omp single
+                {
+                    if constexpr(boundary_condition == BoundaryCondition::NEUMANN || boundary_condition == BoundaryCondition::ROBIN)
+                        apply_boundary_condition<boundary_condition, execution_mode, funcType>(u_h_new_local, data, meshX, meshY, u_h_local, mpi_rank, mpi_size);
+
+                    // Fourth - zero-average constraint for Neumann BCs (required to ensure uniqueness of the solution)
+                    if constexpr(boundary_condition == BoundaryCondition::NEUMANN){
+                        double avg = 0.0;
+                        const double local_sum = u_h_new_local.block(up_row, 0, local_rows, data.n).sum();
+                        MPI_Allreduce(&local_sum, &avg, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+                        u_h_new_local.array() -= avg / (data.n * data.n); 
+                    }
+
+                    // Fourth - Compute local error in L2 norm (frobenius norm) with h
+                    const double local_err = (u_h_new_local.block(up_row, 0, local_rows, data.n) - u_h_local.block(up_row, 0, local_rows, data.n)).squaredNorm();
+
+                    // Fifth - Compute global error and prepare next iteration
+                    MPI_Allreduce(&local_err, &err, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);  
+                    err = h * err; // Maybe it is possible to avoid the sqrt?
+                    iter++;          
+                    u_h_local.swap(u_h_new_local);
+                } // single
+            } // while
+        } // parallel
+        
+        // Prepare communication 
+        std::vector<int> recv_counts(mpi_size);
+        std::vector<int> displs(mpi_size);
+
+        for(int i = 0; i < mpi_size; i++){
+            recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
+            displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
+        }
+
+        // Assemble global solution and mesh
+        eigenMatrix u_h_global(data.n, data.n); // Maybe initialize result.u_h?
+        eigenMatrix meshX_global(data.n, data.n);
+        eigenMatrix meshY_global(data.n, data.n);
+
+
+        MPI_Gatherv(u_h_local.data() + up_row * data.n, local_rows * data.n, MPI_DOUBLE, u_h_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Gatherv(meshX.data(), local_rows * data.n, MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Gatherv(meshY.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+        // Return results - caution: only rank 0 has the correct return structure!
+        result.u_h.swap(u_h_global);
+        result.X.swap(meshX_global);
+        result.Y.swap(meshY_global);
+        result.iterations = iter;
+        result.iteration_residue = std::sqrt(err);
+        if(mpi_rank == 0) result.valid = true;
+
+        return result;
+    
+    }
+} // namespace laplacian_solvers
+
+
+#endif // LAPLACIAN_SOLVERS_PARALLEL_JACOBI_IMPLEMENTATION_HPP

@@ -1,0 +1,40 @@
+\doxysection{include/laplacian\+\_\+solvers\+\_\+parallel\+\_\+schwarz\+\_\+implementation.hpp File Reference}
+\hypertarget{laplacian__solvers__parallel__schwarz__implementation_8hpp}{}\label{laplacian__solvers__parallel__schwarz__implementation_8hpp}\index{include/laplacian\_solvers\_parallel\_schwarz\_implementation.hpp@{include/laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}}
+
+
+Hybrid MPI+\+Open\+MP parallel implementation of the Schwarz domain decomposition method.  
+
+
+{\ttfamily \#include "{}laplacian\+\_\+solvers.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+boundary\+\_\+conditions.\+hpp"{}}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for laplacian\+\_\+solvers\+\_\+parallel\+\_\+schwarz\+\_\+implementation.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\+\_\+solvers}}
+\begin{DoxyCompactList}\small\item\em Namespace dedicated to the computation and numerical resolution of the Laplacian operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{define}} \mbox{\hyperlink{laplacian__solvers__parallel__schwarz__implementation_8hpp_ab78e4a04e3fc13a96a7b6864038ed094}{MAX\+\_\+\+SCHWARZ\+\_\+\+ITERATIONS}}~10
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Hybrid MPI+\+Open\+MP parallel implementation of the Schwarz domain decomposition method. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{laplacian__solvers__parallel__schwarz__implementation_8hpp_ab78e4a04e3fc13a96a7b6864038ed094}\label{laplacian__solvers__parallel__schwarz__implementation_8hpp_ab78e4a04e3fc13a96a7b6864038ed094} 
+\index{laplacian\_solvers\_parallel\_schwarz\_implementation.hpp@{laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}!MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}}
+\index{MAX\_SCHWARZ\_ITERATIONS@{MAX\_SCHWARZ\_ITERATIONS}!laplacian\_solvers\_parallel\_schwarz\_implementation.hpp@{laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}}
+\doxysubsubsection{\texorpdfstring{MAX\_SCHWARZ\_ITERATIONS}{MAX\_SCHWARZ\_ITERATIONS}}
+{\footnotesize\ttfamily \#\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{define}} MAX\+\_\+\+SCHWARZ\+\_\+\+ITERATIONS~10}
+

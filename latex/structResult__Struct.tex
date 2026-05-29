@@ -1,0 +1,97 @@
+\doxysection{Result\+\_\+\+Struct Struct Reference}
+\hypertarget{structResult__Struct}{}\label{structResult__Struct}\index{Result\_Struct@{Result\_Struct}}
+
+
+Data structure to store the final computational results computed by the solver.  
+
+
+
+
+{\ttfamily \#include $<$laplacian\+\_\+solvers.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{structResult__Struct_aa7f9851029266f3b4bc0445044cef28b}{X}}
+\begin{DoxyCompactList}\small\item\em Matrix containing the X coordinates of the structured mesh nodes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{structResult__Struct_acb218ec9c64771de752fd8e30766beca}{Y}}
+\begin{DoxyCompactList}\small\item\em Matrix containing the Y coordinates of the structured mesh nodes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{structResult__Struct_a5d4bb93d577d98a06faf8743d5ae5d46}{u\+\_\+h}}
+\begin{DoxyCompactList}\small\item\em Computed numerical approximate solution. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} \mbox{\hyperlink{structResult__Struct_ae3deb59528c23db8b0cf22649307202c}{iterations}}
+\begin{DoxyCompactList}\small\item\em Number of iterations actually performed. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structResult__Struct_a115a9215010d085d164fa6bfe8a5f517}{iteration\+\_\+residue}}
+\begin{DoxyCompactList}\small\item\em Norm of the final residual at the last iterative step. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{bool}} \mbox{\hyperlink{structResult__Struct_a73811d0cc7a15419b8cf2af041c57639}{valid}} = \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{false}}
+\begin{DoxyCompactList}\small\item\em Validity flag (set to true only on Rank 0 after gathering data). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Data structure to store the final computational results computed by the solver. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structResult__Struct_a115a9215010d085d164fa6bfe8a5f517}\label{structResult__Struct_a115a9215010d085d164fa6bfe8a5f517} 
+\index{Result\_Struct@{Result\_Struct}!iteration\_residue@{iteration\_residue}}
+\index{iteration\_residue@{iteration\_residue}!Result\_Struct@{Result\_Struct}}
+\doxysubsubsection{\texorpdfstring{iteration\_residue}{iteration\_residue}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} Result\+\_\+\+Struct\+::iteration\+\_\+residue}
+
+
+
+Norm of the final residual at the last iterative step. 
+
+\Hypertarget{structResult__Struct_ae3deb59528c23db8b0cf22649307202c}\label{structResult__Struct_ae3deb59528c23db8b0cf22649307202c} 
+\index{Result\_Struct@{Result\_Struct}!iterations@{iterations}}
+\index{iterations@{iterations}!Result\_Struct@{Result\_Struct}}
+\doxysubsubsection{\texorpdfstring{iterations}{iterations}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} Result\+\_\+\+Struct\+::iterations}
+
+
+
+Number of iterations actually performed. 
+
+\Hypertarget{structResult__Struct_a5d4bb93d577d98a06faf8743d5ae5d46}\label{structResult__Struct_a5d4bb93d577d98a06faf8743d5ae5d46} 
+\index{Result\_Struct@{Result\_Struct}!u\_h@{u\_h}}
+\index{u\_h@{u\_h}!Result\_Struct@{Result\_Struct}}
+\doxysubsubsection{\texorpdfstring{u\_h}{u\_h}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} Result\+\_\+\+Struct\+::u\+\_\+h}
+
+
+
+Computed numerical approximate solution. 
+
+\Hypertarget{structResult__Struct_a73811d0cc7a15419b8cf2af041c57639}\label{structResult__Struct_a73811d0cc7a15419b8cf2af041c57639} 
+\index{Result\_Struct@{Result\_Struct}!valid@{valid}}
+\index{valid@{valid}!Result\_Struct@{Result\_Struct}}
+\doxysubsubsection{\texorpdfstring{valid}{valid}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{bool}} Result\+\_\+\+Struct\+::valid = \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{false}}}
+
+
+
+Validity flag (set to true only on Rank 0 after gathering data). 
+
+\Hypertarget{structResult__Struct_aa7f9851029266f3b4bc0445044cef28b}\label{structResult__Struct_aa7f9851029266f3b4bc0445044cef28b} 
+\index{Result\_Struct@{Result\_Struct}!X@{X}}
+\index{X@{X}!Result\_Struct@{Result\_Struct}}
+\doxysubsubsection{\texorpdfstring{X}{X}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} Result\+\_\+\+Struct\+::X}
+
+
+
+Matrix containing the X coordinates of the structured mesh nodes. 
+
+\Hypertarget{structResult__Struct_acb218ec9c64771de752fd8e30766beca}\label{structResult__Struct_acb218ec9c64771de752fd8e30766beca} 
+\index{Result\_Struct@{Result\_Struct}!Y@{Y}}
+\index{Y@{Y}!Result\_Struct@{Result\_Struct}}
+\doxysubsubsection{\texorpdfstring{Y}{Y}}
+{\footnotesize\ttfamily \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} Result\+\_\+\+Struct\+::Y}
+
+
+
+Matrix containing the Y coordinates of the structured mesh nodes. 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{laplacian__solvers_8hpp}{laplacian\+\_\+solvers.\+hpp}}\end{DoxyCompactItemize}

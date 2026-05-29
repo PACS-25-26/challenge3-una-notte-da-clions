@@ -1,0 +1,165 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\contentsline {chapter}{\numberline {1}README}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}challenge3}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}results}{3}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Namespace Index}{11}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Namespace List}{11}{section.3.1}%
+\contentsline {chapter}{\numberline {4}Class Index}{13}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Class List}{13}{section.4.1}%
+\contentsline {chapter}{\numberline {5}File Index}{15}{chapter.5}%
+\contentsline {section}{\numberline {5.1}File List}{15}{section.5.1}%
+\contentsline {chapter}{\numberline {6}Namespace Documentation}{17}{chapter.6}%
+\contentsline {section}{\numberline {6.1}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers Namespace Reference}{17}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Detailed Description}{18}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Typedef Documentation}{18}{subsection.6.1.2}%
+\contentsline {subsubsection}{\numberline {6.1.2.1}funcType}{18}{subsubsection.6.1.2.1}%
+\contentsline {subsection}{\numberline {6.1.3}Function Documentation}{19}{subsection.6.1.3}%
+\contentsline {subsubsection}{\numberline {6.1.3.1}create\_default\_data()}{19}{subsubsection.6.1.3.1}%
+\contentsline {subsubsection}{\numberline {6.1.3.2}run\_test\_10\_dirichlet\_sequential\_vs\_parallel\_jacobi()}{19}{subsubsection.6.1.3.2}%
+\contentsline {subsubsection}{\numberline {6.1.3.3}run\_test\_11\_neumann\_sequential\_vs\_parallel\_jacobi()}{19}{subsubsection.6.1.3.3}%
+\contentsline {subsubsection}{\numberline {6.1.3.4}run\_test\_12\_robin\_sequential\_vs\_parallel\_jacobi()}{19}{subsubsection.6.1.3.4}%
+\contentsline {subsubsection}{\numberline {6.1.3.5}run\_test\_13\_dirichlet\_sequential\_vs\_parallel\_schwarz()}{20}{subsubsection.6.1.3.5}%
+\contentsline {subsubsection}{\numberline {6.1.3.6}run\_test\_14\_neumann\_sequential\_vs\_parallel\_schwarz()}{20}{subsubsection.6.1.3.6}%
+\contentsline {subsubsection}{\numberline {6.1.3.7}run\_test\_15\_robin\_sequential\_vs\_parallel\_schwarz()}{20}{subsubsection.6.1.3.7}%
+\contentsline {subsubsection}{\numberline {6.1.3.8}run\_test\_16\_dirichlet\_sequential()}{21}{subsubsection.6.1.3.8}%
+\contentsline {subsubsection}{\numberline {6.1.3.9}run\_test\_17\_neumann\_sequential()}{21}{subsubsection.6.1.3.9}%
+\contentsline {subsubsection}{\numberline {6.1.3.10}run\_test\_18\_robin\_sequential()}{21}{subsubsection.6.1.3.10}%
+\contentsline {subsubsection}{\numberline {6.1.3.11}run\_test\_19\_dirichlet\_parallel()}{22}{subsubsection.6.1.3.11}%
+\contentsline {subsubsection}{\numberline {6.1.3.12}run\_test\_1\_dirichlet\_sequential()}{22}{subsubsection.6.1.3.12}%
+\contentsline {subsubsection}{\numberline {6.1.3.13}run\_test\_20\_neumann\_parallel()}{22}{subsubsection.6.1.3.13}%
+\contentsline {subsubsection}{\numberline {6.1.3.14}run\_test\_21\_robin\_parallel()}{22}{subsubsection.6.1.3.14}%
+\contentsline {subsubsection}{\numberline {6.1.3.15}run\_test\_22\_neumann\_sequential\_vs\_parallel\_schwarz()}{23}{subsubsection.6.1.3.15}%
+\contentsline {subsubsection}{\numberline {6.1.3.16}run\_test\_2\_neumann\_sequential()}{23}{subsubsection.6.1.3.16}%
+\contentsline {subsubsection}{\numberline {6.1.3.17}run\_test\_3\_robin\_sequential()}{23}{subsubsection.6.1.3.17}%
+\contentsline {subsubsection}{\numberline {6.1.3.18}run\_test\_4\_dirichlet\_parallel()}{24}{subsubsection.6.1.3.18}%
+\contentsline {subsubsection}{\numberline {6.1.3.19}run\_test\_5\_neumann\_parallel()}{24}{subsubsection.6.1.3.19}%
+\contentsline {subsubsection}{\numberline {6.1.3.20}run\_test\_6\_robin\_parallel()}{24}{subsubsection.6.1.3.20}%
+\contentsline {subsubsection}{\numberline {6.1.3.21}run\_test\_7\_dirichlet\_parallel\_schwarz()}{24}{subsubsection.6.1.3.21}%
+\contentsline {subsubsection}{\numberline {6.1.3.22}run\_test\_8\_neumann\_parallel\_schwarz()}{25}{subsubsection.6.1.3.22}%
+\contentsline {subsubsection}{\numberline {6.1.3.23}run\_test\_9\_robin\_parallel\_schwarz()}{25}{subsubsection.6.1.3.23}%
+\contentsline {chapter}{\numberline {7}Class Documentation}{27}{chapter.7}%
+\contentsline {section}{\numberline {7.1}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}::Convergence\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Struct Struct Reference}{27}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Detailed Description}{27}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Member Data Documentation}{28}{subsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.2.1}errors\_parallel}{28}{subsubsection.7.1.2.1}%
+\contentsline {subsubsection}{\numberline {7.1.2.2}errors\_serial}{28}{subsubsection.7.1.2.2}%
+\contentsline {subsubsection}{\numberline {7.1.2.3}iterations\_parallel}{28}{subsubsection.7.1.2.3}%
+\contentsline {subsubsection}{\numberline {7.1.2.4}iterations\_serial}{28}{subsubsection.7.1.2.4}%
+\contentsline {subsubsection}{\numberline {7.1.2.5}n}{28}{subsubsection.7.1.2.5}%
+\contentsline {subsubsection}{\numberline {7.1.2.6}speedups}{28}{subsubsection.7.1.2.6}%
+\contentsline {subsubsection}{\numberline {7.1.2.7}times\_parallel}{28}{subsubsection.7.1.2.7}%
+\contentsline {subsubsection}{\numberline {7.1.2.8}times\_serial}{29}{subsubsection.7.1.2.8}%
+\contentsline {section}{\numberline {7.2}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}::Convergence\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Test$<$ solver\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}type, boundary\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}condition, func\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Type $>$ Class Template Reference}{29}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Data\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Struct$<$ func\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Type $>$ Struct Template Reference}{29}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Detailed Description}{30}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Member Data Documentation}{30}{subsection.7.3.2}%
+\contentsline {subsubsection}{\numberline {7.3.2.1}alpha}{30}{subsubsection.7.3.2.1}%
+\contentsline {subsubsection}{\numberline {7.3.2.2}f0}{30}{subsubsection.7.3.2.2}%
+\contentsline {subsubsection}{\numberline {7.3.2.3}f1}{30}{subsubsection.7.3.2.3}%
+\contentsline {subsubsection}{\numberline {7.3.2.4}f2}{30}{subsubsection.7.3.2.4}%
+\contentsline {subsubsection}{\numberline {7.3.2.5}f3}{30}{subsubsection.7.3.2.5}%
+\contentsline {subsubsection}{\numberline {7.3.2.6}f4}{31}{subsubsection.7.3.2.6}%
+\contentsline {subsubsection}{\numberline {7.3.2.7}max\_iterations}{31}{subsubsection.7.3.2.7}%
+\contentsline {subsubsection}{\numberline {7.3.2.8}max\_schwarz\_iterations}{31}{subsubsection.7.3.2.8}%
+\contentsline {subsubsection}{\numberline {7.3.2.9}n}{31}{subsubsection.7.3.2.9}%
+\contentsline {subsubsection}{\numberline {7.3.2.10}tolerance}{31}{subsubsection.7.3.2.10}%
+\contentsline {subsubsection}{\numberline {7.3.2.11}u\_exact\_lambda}{31}{subsubsection.7.3.2.11}%
+\contentsline {subsubsection}{\numberline {7.3.2.12}x1}{31}{subsubsection.7.3.2.12}%
+\contentsline {subsubsection}{\numberline {7.3.2.13}x2}{32}{subsubsection.7.3.2.13}%
+\contentsline {section}{\numberline {7.4}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}::Laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Solver$<$ solver\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}type, boundary\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}condition, execution\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}mode, func\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Type $>$ Class Template Reference}{32}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Detailed Description}{33}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Constructor \& Destructor Documentation}{34}{subsection.7.4.2}%
+\contentsline {subsubsection}{\numberline {7.4.2.1}Laplacian\_Solver()}{34}{subsubsection.7.4.2.1}%
+\contentsline {subsection}{\numberline {7.4.3}Member Function Documentation}{34}{subsection.7.4.3}%
+\contentsline {subsubsection}{\numberline {7.4.3.1}build\_exact\_solution()}{34}{subsubsection.7.4.3.1}%
+\contentsline {subsubsection}{\numberline {7.4.3.2}build\_exact\_solution\_parallel()}{35}{subsubsection.7.4.3.2}%
+\contentsline {subsubsection}{\numberline {7.4.3.3}build\_exact\_solution\_sequential()}{35}{subsubsection.7.4.3.3}%
+\contentsline {subsubsection}{\numberline {7.4.3.4}build\_mesh()}{35}{subsubsection.7.4.3.4}%
+\contentsline {subsubsection}{\numberline {7.4.3.5}build\_mesh\_parallel()}{36}{subsubsection.7.4.3.5}%
+\contentsline {subsubsection}{\numberline {7.4.3.6}build\_mesh\_sequential()}{36}{subsubsection.7.4.3.6}%
+\contentsline {subsubsection}{\numberline {7.4.3.7}export\_to\_vtk()}{36}{subsubsection.7.4.3.7}%
+\contentsline {subsubsection}{\numberline {7.4.3.8}jacobi\_parallel()}{37}{subsubsection.7.4.3.8}%
+\contentsline {subsubsection}{\numberline {7.4.3.9}jacobi\_sequential()}{37}{subsubsection.7.4.3.9}%
+\contentsline {subsubsection}{\numberline {7.4.3.10}parallel\_solve()}{38}{subsubsection.7.4.3.10}%
+\contentsline {subsubsection}{\numberline {7.4.3.11}print()}{38}{subsubsection.7.4.3.11}%
+\contentsline {subsubsection}{\numberline {7.4.3.12}print\_exact\_solution()}{38}{subsubsection.7.4.3.12}%
+\contentsline {subsubsection}{\numberline {7.4.3.13}print\_mesh()}{39}{subsubsection.7.4.3.13}%
+\contentsline {subsubsection}{\numberline {7.4.3.14}print\_solution()}{39}{subsubsection.7.4.3.14}%
+\contentsline {subsubsection}{\numberline {7.4.3.15}process\_filter()}{39}{subsubsection.7.4.3.15}%
+\contentsline {subsubsection}{\numberline {7.4.3.16}schwarz\_parallel()}{39}{subsubsection.7.4.3.16}%
+\contentsline {subsubsection}{\numberline {7.4.3.17}solve()}{40}{subsubsection.7.4.3.17}%
+\contentsline {subsection}{\numberline {7.4.4}Member Data Documentation}{40}{subsection.7.4.4}%
+\contentsline {subsubsection}{\numberline {7.4.4.1}data}{40}{subsubsection.7.4.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.4.2}h}{41}{subsubsection.7.4.4.2}%
+\contentsline {subsubsection}{\numberline {7.4.4.3}meshX}{41}{subsubsection.7.4.4.3}%
+\contentsline {subsubsection}{\numberline {7.4.4.4}meshY}{41}{subsubsection.7.4.4.4}%
+\contentsline {subsubsection}{\numberline {7.4.4.5}mpi\_rank}{41}{subsubsection.7.4.4.5}%
+\contentsline {subsubsection}{\numberline {7.4.4.6}mpi\_size}{41}{subsubsection.7.4.4.6}%
+\contentsline {subsubsection}{\numberline {7.4.4.7}mpi\_used\_size}{42}{subsubsection.7.4.4.7}%
+\contentsline {subsubsection}{\numberline {7.4.4.8}participating}{42}{subsubsection.7.4.4.8}%
+\contentsline {subsubsection}{\numberline {7.4.4.9}result}{42}{subsubsection.7.4.4.9}%
+\contentsline {subsubsection}{\numberline {7.4.4.10}u\_exact}{42}{subsubsection.7.4.4.10}%
+\contentsline {section}{\numberline {7.5}Result\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}Struct Struct Reference}{42}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Detailed Description}{43}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Member Data Documentation}{43}{subsection.7.5.2}%
+\contentsline {subsubsection}{\numberline {7.5.2.1}iteration\_residue}{43}{subsubsection.7.5.2.1}%
+\contentsline {subsubsection}{\numberline {7.5.2.2}iterations}{43}{subsubsection.7.5.2.2}%
+\contentsline {subsubsection}{\numberline {7.5.2.3}u\_h}{43}{subsubsection.7.5.2.3}%
+\contentsline {subsubsection}{\numberline {7.5.2.4}valid}{43}{subsubsection.7.5.2.4}%
+\contentsline {subsubsection}{\numberline {7.5.2.5}X}{44}{subsubsection.7.5.2.5}%
+\contentsline {subsubsection}{\numberline {7.5.2.6}Y}{44}{subsubsection.7.5.2.6}%
+\contentsline {chapter}{\numberline {8}File Documentation}{45}{chapter.8}%
+\contentsline {section}{\numberline {8.1}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}convergence\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}test.hpp File Reference}{45}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Detailed Description}{45}{subsection.8.1.1}%
+\contentsline {section}{\numberline {8.2}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}convergence\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}test.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{46}{section.8.2}%
+\contentsline {section}{\numberline {8.3}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers.hpp File Reference}{47}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}Detailed Description}{49}{subsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3.2}Macro Definition Documentation}{49}{subsection.8.3.2}%
+\contentsline {subsubsection}{\numberline {8.3.2.1}MAX\_SCHWARZ\_ITERATIONS}{49}{subsubsection.8.3.2.1}%
+\contentsline {subsection}{\numberline {8.3.3}Typedef Documentation}{49}{subsection.8.3.3}%
+\contentsline {subsubsection}{\numberline {8.3.3.1}eigenMatrix}{49}{subsubsection.8.3.3.1}%
+\contentsline {subsection}{\numberline {8.3.4}Enumeration Type Documentation}{49}{subsection.8.3.4}%
+\contentsline {subsubsection}{\numberline {8.3.4.1}BoundaryCondition}{49}{subsubsection.8.3.4.1}%
+\contentsline {subsubsection}{\numberline {8.3.4.2}ExecutionMode}{49}{subsubsection.8.3.4.2}%
+\contentsline {subsubsection}{\numberline {8.3.4.3}SolverType}{50}{subsubsection.8.3.4.3}%
+\contentsline {section}{\numberline {8.4}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{50}{section.8.4}%
+\contentsline {section}{\numberline {8.5}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}boundary\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}conditions.hpp File Reference}{51}{section.8.5}%
+\contentsline {subsection}{\numberline {8.5.1}Detailed Description}{52}{subsection.8.5.1}%
+\contentsline {subsection}{\numberline {8.5.2}Function Documentation}{52}{subsection.8.5.2}%
+\contentsline {subsubsection}{\numberline {8.5.2.1}apply\_boundary\_condition()}{52}{subsubsection.8.5.2.1}%
+\contentsline {subsubsection}{\numberline {8.5.2.2}apply\_dirichlet\_condition()}{53}{subsubsection.8.5.2.2}%
+\contentsline {subsubsection}{\numberline {8.5.2.3}apply\_neumann\_condition()}{53}{subsubsection.8.5.2.3}%
+\contentsline {subsubsection}{\numberline {8.5.2.4}apply\_robin\_condition()}{54}{subsubsection.8.5.2.4}%
+\contentsline {section}{\numberline {8.6}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}boundary\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}conditions.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{55}{section.8.6}%
+\contentsline {section}{\numberline {8.7}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementation.hpp File Reference}{58}{section.8.7}%
+\contentsline {subsection}{\numberline {8.7.1}Detailed Description}{58}{subsection.8.7.1}%
+\contentsline {section}{\numberline {8.8}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementation.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{58}{section.8.8}%
+\contentsline {section}{\numberline {8.9}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}initializer.hpp File Reference}{59}{section.8.9}%
+\contentsline {subsection}{\numberline {8.9.1}Detailed Description}{59}{subsection.8.9.1}%
+\contentsline {section}{\numberline {8.10}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}initializer.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{60}{section.8.10}%
+\contentsline {section}{\numberline {8.11}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}parallel\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}jacobi\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementation.hpp File Reference}{61}{section.8.11}%
+\contentsline {subsection}{\numberline {8.11.1}Detailed Description}{62}{subsection.8.11.1}%
+\contentsline {section}{\numberline {8.12}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}parallel\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}jacobi\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementation.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{62}{section.8.12}%
+\contentsline {section}{\numberline {8.13}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}parallel\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}schwarz\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementation.hpp File Reference}{64}{section.8.13}%
+\contentsline {subsection}{\numberline {8.13.1}Detailed Description}{64}{subsection.8.13.1}%
+\contentsline {subsection}{\numberline {8.13.2}Macro Definition Documentation}{64}{subsection.8.13.2}%
+\contentsline {subsubsection}{\numberline {8.13.2.1}MAX\_SCHWARZ\_ITERATIONS}{64}{subsubsection.8.13.2.1}%
+\contentsline {section}{\numberline {8.14}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}parallel\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}schwarz\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementation.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{64}{section.8.14}%
+\contentsline {section}{\numberline {8.15}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}postprocessing.hpp File Reference}{66}{section.8.15}%
+\contentsline {subsection}{\numberline {8.15.1}Detailed Description}{67}{subsection.8.15.1}%
+\contentsline {section}{\numberline {8.16}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}postprocessing.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{67}{section.8.16}%
+\contentsline {section}{\numberline {8.17}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}sequential\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementations.hpp File Reference}{70}{section.8.17}%
+\contentsline {subsection}{\numberline {8.17.1}Detailed Description}{70}{subsection.8.17.1}%
+\contentsline {section}{\numberline {8.18}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}sequential\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}implementations.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{70}{section.8.18}%
+\contentsline {section}{\numberline {8.19}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}test\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}1.hpp File Reference}{71}{section.8.19}%
+\contentsline {subsection}{\numberline {8.19.1}Detailed Description}{72}{subsection.8.19.1}%
+\contentsline {section}{\numberline {8.20}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}test\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}1.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{72}{section.8.20}%
+\contentsline {section}{\numberline {8.21}include/laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}test\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}2.hpp File Reference}{77}{section.8.21}%
+\contentsline {subsection}{\numberline {8.21.1}Detailed Description}{78}{subsection.8.21.1}%
+\contentsline {section}{\numberline {8.22}laplacian\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}solvers\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}test\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}2.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}hpp}{78}{section.8.22}%
+\contentsline {section}{\numberline {8.23}main.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}cpp File Reference}{81}{section.8.23}%
+\contentsline {subsection}{\numberline {8.23.1}Function Documentation}{81}{subsection.8.23.1}%
+\contentsline {subsubsection}{\numberline {8.23.1.1}main()}{81}{subsubsection.8.23.1.1}%
+\contentsline {section}{\numberline {8.24}README.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}md File Reference}{82}{section.8.24}%
+\contentsline {section}{\numberline {8.25}results.\discretionary {\mbox {\scriptsize $\DOTSB \leftarrow \joinrel \rhook $}}{}{}md File Reference}{82}{section.8.25}%
+\contentsline {chapter}{Index}{83}{section*.33}%

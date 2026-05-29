@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['run_5fconvergence_5ftest_0',['run_convergence_test',['../classlaplacian__solvers_1_1Convergence__Test.html#a29a6e36ca3488d344e20cc44422a8c1e',1,'laplacian_solvers::Convergence_Test']]],
+  ['run_5ftest_5f10_5fdirichlet_5fsequential_5fvs_5fparallel_5fjacobi_1',['run_test_10_dirichlet_sequential_vs_parallel_jacobi',['../namespacelaplacian__solvers.html#a7019f32a342f689f2777e0467937723e',1,'laplacian_solvers']]],
+  ['run_5ftest_5f11_5fneumann_5fsequential_5fvs_5fparallel_5fjacobi_2',['run_test_11_neumann_sequential_vs_parallel_jacobi',['../namespacelaplacian__solvers.html#acfad27b2974a9160cb8fd88d3f5f9a15',1,'laplacian_solvers']]],
+  ['run_5ftest_5f12_5frobin_5fsequential_5fvs_5fparallel_5fjacobi_3',['run_test_12_robin_sequential_vs_parallel_jacobi',['../namespacelaplacian__solvers.html#a0f9efc7761bba3012220888b5d818884',1,'laplacian_solvers']]],
+  ['run_5ftest_5f13_5fdirichlet_5fsequential_5fvs_5fparallel_5fschwarz_4',['run_test_13_dirichlet_sequential_vs_parallel_schwarz',['../namespacelaplacian__solvers.html#ad3a47d905d96867e1caa6dc69d09923d',1,'laplacian_solvers']]],
+  ['run_5ftest_5f14_5fneumann_5fsequential_5fvs_5fparallel_5fschwarz_5',['run_test_14_neumann_sequential_vs_parallel_schwarz',['../namespacelaplacian__solvers.html#affad21c30acdfe749b4e2256e581b287',1,'laplacian_solvers']]],
+  ['run_5ftest_5f15_5frobin_5fsequential_5fvs_5fparallel_5fschwarz_6',['run_test_15_robin_sequential_vs_parallel_schwarz',['../namespacelaplacian__solvers.html#a818a0a1eeec6650ad8d953e90c6ec852',1,'laplacian_solvers']]],
+  ['run_5ftest_5f16_5fdirichlet_5fsequential_7',['run_test_16_dirichlet_sequential',['../namespacelaplacian__solvers.html#a50b24e2d661907cf503b5ffdad5fbc54',1,'laplacian_solvers']]],
+  ['run_5ftest_5f17_5fneumann_5fsequential_8',['run_test_17_neumann_sequential',['../namespacelaplacian__solvers.html#a4734c62aa22cd92714deb7f2d8bef992',1,'laplacian_solvers']]],
+  ['run_5ftest_5f18_5frobin_5fsequential_9',['run_test_18_robin_sequential',['../namespacelaplacian__solvers.html#a794b39f83c48ee25ca2d9a67c015c579',1,'laplacian_solvers']]],
+  ['run_5ftest_5f19_5fdirichlet_5fparallel_10',['run_test_19_dirichlet_parallel',['../namespacelaplacian__solvers.html#afafc4f13939b8ccf1464f22d8e9a53ba',1,'laplacian_solvers']]],
+  ['run_5ftest_5f1_5fdirichlet_5fsequential_11',['run_test_1_dirichlet_sequential',['../namespacelaplacian__solvers.html#a3163f14b181cf1e9c38ee044db0e2900',1,'laplacian_solvers']]],
+  ['run_5ftest_5f20_5fneumann_5fparallel_12',['run_test_20_neumann_parallel',['../namespacelaplacian__solvers.html#ae191b81aae7448afc5614a0d38c13bc5',1,'laplacian_solvers']]],
+  ['run_5ftest_5f21_5frobin_5fparallel_13',['run_test_21_robin_parallel',['../namespacelaplacian__solvers.html#aff2ea56abb0effa685b5819177077566',1,'laplacian_solvers']]],
+  ['run_5ftest_5f22_5fneumann_5fsequential_5fvs_5fparallel_5fschwarz_14',['run_test_22_neumann_sequential_vs_parallel_schwarz',['../namespacelaplacian__solvers.html#a1f15d78b39257dcf96536eadda7fc1dc',1,'laplacian_solvers']]],
+  ['run_5ftest_5f2_5fneumann_5fsequential_15',['run_test_2_neumann_sequential',['../namespacelaplacian__solvers.html#a56df8682857ac4a7a6dd804a6af73fcf',1,'laplacian_solvers']]],
+  ['run_5ftest_5f3_5frobin_5fsequential_16',['run_test_3_robin_sequential',['../namespacelaplacian__solvers.html#a56f3dbd7fdc50c65cd303eeae1fda454',1,'laplacian_solvers']]],
+  ['run_5ftest_5f4_5fdirichlet_5fparallel_17',['run_test_4_dirichlet_parallel',['../namespacelaplacian__solvers.html#ad7232cac4ff884c895bee6b095e05588',1,'laplacian_solvers']]],
+  ['run_5ftest_5f5_5fneumann_5fparallel_18',['run_test_5_neumann_parallel',['../namespacelaplacian__solvers.html#a037209e523c8abbafca41ca608f6b203',1,'laplacian_solvers']]],
+  ['run_5ftest_5f6_5frobin_5fparallel_19',['run_test_6_robin_parallel',['../namespacelaplacian__solvers.html#ae17a35bf3b6a2f2aef919e5fa4bebf63',1,'laplacian_solvers']]],
+  ['run_5ftest_5f7_5fdirichlet_5fparallel_5fschwarz_20',['run_test_7_dirichlet_parallel_schwarz',['../namespacelaplacian__solvers.html#a716b400a32f12e90801b33e9f3b80860',1,'laplacian_solvers']]],
+  ['run_5ftest_5f8_5fneumann_5fparallel_5fschwarz_21',['run_test_8_neumann_parallel_schwarz',['../namespacelaplacian__solvers.html#abb1c879675e11fc92abea50a2d6c3be0',1,'laplacian_solvers']]],
+  ['run_5ftest_5f9_5frobin_5fparallel_5fschwarz_22',['run_test_9_robin_parallel_schwarz',['../namespacelaplacian__solvers.html#a27906c4e601458680273501c43740739',1,'laplacian_solvers']]]
+];

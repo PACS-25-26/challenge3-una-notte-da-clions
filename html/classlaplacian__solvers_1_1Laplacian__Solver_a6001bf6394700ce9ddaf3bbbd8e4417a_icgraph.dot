@@ -1,0 +1,11 @@
+digraph "laplacian_solvers::Laplacian_Solver::build_exact_solution"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="laplacian_solvers::\lLaplacian_Solver::build\l_exact_solution",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Allocates space for the exact analytical solution matrix and triggers initialization."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="laplacian_solvers::\lLaplacian_Solver::Laplacian\l_Solver",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classlaplacian__solvers_1_1Laplacian__Solver.html#a2385367376f5cf926807a00c148e2a6e",tooltip="Constructs a new Laplacian Solver object."];
+}

@@ -1,0 +1,126 @@
+\doxysection{laplacian\+\_\+solvers\+::Convergence\+\_\+\+Struct Struct Reference}
+\hypertarget{structlaplacian__solvers_1_1Convergence__Struct}{}\label{structlaplacian__solvers_1_1Convergence__Struct}\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+
+
+Stores collected benchmark metrics across multiple grid refinement levels.  
+
+
+
+
+{\ttfamily \#include $<$laplacian\+\_\+convergence\+\_\+test.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_ae3c913fc7e8c862990c0ed01f2c7df8f}{errors\+\_\+serial}}
+\begin{DoxyCompactList}\small\item\em L2 norm error tracking for sequential solver runs. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a53425b4ee23986df7339b8d13bcb0c9e}{errors\+\_\+parallel}}
+\begin{DoxyCompactList}\small\item\em L2 norm error tracking for parallel solver runs. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a4b0c9ce092d05665eb9c5ceafd033751}{n}}
+\begin{DoxyCompactList}\small\item\em Grid resolution size sequence values. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a30b52a2ca749deda677a66073703e6fd}{iterations\+\_\+serial}}
+\begin{DoxyCompactList}\small\item\em Number of inner solver loops completed sequentially. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_af98ce9ed23a065b06acc27710c41c4b2}{iterations\+\_\+parallel}}
+\begin{DoxyCompactList}\small\item\em Number of inner solver loops completed in parallel. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_ae16d8241dfd37d9af2bbdb91eb5753a1}{times\+\_\+serial}}
+\begin{DoxyCompactList}\small\item\em Elapsed execution duration for sequential loops (ms). \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a8a7dbafa87d2b91afe33966f51ff9c31}{times\+\_\+parallel}}
+\begin{DoxyCompactList}\small\item\em Elapsed execution duration for parallel loops (ms). \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} $>$ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a3ce35739834aaed14459a7e8251ab320}{speedups}}
+\begin{DoxyCompactList}\small\item\em Speedup scaling metric ratio (Serial Time / Parallel Time). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Stores collected benchmark metrics across multiple grid refinement levels. 
+
+
+\begin{DoxyItemize}
+\item Tracks L2 errors, iteration counts, and computational times for both serial and parallel runs to facilitate convergence order verification and speedup analysis. 
+\end{DoxyItemize}
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_a53425b4ee23986df7339b8d13bcb0c9e}\label{structlaplacian__solvers_1_1Convergence__Struct_a53425b4ee23986df7339b8d13bcb0c9e} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!errors\_parallel@{errors\_parallel}}
+\index{errors\_parallel@{errors\_parallel}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{errors\_parallel}{errors\_parallel}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::errors\+\_\+parallel}
+
+
+
+L2 norm error tracking for parallel solver runs. 
+
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_ae3c913fc7e8c862990c0ed01f2c7df8f}\label{structlaplacian__solvers_1_1Convergence__Struct_ae3c913fc7e8c862990c0ed01f2c7df8f} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!errors\_serial@{errors\_serial}}
+\index{errors\_serial@{errors\_serial}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{errors\_serial}{errors\_serial}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::errors\+\_\+serial}
+
+
+
+L2 norm error tracking for sequential solver runs. 
+
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_af98ce9ed23a065b06acc27710c41c4b2}\label{structlaplacian__solvers_1_1Convergence__Struct_af98ce9ed23a065b06acc27710c41c4b2} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!iterations\_parallel@{iterations\_parallel}}
+\index{iterations\_parallel@{iterations\_parallel}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{iterations\_parallel}{iterations\_parallel}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::iterations\+\_\+parallel}
+
+
+
+Number of inner solver loops completed in parallel. 
+
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_a30b52a2ca749deda677a66073703e6fd}\label{structlaplacian__solvers_1_1Convergence__Struct_a30b52a2ca749deda677a66073703e6fd} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!iterations\_serial@{iterations\_serial}}
+\index{iterations\_serial@{iterations\_serial}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{iterations\_serial}{iterations\_serial}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::iterations\+\_\+serial}
+
+
+
+Number of inner solver loops completed sequentially. 
+
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_a4b0c9ce092d05665eb9c5ceafd033751}\label{structlaplacian__solvers_1_1Convergence__Struct_a4b0c9ce092d05665eb9c5ceafd033751} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!n@{n}}
+\index{n@{n}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{n}{n}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::n}
+
+
+
+Grid resolution size sequence values. 
+
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_a3ce35739834aaed14459a7e8251ab320}\label{structlaplacian__solvers_1_1Convergence__Struct_a3ce35739834aaed14459a7e8251ab320} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!speedups@{speedups}}
+\index{speedups@{speedups}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{speedups}{speedups}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::speedups}
+
+
+
+Speedup scaling metric ratio (Serial Time / Parallel Time). 
+
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_a8a7dbafa87d2b91afe33966f51ff9c31}\label{structlaplacian__solvers_1_1Convergence__Struct_a8a7dbafa87d2b91afe33966f51ff9c31} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!times\_parallel@{times\_parallel}}
+\index{times\_parallel@{times\_parallel}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{times\_parallel}{times\_parallel}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::times\+\_\+parallel}
+
+
+
+Elapsed execution duration for parallel loops (ms). 
+
+\Hypertarget{structlaplacian__solvers_1_1Convergence__Struct_ae16d8241dfd37d9af2bbdb91eb5753a1}\label{structlaplacian__solvers_1_1Convergence__Struct_ae16d8241dfd37d9af2bbdb91eb5753a1} 
+\index{laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}!times\_serial@{times\_serial}}
+\index{times\_serial@{times\_serial}!laplacian\_solvers::Convergence\_Struct@{laplacian\_solvers::Convergence\_Struct}}
+\doxysubsubsection{\texorpdfstring{times\_serial}{times\_serial}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}$>$ laplacian\+\_\+solvers\+::\+Convergence\+\_\+\+Struct\+::times\+\_\+serial}
+
+
+
+Elapsed execution duration for sequential loops (ms). 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{laplacian__convergence__test_8hpp}{laplacian\+\_\+convergence\+\_\+test.\+hpp}}\end{DoxyCompactItemize}

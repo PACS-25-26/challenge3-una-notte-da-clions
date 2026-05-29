@@ -1,0 +1,149 @@
+\doxysection{laplacian\+\_\+convergence\+\_\+test.\+hpp}
+\hypertarget{laplacian__convergence__test_8hpp_source}{}\label{laplacian__convergence__test_8hpp_source}\index{include/laplacian\_convergence\_test.hpp@{include/laplacian\_convergence\_test.hpp}}
+\mbox{\hyperlink{laplacian__convergence__test_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ LAPLACIAN\_CONVERGENCE\_TEST\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ LAPLACIAN\_CONVERGENCE\_TEST\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers_8hpp}{laplacian\_solvers.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__implementation_8hpp}{laplacian\_solvers\_implementation.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\_solvers}}\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct}{Convergence\_Struct}}\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_ae3c913fc7e8c862990c0ed01f2c7df8f}{errors\_serial}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a53425b4ee23986df7339b8d13bcb0c9e}{errors\_parallel}};\ \ \ \ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ std::vector<unsigned>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a4b0c9ce092d05665eb9c5ceafd033751}{n}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a30b52a2ca749deda677a66073703e6fd}{iterations\_serial}};\ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_af98ce9ed23a065b06acc27710c41c4b2}{iterations\_parallel}};\ }
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_ae16d8241dfd37d9af2bbdb91eb5753a1}{times\_serial}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a8a7dbafa87d2b91afe33966f51ff9c31}{times\_parallel}};\ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a3ce35739834aaed14459a7e8251ab320}{speedups}};\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00032\ \ \ \ \ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test}{Convergence\_Test}}\ \{\ \ }
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a5fa29e35539c85129b1f97da542a2128}{data\_original}};\ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ std::vector<unsigned>\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_aea38de0c1bf9d2b896a86c36333b3b94}{refinement\_levels}}\ =\ \{8,\ 16,\ 32,\ 64,\ 128\};\ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a7872138ab9ab0237dc5f59823f838ce3}{compute\_error}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ u\_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ X,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ Y,\ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{funcType}}\ u\_exact\_lambda);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct}{Convergence\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a76a38a57f1aa09f6386c77601352110a}{convergence\_data\_struct}};\ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_ab31db2238ef53e0691b11002df1c50fa}{is\_test\_done}}\ =\ \textcolor{keyword}{false};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a7b135d37407e1a8109c9107110f49cff}{mpi\_rank}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a5c5db4e9859dca0be4c2a3a91cf9f54a}{Convergence\_Test}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\&\ data)\ :\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a5fa29e35539c85129b1f97da542a2128}{data\_original}}(data)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Initialize\ MPI\ rank\ for\ potential\ use\ in\ parallel\ mesh\ building\ or\ solver\ execution}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ MPI\_Comm\_rank(MPI\_COMM\_WORLD,\ \&\mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a7b135d37407e1a8109c9107110f49cff}{mpi\_rank}});}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct}{Convergence\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a29a6e36ca3488d344e20cc44422a8c1e}{run\_convergence\_test}}();}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_ad428012f3cb6ebec328eefe10a382953}{print\_convergence\_results}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00084\ \ \ \ \ \mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct}{Convergence\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a29a6e36ca3488d344e20cc44422a8c1e}{Convergence\_Test<solver\_type,\ boundary\_condition,\ funcType>::run\_convergence\_test}}()\ \{}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ n\_val\ :\ refinement\_levels)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.\mbox{\hyperlink{structlaplacian__solvers_1_1Convergence__Struct_a4b0c9ce092d05665eb9c5ceafd033751}{n}}.push\_back(n\_val);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ data\_original.n\ =\ n\_val;\ }
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Serial\ Run}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ start\_serial\ =\ std::chrono::steady\_clock::now();}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ ExecutionMode::SEQUENTIAL,\ funcType>}}\ solver\_dirichlet\_sequential(data\_original);}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ solver\_dirichlet\_sequential.\mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2}{build\_mesh}}();}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ result\_serial\ =\ solver\_dirichlet\_sequential.\mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a050cbed7a1be81395096708c97f3dc1d}{solve}}();}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ end\_serial\ =\ std::chrono::steady\_clock::now();}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::duration<double,\ std::milli>\ elapsed\_serial\ =\ end\_serial\ -\/\ start\_serial;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.times\_serial.push\_back(elapsed\_serial.count());}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ error\_serial\ =\ compute\_error(result\_serial.u\_h,\ result\_serial.X,\ result\_serial.Y,\ data\_original.u\_exact\_lambda);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.errors\_serial.push\_back(error\_serial);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.iterations\_serial.push\_back(result\_serial.iterations);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ i\ =\ 0;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ n\_val\ :\ refinement\_levels)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ data\_original.n\ =\ n\_val;\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Parallel\ Run}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ start\_parallel\ =\ std::chrono::steady\_clock::now();}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ ExecutionMode::PARALLEL,\ funcType>}}\ solver\_dirichlet\_parallel(data\_original);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ solver\_dirichlet\_parallel.\mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2}{build\_mesh}}();}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ result\_parallel\ =\ solver\_dirichlet\_parallel.\mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a050cbed7a1be81395096708c97f3dc1d}{solve}}();}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ end\_parallel\ =\ std::chrono::steady\_clock::now();}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::duration<double,\ std::milli>\ elapsed\_parallel\ =\ end\_parallel\ -\/\ start\_parallel;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.times\_parallel.push\_back(elapsed\_parallel.count());}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ error\_parallel\ =\ compute\_error(result\_parallel.u\_h,\ result\_parallel.X,\ result\_parallel.Y,\ data\_original.u\_exact\_lambda);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.errors\_parallel.push\_back(error\_parallel);}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.iterations\_parallel.push\_back(result\_parallel.iterations);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ convergence\_data\_struct.speedups.push\_back(convergence\_data\_struct.times\_serial[i]\ /\ convergence\_data\_struct.times\_parallel[i]);}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ is\_test\_done\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ convergence\_data\_struct;}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_a7872138ab9ab0237dc5f59823f838ce3}{Convergence\_Test<solver\_type,\ boundary\_condition,\ funcType>::compute\_error}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ u\_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ X,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ Y,\ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{funcType}}\ u\_exact\_lambda)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ error\_sum\ =\ 0.0;}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ n\ =\ u\_h.rows();}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ h\ =\ (data\_original.x2\ -\/\ data\_original.x1)\ /\ (n\ -\/\ 1);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ i\ =\ 0;\ i\ <\ n;\ ++i)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ j\ =\ 0;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ u\_exact\ =\ u\_exact\_lambda(X(i,\ j),\ Y(i,\ j));}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ error\_sum\ +=\ h*std::pow(u\_h(i,\ j)\ -\/\ u\_exact,\ 2);}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt(error\_sum);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Convergence__Test_ad428012f3cb6ebec328eefe10a382953}{Convergence\_Test<solver\_type,\ boundary\_condition,\ funcType>::print\_convergence\_results}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mpi\_rank\ !=\ 0)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Only\ the\ master\ process\ should\ print\ results\ to\ avoid\ clutter}}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!is\_test\_done)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Convergence\ test\ has\ not\ been\ run\ yet.\ Please\ run\ run\_convergence\_test()\ before\ printing\ results."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \}\ }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Refinement\ Level\ (n)\ |\ L2\ Error\ (Serial)\ |\ L2\ Error\ (Parallel)\ |\ Iterations\ (Serial)\ |\ Iterations\ (Parallel)\ |\ Time\ (ms,\ Serial)\ |\ Time\ (ms,\ Parallel)\ |\ Speedup"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ convergence\_data\_struct.n.size();\ ++i)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ convergence\_data\_struct.n[i]\ <<\ \textcolor{stringliteral}{"{}\ |\ "{}}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ convergence\_data\_struct.errors\_serial[i]\ <<\ \textcolor{stringliteral}{"{}\ |\ "{}}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ convergence\_data\_struct.errors\_parallel[i]\ <<\ \textcolor{stringliteral}{"{}\ |\ "{}}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ convergence\_data\_struct.iterations\_serial[i]\ <<\ \textcolor{stringliteral}{"{}\ |\ "{}}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ convergence\_data\_struct.iterations\_parallel[i]\ <<\ \textcolor{stringliteral}{"{}\ |\ "{}}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ convergence\_data\_struct.times\_serial[i]\ <<\ \textcolor{stringliteral}{"{}\ |\ "{}}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ convergence\_data\_struct.times\_parallel[i]\ <<\ \textcolor{stringliteral}{"{}\ |\ "{}}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ convergence\_data\_struct.speedups[i]\ <<\ std::endl;\ \ \ \ }
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \}\ \textcolor{comment}{//\ namespace\ laplacian\_solvers}}
+\DoxyCodeLine{00177\ \ \ \ \ }
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ LAPLACIAN\_CONVERGENCE\_TEST\_HPP}}
+
+\end{DoxyCode}
