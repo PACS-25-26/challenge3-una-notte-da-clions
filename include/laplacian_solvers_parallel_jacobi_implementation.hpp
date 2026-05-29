@@ -75,11 +75,11 @@ namespace laplacian_solvers{
                     }
 
                     // Fourth - Compute local error in L2 norm (frobenius norm) with h
-                    const double local_err = (u_h_new_local - u_h_local).squaredNorm();
+                    const double local_err = (u_h_new_local.block(up_row, 0, local_rows, data.n) - u_h_local.block(up_row, 0, local_rows, data.n)).squaredNorm();
 
                     // Fifth - Compute global error and prepare next iteration
                     MPI_Allreduce(&local_err, &err, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);  
-                    err = h * err;
+                    err = h * err; // Maybe it is possible to avoid the sqrt?
                     iter++;          
                     u_h_local.swap(u_h_new_local);
                 } // single
