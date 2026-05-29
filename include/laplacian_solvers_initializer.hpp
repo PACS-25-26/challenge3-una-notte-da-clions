@@ -138,19 +138,10 @@ namespace laplacian_solvers{
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_parallel(){
         
-        // Get rank information
-        /*int mpi_rank, mpi_size;
-        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
         // Distribute rows among processes. If the number of rows is not divided by the number of threads, the remaining ones will be assigned to the
         // fisrt threads, as shown in Figure 1 of the challenge pdf file.
         const unsigned local_rows = meshX.rows();
-
-        /*
-        const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
-        const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
-        */
 
         u_exact = eigenMatrix::Zero(local_rows, data.n);
 
@@ -159,8 +150,6 @@ namespace laplacian_solvers{
             u_exact(i, j) = data.u_exact_lambda(meshX(i, j), meshY(i, j));
         }
 
-        // Gather the local exact solutions into the global one. All processes will have a copy of the complete exact solution.
-        //MPI_Allgather(local_exact_solution.data(), (end_row - start_row) * data.n, MPI_DOUBLE, u_exact.data(), (end_row - start_row) * data.n, MPI_DOUBLE, MPI_COMM_WORLD);
     }
 }
 

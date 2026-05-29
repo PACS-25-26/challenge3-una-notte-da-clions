@@ -30,8 +30,6 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
 
     } else if constexpr(execution_mode == ExecutionMode::PARALLEL){
         // Parallel execution: mesh spatial variables represent the local subdomain rows
-        const unsigned up_row = (mpi_rank == 0? 0: 1);
-        const unsigned down_row = (mpi_rank == mpi_size -1? 0: 1);
         const unsigned local_rows = u_h.rows() - 2;
         
         // Bottom side

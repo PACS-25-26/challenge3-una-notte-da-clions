@@ -21,7 +21,7 @@ OPTIMIZATION = -O1
 
 # OpenMP settings
 USE_OPENMP ?= true
-AVAILABLE_THREADS ?= 10 
+AVAILABLE_THREADS ?= 16 
 # Andrea: 10 for high performance, 20 for hardware limit
 
 ifeq ($(USE_OPENMP), true)
