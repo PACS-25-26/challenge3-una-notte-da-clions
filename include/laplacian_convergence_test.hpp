@@ -1,49 +1,81 @@
 #ifndef LAPLACIAN_CONVERGENCE_TEST_HPP
 #define LAPLACIAN_CONVERGENCE_TEST_HPP
 
-// Test functions for Laplacian solver convergence
 #include "laplacian_solvers.hpp"
 #include "laplacian_solvers_implementation.hpp"
 #include <cmath>
 #include <vector>
 #include <chrono>
 
+/**
+ * @file laplacian_convergence_test.hpp
+ * @brief Convergence test suite for verifying solver accuracy and performance speedup.
+ */
+
 namespace laplacian_solvers {
 
     /**
      * @struct Convergence_Struct
      * @brief Stores collected benchmark metrics across multiple grid refinement levels.
-     * 
-     * Tracks L2 errors, iteration counts, and computational times for both serial and parallel
+     * * Tracks L2 errors, iteration counts, and computational times for both serial and parallel
      * runs to facilitate convergence order verification and speedup analysis.
      */
     struct Convergence_Struct {
-        std::vector<double> errors_serial;
-        std::vector<double> errors_parallel; 
-        std::vector<unsigned> n;
-        std::vector<double> iterations_serial;
-        std::vector<double> iterations_parallel;
-        std::vector<double> times_serial;
-        std::vector<double> times_parallel;
-        std::vector<double> speedups; // Parallel time / Serial time
+        std::vector<double> errors_serial;       ///< L2 norm error tracking for sequential solver runs.
+        std::vector<double> errors_parallel;     ///< L2 norm error tracking for parallel solver runs.
+        std::vector<unsigned> n;                 ///< Grid resolution size sequence values.
+        std::vector<double> iterations_serial;   ///< Number of inner solver loops completed sequentially.
+        std::vector<double> iterations_parallel; ///< Number of inner solver loops completed in parallel.
+        std::vector<double> times_serial;        ///< Elapsed execution duration for sequential loops (ms).
+        std::vector<double> times_parallel;      ///< Elapsed execution duration for parallel loops (ms).
+        std::vector<double> speedups;            ///< Speedup scaling metric ratio (Serial Time / Parallel Time).
     };
 
+    /**
+     * @class Convergence_Test
+     * @brief Benchmark coordinator running serial and parallel execution comparison groups.
+     * * Evaluates numerical execution trends across variable space step metrics to compute 
+     * discretization error orders and performance profiling benchmarks.
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam funcType Callable type for boundary and source terms.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, typename funcType>
     class Convergence_Test {  
+
         private:
-        Data_Struct<funcType> data_original;
-        std::vector<unsigned> refinement_levels = {8, 16, 32, 64, 128}; // Example refinement levels. Adjust as needed.
+        Data_Struct<funcType> data_original; ///< Base structural configurations copy.
+        std::vector<unsigned> refinement_levels = {8, 16, 32, 64, 128}; ///< Active mesh sampling steps.
+        
+        /**
+         * @brief Internal utility evaluating L2 discrete space error bounds.
+         */
         double compute_error(const eigenMatrix& u_h, const eigenMatrix& X, const eigenMatrix& Y, funcType u_exact_lambda);
-        Convergence_Struct convergence_data_struct;
-        bool is_test_done = false;
-        int mpi_rank; ///< Rank of the MPI process (used in parallel execution).
+        
+        Convergence_Struct convergence_data_struct; ///< Internal evaluation data metrics cache.
+        bool is_test_done = false;                  ///< Validation flag verifying benchmark sequence completion.
+        int mpi_rank;                               ///< Rank of the active MPI process allocation context.
 
         public:
+        /**
+         * @brief Constructs a Convergence_Test runner instance.
+         * @param data Fundamental configuration context parameters container reference.
+         */
         Convergence_Test(const Data_Struct<funcType>& data) : data_original(data) {
             // Initialize MPI rank for potential use in parallel mesh building or solver execution
             MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
         }
+
+        /**
+         * @brief Executes sequential and parallel benchmark solvers sequentially over every refinement level.
+         * @return Populated @ref Convergence_Struct containing collected performance profiles.
+         */
         Convergence_Struct run_convergence_test();
+
+        /**
+         * @brief Formats and prints gathered convergence tracking details to standard output channels.
+         * * Restricts visual render triggers to Rank 0 to bypass standard console racing errors.
+         */
         void print_convergence_results() const;
 
     };
@@ -141,8 +173,6 @@ namespace laplacian_solvers {
         return;
     }
 
-}
+} // namespace laplacian_solvers
     
-
-
 #endif // LAPLACIAN_CONVERGENCE_TEST_HPP

@@ -9,11 +9,20 @@
 #include "laplacian_convergence_test.hpp"
 #include "laplacian_solvers_postprocessing.hpp"
 
+/**
+ * @file laplacian_solvers_test_1.hpp
+ * @brief Integration test suite covering sequential, parallel, and convergence benchmarks.
+ */
+
 namespace laplacian_solvers {
-    // Define the function type alias for readability
+
+    /// Type alias for standard 2D spatial functions.
     using funcType = std::function<double(double, double)>;
 
-    // Base data configuration setup helper
+    /**
+     * @brief Generates a baseline configuration structure with default parameters.
+     * @return Initialized Data_Struct with standard numerical tolerances and grid boundaries.
+     */
     inline Data_Struct<funcType> create_default_data() {
         Data_Struct<funcType> data;
         data.n = 8;
@@ -28,6 +37,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 1: DIRICHLET SEQUENTIAL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 1: Evaluates a sequential Jacobi solver under homogeneous Dirichlet boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_1_dirichlet_sequential(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 1: DIRICHLET SEQUENTIAL (Jacobi) ===" << std::endl;
@@ -51,6 +64,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 2: NEUMANN SEQUENTIAL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 2: Evaluates a sequential Jacobi solver under pure Neumann boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_2_neumann_sequential(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 2: NEUMANN SEQUENTIAL (Jacobi) ===" << std::endl;
@@ -70,7 +87,10 @@ namespace laplacian_solvers {
         solver.print();
         solver.export_to_vtk("test_2_neumann_sequential.vtk");
     }
-
+    /**
+     * @brief Test 3: Evaluates a sequential Jacobi solver under Robin boundary conditions.
+     * @param mpi_rank Active process rank.
+     */
     // =========================================================================
     // TEST 3: ROBIN SEQUENTIAL (Jacobi)
     // =========================================================================
@@ -97,6 +117,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 4: DIRICHLET PARALLEL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 4: Evaluates a parallel MPI Jacobi solver under Dirichlet boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_4_dirichlet_parallel(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 4: DIRICHLET PARALLEL (Jacobi) ===" << std::endl;
@@ -120,6 +144,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 5: NEUMANN PARALLEL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 5: Evaluates a parallel MPI Jacobi solver under Neumann boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_5_neumann_parallel(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 5: NEUMANN PARALLEL (Jacobi) ===" << std::endl;
@@ -143,6 +171,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 6: ROBIN PARALLEL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 6: Evaluates a parallel MPI Jacobi solver under Robin boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_6_robin_parallel(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 6: ROBIN PARALLEL (Jacobi) ===" << std::endl;
@@ -166,6 +198,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 7: DIRICHLET PARALLEL (Schwarz)
     // =========================================================================
+    /**
+     * @brief Test 7: Evaluates a hybrid MPI+OpenMP Schwarz domain decomposition solver under Dirichlet boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_7_dirichlet_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 7: DIRICHLET PARALLEL (Schwarz) ===" << std::endl;
@@ -186,9 +222,13 @@ namespace laplacian_solvers {
         solver.export_to_vtk("test_7_dirichlet_parallel_schwarz.vtk");
     }
 
-        // =========================================================================
-        // TEST 8: NEUMANN PARALLEL (Schwarz)
-        // =========================================================================
+    // =========================================================================
+    // TEST 8: NEUMANN PARALLEL (Schwarz)
+    // =========================================================================
+    /**
+     * @brief Test 8: Evaluates a hybrid MPI+OpenMP Schwarz domain decomposition solver under Neumann boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_8_neumann_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 8: NEUMANN PARALLEL (Schwarz) ===" << std::endl;
@@ -212,6 +252,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 9: ROBIN PARALLEL (Schwarz)
     // =========================================================================
+    /**
+     * @brief Test 9: Evaluates a hybrid MPI+OpenMP Schwarz domain decomposition solver under Robin boundaries.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_9_robin_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 9: ROBIN PARALLEL (Schwarz) ===" << std::endl;
@@ -235,6 +279,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 10: DIRICHLET SEQUENTIAL vs PARALLEL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 10: Performs error convergence analysis and speedup profiling for Dirichlet Jacobi routines.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_10_dirichlet_sequential_vs_parallel_jacobi(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 10: DIRICHLET SEQUENTIAL vs PARALLEL (Jacobi) ===" << std::endl;
@@ -256,6 +304,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 11: NEUMANN SEQUENTIAL vs PARALLEL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 11: Performs error convergence analysis and speedup profiling for Neumann Jacobi routines.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_11_neumann_sequential_vs_parallel_jacobi(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 11: NEUMANN SEQUENTIAL vs PARALLEL (Jacobi) ===" << std::endl;
@@ -277,6 +329,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 12: ROBIN SEQUENTIAL vs PARALLEL (Jacobi)
     // =========================================================================
+    /**
+     * @brief Test 12: Performs error convergence analysis and speedup profiling for Robin Jacobi routines.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_12_robin_sequential_vs_parallel_jacobi(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 12: ROBIN SEQUENTIAL vs PARALLEL (Jacobi) ===" << std::endl;
@@ -298,6 +354,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 13: DIRICHLET SEQUENTIAL vs PARALLEL (Schwarz)
     // =========================================================================
+    /**
+     * @brief Test 13: Performs error convergence analysis and speedup profiling for Dirichlet Schwarz domain decomposition.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_13_dirichlet_sequential_vs_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 13: DIRICHLET SEQUENTIAL vs PARALLEL (Schwarz) ===" << std::endl;
@@ -319,6 +379,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 14: NEUMANN SEQUENTIAL vs PARALLEL (Schwarz)
     // =========================================================================
+    /**
+     * @brief Test 14: Performs error convergence analysis and speedup profiling for Neumann Schwarz domain decomposition.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_14_neumann_sequential_vs_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 14: NEUMANN SEQUENTIAL vs PARALLEL (Schwarz) ===" << std::endl;
@@ -340,6 +404,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 15: ROBIN SEQUENTIAL vs PARALLEL (Schwarz)
     // =========================================================================
+    /**
+     * @brief Test 15: Performs error convergence analysis and speedup profiling for Robin Schwarz domain decomposition.
+     * @param mpi_rank Active process rank.
+     */
     inline void run_test_15_robin_sequential_vs_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 15: ROBIN SEQUENTIAL vs PARALLEL (Schwarz) ===" << std::endl;

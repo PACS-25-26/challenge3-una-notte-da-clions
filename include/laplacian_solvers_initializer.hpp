@@ -6,9 +6,25 @@
 
 #include "laplacian_solvers.hpp"
 
+/**
+ * @file laplacian_solvers_initializer.hpp
+ * @brief Implementation of initialization, mesh generation, and exact solution building for Laplacian_Solver.
+ */
+
 namespace laplacian_solvers{
 
     /* --- CONSTRUCTOR --- */
+
+    /**
+     * @brief Constructs a new Laplacian Solver object.
+     * * Initializes problem data parameters, checks process topology validity via the filter,
+     * and allocates/populates both the computational grid grid and the exact solution matrix.
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam execution_mode Parallelism execution backend policy.
+     * @tparam funcType Callable type for boundary and source terms.
+     * * @param d Configuration data structure containing physical and analytical bounds.
+     */
 
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
               typename funcType>
@@ -21,7 +37,12 @@ namespace laplacian_solvers{
     
     };
 
-    //
+    /**
+     * @brief Filters active MPI processes and checks communicator sizing validity.
+     * * In parallel execution mode, ensures that the number of allocated MPI ranks does not
+     * exceed the total number of mesh rows (\f$ N \f$), preventing empty or unassigned processes.
+     * If the topology is invalid, Rank 0 prints an error and aborts execution.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     inline void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::process_filter(){
 
@@ -42,10 +63,10 @@ namespace laplacian_solvers{
     /* --- MESH GENERATION AND INITIALIZATION --- */
 
     /**
-     * @brief Builds the mesh according to sequential or parallel execution mode.
-     * Since the required operation are trivial, the overhead cost of paralleization might actually be a detriment. 
+     * @brief Computes the uniform grid spacing and routes mesh generation to the active backend.
+     * * Calculates the uniform grid step \f$ h = \frac{|x_2 - x_1|}{N - 1} \f$. It guarantees 
+     * correct computation even if domain bounds are specified in reversed spatial orientation (\f$ x_2 < x_1 \f$).
      */
-
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,
               typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh(){
@@ -55,12 +76,12 @@ namespace laplacian_solvers{
         if constexpr (execution_mode == ExecutionMode::SEQUENTIAL) build_mesh_sequential();
         else build_mesh_parallel();
     }
-
+   
     /**
-     * @brief Builds the mesh according to sequential execution mode.
-     * Simply loops over the grid points and assigns the corresponding coordinates to meshX and meshY.
+     * @brief Generates the global coordinates mesh on a single thread.
+     * * Allocates and populates an \f$ N \times N \f$ matrix representing the full grid domain layout,
+     * assigning spatial continuous coordinate mappings directly to `meshX` and `meshY`.
      */
-
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_sequential(){
 
@@ -74,17 +95,16 @@ namespace laplacian_solvers{
     }
 
     /**
-     * @brief Builds the mesh according to parallel execution mode.
-     * This is done by decompsing the domain according to example shown on the challenge pdf file
+     * @brief Generates a local sub-grid slice allocated to the invoking MPI process.
+     * * Distributes grid rows dynamically across active MPI processes. If the row count \f$ N \f$ 
+     * is not perfectly divisible by the number of processes, the remainder rows are assigned 
+     * one-by-one to the first lower-ranked processes to ensure optimal workload distribution.
+     * Internal cell row populations are accelerated locally via multi-threaded OpenMP parallel loops.
      */
-
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_mesh_parallel(){
         
         // Get rank information
-        /*int mpi_rank, mpi_size;
-        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
         // Distribute rows among processes. If the number of rows is not divided by the number of threads, the remaining ones will be assigned to the
         // fisrt threads, as shown in Figure 1 of the challenge pdf file.
@@ -105,10 +125,8 @@ namespace laplacian_solvers{
     }
 
     /**
-     * @brief Builds the mesh according to parallel execution mode.
-     * This is done by decompsing the domain according to example shown on the challenge pdf file
+     * @brief Allocates space for the exact analytical solution matrix and triggers initialization.
      */
-
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution(){
 
@@ -119,8 +137,7 @@ namespace laplacian_solvers{
     }
 
     /**
-     * @brief Builds the exact solution according to sequential execution mode.
-     * Simply loops over the grid points, evaluates the exact solution and stores the result.
+     * @brief Evaluates the exact analytical lambda expression sequentially across the full grid.
      */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_sequential(){
@@ -129,12 +146,12 @@ namespace laplacian_solvers{
             u_exact(i, j) = data.u_exact_lambda(meshX(i, j), meshY(i, j));
         
     }
-    
-    /**
-     * @brief Builds the exact solution according to parallel execution mode.
-     * This is done by decompsing the domain according to example shown on the challenge pdf file
-     */
 
+    /**
+     * @brief Evaluates the exact analytical lambda function in parallel over the local grid slice.
+     * * Re-allocates the local `u_exact` array to match the chunk sizing generated in @ref build_mesh_parallel.
+     * Computations are offloaded to an active OpenMP thread pool operating on local memory rows.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::build_exact_solution_parallel(){
         
@@ -151,6 +168,6 @@ namespace laplacian_solvers{
         }
 
     }
-}
+}// namespace laplacian_solvers
 
-#endif
+#endif // LAPLACIAN_SOLVERS_INITIALIZER_HPP

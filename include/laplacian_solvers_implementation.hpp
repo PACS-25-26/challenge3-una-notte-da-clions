@@ -1,10 +1,3 @@
-/**
- * @file laplacian_solvers_implementation.hpp
- * @brief Template-based implementation of the 2D Laplace and Poisson solvers.
- * @details Contains the concrete method definitions for the Laplacian_Solver class,
- *          organizing the compile-time dispatching chain (execution mode -> solver type -> boundary conditions)
- *          and implementing Jacobi and Schwarz methods.
- */
 #ifndef LAPLACIAN_SOLVERS_IMPLEMENTATION_HPP
 #define LAPLACIAN_SOLVERS_IMPLEMENTATION_HPP
 
@@ -16,9 +9,25 @@
 #include <vector>
 #include <fstream>
 
+/**
+ * @file laplacian_solvers_implementation.hpp
+ * @brief Dispatching logic for the sequential and parallel Laplacian solvers.
+ */
 
 namespace laplacian_solvers{
 
+    /**
+     * @brief Method that triggers the appropriate linear solver backend.
+     * * Checks process validity and uses compile-time template routing (`if constexpr`) to 
+     * dispatch execution based on the configured @ref ExecutionMode.
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam execution_mode Parallelism execution backend policy.
+     * @tparam funcType Callable type for boundary and source terms.
+     * * @return A @ref Result_Struct containing the final solution state. 
+     * * @note Non-participating MPI processes or non-zero ranks under sequential mode will immediately 
+     * return an uninitialized or incomplete result object.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode,typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::solve(){
 
@@ -33,6 +42,16 @@ namespace laplacian_solvers{
         
     }
 
+    /**
+     * @brief Dispatches the parallel execution loop to the selected numerical algorithm.
+     * * Performs compile-time static routing between a standard point-to-point 
+     * Jacobi method or an overlapping/non-overlapping alternating Schwarz domain decomposition method.
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam execution_mode Parallelism execution backend policy.
+     * @tparam funcType Callable type for boundary and source terms.
+     * * @return A @ref Result_Struct containing local or gathered compute states.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::parallel_solve(){
         if constexpr (solver_type == SolverType::JACOBI) {

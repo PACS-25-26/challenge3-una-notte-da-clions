@@ -1,15 +1,25 @@
 #ifndef LAPLACIAN_SOLVERS_TEST_2_HPP
 #define LAPLACIAN_SOLVERS_TEST_2_HPP
 
-
 #include "laplacian_solvers_test_1.hpp"
+
+/**
+ * @file laplacian_solvers_test_2.hpp
+ * @brief Extended integration test suite evaluating non-homogeneous boundary test cases.
+ * * Contains advanced validation tests using multi-dimensional polynomial and 
+ * trigonometric exact solutions to verify convergence under complex boundary configurations.
+ */
 
 namespace laplacian_solvers {
     
-
     // =========================================================================
     // TEST 16: DIRICHLET SEQUENTIAL (Jacobi) - Non-homogeneous Polynomial
     // =========================================================================
+    /**
+     * @brief Test 16: Sequential Jacobi solver with a non-homogeneous polynomial solution under Dirichlet boundaries.
+     * * Validates analytical solution: \f$ u(x,y) = x^2y + xy^2 + x + y + 1 \f$
+     * @param mpi_rank Rank of the calling MPI process.
+     */
     inline void run_test_16_dirichlet_sequential(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 16: DIRICHLET SEQUENTIAL (Jacobi) ===" << std::endl;
@@ -39,6 +49,11 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 17: NEUMANN SEQUENTIAL (Jacobi) - Non-homogeneous Polynomial
     // =========================================================================
+    /**
+     * @brief Test 17: Sequential Jacobi solver with a non-homogeneous polynomial solution under Neumann boundaries.
+     * * Verifies normal derivative flux mappings: \f$ \frac{\partial u}{\partial n} = \nabla u \cdot \mathbf{n} \f$
+     * @param mpi_rank Rank of the calling MPI process.
+     */
     inline void run_test_17_neumann_sequential(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 17: NEUMANN SEQUENTIAL (Jacobi) ===" << std::endl;
@@ -68,6 +83,11 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 18: ROBIN SEQUENTIAL (Jacobi) - Non-homogeneous Trigonometric
     // =========================================================================
+    /**
+     * @brief Test 18: Sequential Jacobi solver with a non-homogeneous trigonometric solution under Robin boundaries.
+     * * Evaluates linear combination constraints: \f$ u + \frac{\partial u}{\partial n} = g \f$
+     * @param mpi_rank Rank of the calling MPI process.
+     */
     inline void run_test_18_robin_sequential(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 18: ROBIN SEQUENTIAL (Jacobi) ===" << std::endl;
@@ -98,6 +118,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 19: DIRICHLET PARALLEL (Jacobi) - Non-homogeneous Polynomial
     // =========================================================================
+    /**
+     * @brief Test 19: Parallel MPI-distributed Jacobi solver with a non-homogeneous polynomial solution under Dirichlet boundaries.
+     * @param mpi_rank Rank of the calling MPI process.
+     */
     inline void run_test_19_dirichlet_parallel(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 19: DIRICHLET PARALLEL (Jacobi) ===" << std::endl;
@@ -127,6 +151,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 20: NEUMANN PARALLEL (Jacobi) - Non-homogeneous Polynomial
     // =========================================================================
+    /**
+     * @brief Test 20: Parallel MPI-distributed Jacobi solver with a non-homogeneous polynomial solution under Neumann boundaries.
+     * @param mpi_rank Rank of the calling MPI process.
+     */
     inline void run_test_20_neumann_parallel(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 20: NEUMANN PARALLEL (Jacobi) ===" << std::endl;
@@ -156,6 +184,10 @@ namespace laplacian_solvers {
     // =========================================================================
     // TEST 21: ROBIN PARALLEL (Jacobi) - Non-homogeneous Trigonometric
     // =========================================================================
+    /**
+     * @brief Test 21: Parallel MPI-distributed Jacobi solver with a non-homogeneous trigonometric solution under Robin boundaries.
+     * @param mpi_rank Rank of the calling MPI process.
+     */
     inline void run_test_21_robin_parallel(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 21: ROBIN PARALLEL (Jacobi) ===" << std::endl;
@@ -183,6 +215,13 @@ namespace laplacian_solvers {
         solver.export_to_vtk("test_21_robin_parallel.vtk");
     }
 
+    // =========================================================================
+    // TEST 22: NEUMANN SEQUENTIAL vs PARALLEL (Schwarz)
+    // =========================================================================
+    /**
+     * @brief Test 22: Performance convergence benchmark for a polynomial solution under Neumann conditions using the Schwarz solver.
+     * @param mpi_rank Rank of the calling MPI process.
+     */
     inline void run_test_22_neumann_sequential_vs_parallel_schwarz(int mpi_rank) {
         if (mpi_rank == 0) {
             std::cout << "\n=== Running Test 22: NEUMANN SEQUENTIAL vs PARALLEL (Schwarz) ===" << std::endl;

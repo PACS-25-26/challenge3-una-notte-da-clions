@@ -1,19 +1,23 @@
-/**
- * @file laplacian_solvers_boundary_conditions.hpp
- * @brief Template-based implementation of boundary condition methods for the Laplacian solver.
- * @details Contains a template function for the implementation of a requested boundary condition. Since Neumann and Robin call their functions at
- * each iteration, a template function is used for optimization.
- */
-
-
 #ifndef LAPLACIAN_SOLVERS_BOUNDARY_CONDITIONS_HPP
 #define LAPLACIAN_SOLVERS_BOUNDARY_CONDITIONS_HPP
 #include "laplacian_solvers.hpp"
 
 /**
-     * @brief General function for Dirichlet boundary conditions. This covers both the homogeneous and non-homogeneus cases
-     * The template function can select the execution policy (sequential or parallel)
-     */
+ * @file laplacian_solvers_boundary_conditions.hpp
+ * @brief Functions to apply Dirichlet, Neumann, and Robin boundary conditions.
+ */
+
+/**
+ * @brief Applies Dirichlet boundary conditions (homogeneous or non-homogeneous).
+ * @tparam execution_mode Sequential or parallel execution policy.
+ * @tparam funcType Callable type for boundary functions.
+ * @param u_h Matrix containing the current solution to update.
+ * @param data Struct containing domain and boundary function definitions.
+ * @param meshX Matrix of X grid coordinates.
+ * @param meshY Matrix of Y grid coordinates.
+ * @param mpi_rank Rank of the current MPI process.
+ * @param mpi_size Total number of MPI processes.
+ */
 template <ExecutionMode execution_mode, typename funcType>
 void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix & meshY, const unsigned mpi_rank, const unsigned mpi_size){
     
@@ -65,9 +69,18 @@ void apply_dirichlet_condition(eigenMatrix & u_h, const Data_Struct<funcType>& d
 }
 
 /**
-     * @brief General function for Neumann boundary conditions. This covers both the homogeneous and non-homogeneus cases
-     * The template function can select the execution policy (sequential or parallel). Notice that the compatibility condition is not checked
-     */
+ * @brief Applies Neumann boundary conditions using a second-order central difference scheme.
+ * @tparam execution_mode Sequential or parallel execution policy.
+ * @tparam funcType Callable type for boundary functions.
+ * @param u_h Matrix containing the solution to update.
+ * @param data Struct containing domain, source term, and flux definitions.
+ * @param meshX Matrix of X grid coordinates.
+ * @param meshY Matrix of Y grid coordinates.
+ * @param u_old Solution matrix from the previous iteration step.
+ * @param mpi_rank Rank of the current MPI process.
+ * @param mpi_size Total number of MPI processes.
+ * @note Compatibility condition for pure Neumann problems is not checked by this function.
+ */
 template <ExecutionMode execution_mode, typename funcType>
 void apply_neumann_condition(eigenMatrix& u_h, const Data_Struct<funcType>& data, const eigenMatrix& meshX, const eigenMatrix& meshY, const eigenMatrix& u_old, const unsigned mpi_rank, const unsigned mpi_size){
     const unsigned last = data.n - 1;
@@ -134,10 +147,17 @@ void apply_neumann_condition(eigenMatrix& u_h, const Data_Struct<funcType>& data
 }
 
 /**
-     * @brief General function for Robin boundary conditions. This covers both the homogeneous and non-homogeneus cases
-     * The template function can select the execution policy (sequential or parallel)
-     */
-
+ * @brief Applies Robin boundary conditions (mixed conditions matching value and normal derivative).
+ * @tparam execution_mode Sequential or parallel execution policy.
+ * @tparam funcType Callable type for boundary functions.
+ * @param u_h Matrix containing the solution to update.
+ * @param data Struct containing domain, source term, alpha coefficient, and boundary functions.
+ * @param meshX Matrix of X grid coordinates.
+ * @param meshY Matrix of Y grid coordinates.
+ * @param u_old Solution matrix from the previous iteration step.
+ * @param mpi_rank Rank of the current MPI process.
+ * @param mpi_size Total number of MPI processes.
+ */
 template <ExecutionMode execution_mode, typename funcType>
 void apply_robin_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix& meshY, const eigenMatrix & u_old, const unsigned mpi_rank, const unsigned mpi_size){
     
@@ -219,11 +239,19 @@ void apply_robin_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data,
     }
 }
 
-    /**
-     * @brief General function for applying boundary conditions.
-     * Available boundary conditions are Dirichlet, Neumann and Robin. They are available for both sequential and parallel execution modes, and the function will dispatch to the correct implementation based on the template parameters. 
-     */
-
+/**
+ * @brief Interface function to route execution to the selected boundary condition type.
+ * @tparam boundary_condition Dirichlet, Neumann, or Robin selector.
+ * @tparam execution_mode Sequential or parallel policy backend.
+ * @tparam funcType Callable type for boundary and source terms.
+ * @param u_h Solution matrix to update.
+ * @param data Struct containing configuration settings and data callbacks.
+ * @param meshX Matrix of X grid coordinates.
+ * @param meshY Matrix of Y grid coordinates.
+ * @param u_old Previous iteration solution matrix (default is empty for Dirichlet).
+ * @param mpi_rank Rank of the current MPI process (default 0).
+ * @param mpi_size Total number of MPI processes (default 1).
+ */
 template <BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
 void apply_boundary_condition(eigenMatrix & u_h, const Data_Struct<funcType>& data, const eigenMatrix & meshX, const eigenMatrix &meshY, const eigenMatrix & u_old = {}, unsigned mpi_rank = 0, unsigned mpi_size = 1){
     if constexpr(boundary_condition == BoundaryCondition::DIRICHLET) apply_dirichlet_condition<execution_mode, funcType>(u_h, data, meshX, meshY, mpi_rank, mpi_size);
@@ -231,4 +259,4 @@ void apply_boundary_condition(eigenMatrix & u_h, const Data_Struct<funcType>& da
     if constexpr(boundary_condition == BoundaryCondition::ROBIN) apply_robin_condition<execution_mode, funcType>(u_h, data, meshX, meshY, u_old, mpi_rank, mpi_size);
 }
 
-#endif
+#endif // LAPLACIAN_SOLVERS_BOUNDARY_CONDITIONS_HPP

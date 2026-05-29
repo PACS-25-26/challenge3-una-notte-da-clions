@@ -1,0 +1,68 @@
+\doxysection{include/laplacian\+\_\+solvers\+\_\+test\+\_\+1.hpp File Reference}
+\hypertarget{laplacian__solvers__test__1_8hpp}{}\label{laplacian__solvers__test__1_8hpp}\index{include/laplacian\_solvers\_test\_1.hpp@{include/laplacian\_solvers\_test\_1.hpp}}
+
+
+Integration test suite covering sequential, parallel, and convergence benchmarks.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$mpi.\+h$>$}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+convergence\+\_\+test.\+hpp"{}}\newline
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+postprocessing.\+hpp"{}}\newline
+Include dependency graph for laplacian\+\_\+solvers\+\_\+test\+\_\+1.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\+\_\+solvers}}
+\begin{DoxyCompactList}\small\item\em Namespace dedicated to the computation and numerical resolution of the Laplacian operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{using}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{laplacian\+\_\+solvers\+::func\+Type}} = std\+::function$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}})$>$
+\begin{DoxyCompactList}\small\item\em Type alias for standard 2D spatial functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \mbox{\hyperlink{namespacelaplacian__solvers_af32d241ef9f01a7e278b81f1436ec679}{laplacian\+\_\+solvers\+::create\+\_\+default\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em Generates a baseline configuration structure with default parameters. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a3163f14b181cf1e9c38ee044db0e2900}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+1\+\_\+dirichlet\+\_\+sequential}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 1\+: Evaluates a sequential Jacobi solver under homogeneous Dirichlet boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a56df8682857ac4a7a6dd804a6af73fcf}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+2\+\_\+neumann\+\_\+sequential}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 2\+: Evaluates a sequential Jacobi solver under pure Neumann boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a56f3dbd7fdc50c65cd303eeae1fda454}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+3\+\_\+robin\+\_\+sequential}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 3\+: Evaluates a sequential Jacobi solver under Robin boundary conditions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_ad7232cac4ff884c895bee6b095e05588}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+4\+\_\+dirichlet\+\_\+parallel}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 4\+: Evaluates a parallel MPI Jacobi solver under Dirichlet boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a037209e523c8abbafca41ca608f6b203}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+5\+\_\+neumann\+\_\+parallel}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 5\+: Evaluates a parallel MPI Jacobi solver under Neumann boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_ae17a35bf3b6a2f2aef919e5fa4bebf63}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+6\+\_\+robin\+\_\+parallel}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 6\+: Evaluates a parallel MPI Jacobi solver under Robin boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a716b400a32f12e90801b33e9f3b80860}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+7\+\_\+dirichlet\+\_\+parallel\+\_\+schwarz}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 7\+: Evaluates a hybrid MPI+\+Open\+MP Schwarz domain decomposition solver under Dirichlet boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_abb1c879675e11fc92abea50a2d6c3be0}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+8\+\_\+neumann\+\_\+parallel\+\_\+schwarz}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 8\+: Evaluates a hybrid MPI+\+Open\+MP Schwarz domain decomposition solver under Neumann boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a27906c4e601458680273501c43740739}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+9\+\_\+robin\+\_\+parallel\+\_\+schwarz}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 9\+: Evaluates a hybrid MPI+\+Open\+MP Schwarz domain decomposition solver under Robin boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a7019f32a342f689f2777e0467937723e}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+10\+\_\+dirichlet\+\_\+sequential\+\_\+vs\+\_\+parallel\+\_\+jacobi}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 10\+: Performs error convergence analysis and speedup profiling for Dirichlet Jacobi routines. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_acfad27b2974a9160cb8fd88d3f5f9a15}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+11\+\_\+neumann\+\_\+sequential\+\_\+vs\+\_\+parallel\+\_\+jacobi}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 11\+: Performs error convergence analysis and speedup profiling for Neumann Jacobi routines. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a0f9efc7761bba3012220888b5d818884}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+12\+\_\+robin\+\_\+sequential\+\_\+vs\+\_\+parallel\+\_\+jacobi}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 12\+: Performs error convergence analysis and speedup profiling for Robin Jacobi routines. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_ad3a47d905d96867e1caa6dc69d09923d}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+13\+\_\+dirichlet\+\_\+sequential\+\_\+vs\+\_\+parallel\+\_\+schwarz}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 13\+: Performs error convergence analysis and speedup profiling for Dirichlet Schwarz domain decomposition. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_affad21c30acdfe749b4e2256e581b287}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+14\+\_\+neumann\+\_\+sequential\+\_\+vs\+\_\+parallel\+\_\+schwarz}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 14\+: Performs error convergence analysis and speedup profiling for Neumann Schwarz domain decomposition. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a818a0a1eeec6650ad8d953e90c6ec852}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+15\+\_\+robin\+\_\+sequential\+\_\+vs\+\_\+parallel\+\_\+schwarz}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 15\+: Performs error convergence analysis and speedup profiling for Robin Schwarz domain decomposition. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Integration test suite covering sequential, parallel, and convergence benchmarks. 
+

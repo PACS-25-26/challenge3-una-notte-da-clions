@@ -1,0 +1,426 @@
+\begin{theindex}
+
+  \item {alpha}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{30}
+  \item {apply\_boundary\_condition}
+    \subitem {laplacian\_solvers\_boundary\_conditions.hpp}, 
+		\hyperpage{52}
+  \item {apply\_dirichlet\_condition}
+    \subitem {laplacian\_solvers\_boundary\_conditions.hpp}, 
+		\hyperpage{53}
+  \item {apply\_neumann\_condition}
+    \subitem {laplacian\_solvers\_boundary\_conditions.hpp}, 
+		\hyperpage{53}
+  \item {apply\_robin\_condition}
+    \subitem {laplacian\_solvers\_boundary\_conditions.hpp}, 
+		\hyperpage{54}
+
+  \indexspace
+
+  \item {BoundaryCondition}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+  \item {build\_exact\_solution}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{34}
+  \item {build\_exact\_solution\_parallel}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{35}
+  \item {build\_exact\_solution\_sequential}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{35}
+  \item {build\_mesh}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{35}
+  \item {build\_mesh\_parallel}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{35}
+  \item {build\_mesh\_sequential}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{36}
+
+  \indexspace
+
+  \item {create\_default\_data}
+    \subitem {laplacian\_solvers}, \hyperpage{19}
+
+  \indexspace
+
+  \item {data}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{40}
+  \item {Data\_Struct$<$ funcType $>$}, \hyperpage{29}
+    \subitem {alpha}, \hyperpage{30}
+    \subitem {f0}, \hyperpage{30}
+    \subitem {f1}, \hyperpage{30}
+    \subitem {f2}, \hyperpage{30}
+    \subitem {f3}, \hyperpage{30}
+    \subitem {f4}, \hyperpage{30}
+    \subitem {max\_iterations}, \hyperpage{31}
+    \subitem {max\_schwarz\_iterations}, \hyperpage{31}
+    \subitem {n}, \hyperpage{31}
+    \subitem {tolerance}, \hyperpage{31}
+    \subitem {u\_exact\_lambda}, \hyperpage{31}
+    \subitem {x1}, \hyperpage{31}
+    \subitem {x2}, \hyperpage{31}
+  \item {DIRICHLET}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+
+  \indexspace
+
+  \item {eigenMatrix}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+  \item {errors\_parallel}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+  \item {errors\_serial}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+  \item {ExecutionMode}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+  \item {export\_to\_vtk}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{36}
+
+  \indexspace
+
+  \item {f0}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{30}
+  \item {f1}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{30}
+  \item {f2}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{30}
+  \item {f3}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{30}
+  \item {f4}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{30}
+  \item {funcType}
+    \subitem {laplacian\_solvers}, \hyperpage{18}
+
+  \indexspace
+
+  \item {h}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{41}
+
+  \indexspace
+
+  \item {include/laplacian\_convergence\_test.hpp}, \hyperpage{45, 46}
+  \item {include/laplacian\_solvers.hpp}, \hyperpage{47}, 
+		\hyperpage{50}
+  \item {include/laplacian\_solvers\_boundary\_conditions.hpp}, 
+		\hyperpage{51}, \hyperpage{55}
+  \item {include/laplacian\_solvers\_implementation.hpp}, 
+		\hyperpage{58}
+  \item {include/laplacian\_solvers\_initializer.hpp}, 
+		\hyperpage{59, 60}
+  \item {include/laplacian\_solvers\_parallel\_jacobi\_implementation.hpp}, 
+		\hyperpage{61, 62}
+  \item {include/laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}, 
+		\hyperpage{64}
+  \item {include/laplacian\_solvers\_postprocessing.hpp}, 
+		\hyperpage{66, 67}
+  \item {include/laplacian\_solvers\_sequential\_implementations.hpp}, 
+		\hyperpage{70}
+  \item {include/laplacian\_solvers\_test\_1.hpp}, \hyperpage{71, 72}
+  \item {include/laplacian\_solvers\_test\_2.hpp}, \hyperpage{77, 78}
+  \item {iteration\_residue}
+    \subitem {Result\_Struct}, \hyperpage{43}
+  \item {iterations}
+    \subitem {Result\_Struct}, \hyperpage{43}
+  \item {iterations\_parallel}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+  \item {iterations\_serial}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+
+  \indexspace
+
+  \item {JACOBI}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{50}
+  \item {jacobi\_parallel}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{37}
+  \item {jacobi\_sequential}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{37}
+
+  \indexspace
+
+  \item {Laplacian\_Solver}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{34}
+  \item {laplacian\_solvers}, \hyperpage{17}
+    \subitem {create\_default\_data}, \hyperpage{19}
+    \subitem {funcType}, \hyperpage{18}
+    \subitem {run\_test\_10\_dirichlet\_sequential\_vs\_parallel\_jacobi}, 
+		\hyperpage{19}
+    \subitem {run\_test\_11\_neumann\_sequential\_vs\_parallel\_jacobi}, 
+		\hyperpage{19}
+    \subitem {run\_test\_12\_robin\_sequential\_vs\_parallel\_jacobi}, 
+		\hyperpage{19}
+    \subitem {run\_test\_13\_dirichlet\_sequential\_vs\_parallel\_schwarz}, 
+		\hyperpage{20}
+    \subitem {run\_test\_14\_neumann\_sequential\_vs\_parallel\_schwarz}, 
+		\hyperpage{20}
+    \subitem {run\_test\_15\_robin\_sequential\_vs\_parallel\_schwarz}, 
+		\hyperpage{20}
+    \subitem {run\_test\_16\_dirichlet\_sequential}, \hyperpage{20}
+    \subitem {run\_test\_17\_neumann\_sequential}, \hyperpage{21}
+    \subitem {run\_test\_18\_robin\_sequential}, \hyperpage{21}
+    \subitem {run\_test\_19\_dirichlet\_parallel}, \hyperpage{21}
+    \subitem {run\_test\_1\_dirichlet\_sequential}, \hyperpage{22}
+    \subitem {run\_test\_20\_neumann\_parallel}, \hyperpage{22}
+    \subitem {run\_test\_21\_robin\_parallel}, \hyperpage{22}
+    \subitem {run\_test\_22\_neumann\_sequential\_vs\_parallel\_schwarz}, 
+		\hyperpage{23}
+    \subitem {run\_test\_2\_neumann\_sequential}, \hyperpage{23}
+    \subitem {run\_test\_3\_robin\_sequential}, \hyperpage{23}
+    \subitem {run\_test\_4\_dirichlet\_parallel}, \hyperpage{23}
+    \subitem {run\_test\_5\_neumann\_parallel}, \hyperpage{24}
+    \subitem {run\_test\_6\_robin\_parallel}, \hyperpage{24}
+    \subitem {run\_test\_7\_dirichlet\_parallel\_schwarz}, 
+		\hyperpage{24}
+    \subitem {run\_test\_8\_neumann\_parallel\_schwarz}, \hyperpage{25}
+    \subitem {run\_test\_9\_robin\_parallel\_schwarz}, \hyperpage{25}
+  \item {laplacian\_solvers.hpp}
+    \subitem {BoundaryCondition}, \hyperpage{49}
+    \subitem {DIRICHLET}, \hyperpage{49}
+    \subitem {eigenMatrix}, \hyperpage{49}
+    \subitem {ExecutionMode}, \hyperpage{49}
+    \subitem {JACOBI}, \hyperpage{50}
+    \subitem {MAX\_SCHWARZ\_ITERATIONS}, \hyperpage{49}
+    \subitem {NEUMANN}, \hyperpage{49}
+    \subitem {PARALLEL}, \hyperpage{49}
+    \subitem {ROBIN}, \hyperpage{49}
+    \subitem {SCHWARZ}, \hyperpage{50}
+    \subitem {SEQUENTIAL}, \hyperpage{49}
+    \subitem {SolverType}, \hyperpage{49}
+  \item {laplacian\_solvers::Convergence\_Struct}, \hyperpage{27}
+    \subitem {errors\_parallel}, \hyperpage{28}
+    \subitem {errors\_serial}, \hyperpage{28}
+    \subitem {iterations\_parallel}, \hyperpage{28}
+    \subitem {iterations\_serial}, \hyperpage{28}
+    \subitem {n}, \hyperpage{28}
+    \subitem {speedups}, \hyperpage{28}
+    \subitem {times\_parallel}, \hyperpage{28}
+    \subitem {times\_serial}, \hyperpage{28}
+  \item {laplacian\_solvers::Convergence\_Test$<$ solver\_type, boundary\_condition, funcType $>$}, 
+		\hyperpage{29}
+  \item {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{32}
+    \subitem {build\_exact\_solution}, \hyperpage{34}
+    \subitem {build\_exact\_solution\_parallel}, \hyperpage{35}
+    \subitem {build\_exact\_solution\_sequential}, \hyperpage{35}
+    \subitem {build\_mesh}, \hyperpage{35}
+    \subitem {build\_mesh\_parallel}, \hyperpage{35}
+    \subitem {build\_mesh\_sequential}, \hyperpage{36}
+    \subitem {data}, \hyperpage{40}
+    \subitem {export\_to\_vtk}, \hyperpage{36}
+    \subitem {h}, \hyperpage{41}
+    \subitem {jacobi\_parallel}, \hyperpage{37}
+    \subitem {jacobi\_sequential}, \hyperpage{37}
+    \subitem {Laplacian\_Solver}, \hyperpage{34}
+    \subitem {meshX}, \hyperpage{41}
+    \subitem {meshY}, \hyperpage{41}
+    \subitem {mpi\_rank}, \hyperpage{41}
+    \subitem {mpi\_size}, \hyperpage{41}
+    \subitem {mpi\_used\_size}, \hyperpage{41}
+    \subitem {parallel\_solve}, \hyperpage{38}
+    \subitem {participating}, \hyperpage{42}
+    \subitem {print}, \hyperpage{38}
+    \subitem {print\_exact\_solution}, \hyperpage{38}
+    \subitem {print\_mesh}, \hyperpage{38}
+    \subitem {print\_solution}, \hyperpage{39}
+    \subitem {process\_filter}, \hyperpage{39}
+    \subitem {result}, \hyperpage{42}
+    \subitem {schwarz\_parallel}, \hyperpage{39}
+    \subitem {solve}, \hyperpage{40}
+    \subitem {u\_exact}, \hyperpage{42}
+  \item {laplacian\_solvers\_boundary\_conditions.hpp}
+    \subitem {apply\_boundary\_condition}, \hyperpage{52}
+    \subitem {apply\_dirichlet\_condition}, \hyperpage{53}
+    \subitem {apply\_neumann\_condition}, \hyperpage{53}
+    \subitem {apply\_robin\_condition}, \hyperpage{54}
+  \item {laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}
+    \subitem {MAX\_SCHWARZ\_ITERATIONS}, \hyperpage{64}
+
+  \indexspace
+
+  \item {main}
+    \subitem {main.cpp}, \hyperpage{81}
+  \item {main.cpp}, \hyperpage{81}
+    \subitem {main}, \hyperpage{81}
+  \item {max\_iterations}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{31}
+  \item {MAX\_SCHWARZ\_ITERATIONS}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+    \subitem {laplacian\_solvers\_parallel\_schwarz\_implementation.hpp}, 
+		\hyperpage{64}
+  \item {max\_schwarz\_iterations}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{31}
+  \item {meshX}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{41}
+  \item {meshY}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{41}
+  \item {mpi\_rank}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{41}
+  \item {mpi\_size}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{41}
+  \item {mpi\_used\_size}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{41}
+
+  \indexspace
+
+  \item {n}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{31}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+  \item {NEUMANN}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+
+  \indexspace
+
+  \item {PARALLEL}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+  \item {parallel\_solve}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{38}
+  \item {participating}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{42}
+  \item {print}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{38}
+  \item {print\_exact\_solution}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{38}
+  \item {print\_mesh}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{38}
+  \item {print\_solution}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{39}
+  \item {process\_filter}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{39}
+
+  \indexspace
+
+  \item {README}, \hyperpage{1}
+  \item {README.md}, \hyperpage{82}
+  \item {result}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{42}
+  \item {Result\_Struct}, \hyperpage{42}
+    \subitem {iteration\_residue}, \hyperpage{43}
+    \subitem {iterations}, \hyperpage{43}
+    \subitem {u\_h}, \hyperpage{43}
+    \subitem {valid}, \hyperpage{43}
+    \subitem {X}, \hyperpage{43}
+    \subitem {Y}, \hyperpage{44}
+  \item {results}, \hyperpage{3}
+  \item {results.md}, \hyperpage{82}
+  \item {ROBIN}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+  \item {run\_test\_10\_dirichlet\_sequential\_vs\_parallel\_jacobi}
+    \subitem {laplacian\_solvers}, \hyperpage{19}
+  \item {run\_test\_11\_neumann\_sequential\_vs\_parallel\_jacobi}
+    \subitem {laplacian\_solvers}, \hyperpage{19}
+  \item {run\_test\_12\_robin\_sequential\_vs\_parallel\_jacobi}
+    \subitem {laplacian\_solvers}, \hyperpage{19}
+  \item {run\_test\_13\_dirichlet\_sequential\_vs\_parallel\_schwarz}
+    \subitem {laplacian\_solvers}, \hyperpage{20}
+  \item {run\_test\_14\_neumann\_sequential\_vs\_parallel\_schwarz}
+    \subitem {laplacian\_solvers}, \hyperpage{20}
+  \item {run\_test\_15\_robin\_sequential\_vs\_parallel\_schwarz}
+    \subitem {laplacian\_solvers}, \hyperpage{20}
+  \item {run\_test\_16\_dirichlet\_sequential}
+    \subitem {laplacian\_solvers}, \hyperpage{20}
+  \item {run\_test\_17\_neumann\_sequential}
+    \subitem {laplacian\_solvers}, \hyperpage{21}
+  \item {run\_test\_18\_robin\_sequential}
+    \subitem {laplacian\_solvers}, \hyperpage{21}
+  \item {run\_test\_19\_dirichlet\_parallel}
+    \subitem {laplacian\_solvers}, \hyperpage{21}
+  \item {run\_test\_1\_dirichlet\_sequential}
+    \subitem {laplacian\_solvers}, \hyperpage{22}
+  \item {run\_test\_20\_neumann\_parallel}
+    \subitem {laplacian\_solvers}, \hyperpage{22}
+  \item {run\_test\_21\_robin\_parallel}
+    \subitem {laplacian\_solvers}, \hyperpage{22}
+  \item {run\_test\_22\_neumann\_sequential\_vs\_parallel\_schwarz}
+    \subitem {laplacian\_solvers}, \hyperpage{23}
+  \item {run\_test\_2\_neumann\_sequential}
+    \subitem {laplacian\_solvers}, \hyperpage{23}
+  \item {run\_test\_3\_robin\_sequential}
+    \subitem {laplacian\_solvers}, \hyperpage{23}
+  \item {run\_test\_4\_dirichlet\_parallel}
+    \subitem {laplacian\_solvers}, \hyperpage{23}
+  \item {run\_test\_5\_neumann\_parallel}
+    \subitem {laplacian\_solvers}, \hyperpage{24}
+  \item {run\_test\_6\_robin\_parallel}
+    \subitem {laplacian\_solvers}, \hyperpage{24}
+  \item {run\_test\_7\_dirichlet\_parallel\_schwarz}
+    \subitem {laplacian\_solvers}, \hyperpage{24}
+  \item {run\_test\_8\_neumann\_parallel\_schwarz}
+    \subitem {laplacian\_solvers}, \hyperpage{25}
+  \item {run\_test\_9\_robin\_parallel\_schwarz}
+    \subitem {laplacian\_solvers}, \hyperpage{25}
+
+  \indexspace
+
+  \item {SCHWARZ}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{50}
+  \item {schwarz\_parallel}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{39}
+  \item {SEQUENTIAL}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+  \item {solve}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{40}
+  \item {SolverType}
+    \subitem {laplacian\_solvers.hpp}, \hyperpage{49}
+  \item {speedups}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+
+  \indexspace
+
+  \item {times\_parallel}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+  \item {times\_serial}
+    \subitem {laplacian\_solvers::Convergence\_Struct}, \hyperpage{28}
+  \item {tolerance}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{31}
+
+  \indexspace
+
+  \item {u\_exact}
+    \subitem {laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}, 
+		\hyperpage{42}
+  \item {u\_exact\_lambda}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{31}
+  \item {u\_h}
+    \subitem {Result\_Struct}, \hyperpage{43}
+
+  \indexspace
+
+  \item {valid}
+    \subitem {Result\_Struct}, \hyperpage{43}
+
+  \indexspace
+
+  \item {X}
+    \subitem {Result\_Struct}, \hyperpage{43}
+  \item {x1}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{31}
+  \item {x2}
+    \subitem {Data\_Struct$<$ funcType $>$}, \hyperpage{31}
+
+  \indexspace
+
+  \item {Y}
+    \subitem {Result\_Struct}, \hyperpage{44}
+
+\end{theindex}

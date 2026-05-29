@@ -4,8 +4,16 @@
 #include "laplacian_solvers.hpp"
 #include <filesystem>
 
+/**
+ * @file laplacian_solvers_postprocessing.hpp
+ * @brief Post-processing, console printing, and VTK export routines.
+ */
+
 namespace laplacian_solvers{
 
+    /**
+     * @brief Wrapper method to print the mesh, numerical solution, and exact solution.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print() const{
         print_mesh();
@@ -13,6 +21,11 @@ namespace laplacian_solvers{
         print_exact_solution();
     }
 
+    /**
+     * @brief Gathers and prints the grid mesh coordinates across all active nodes.
+     * * If operating in parallel execution mode, a collective @c MPI_Gatherv operation collects 
+     * the partitioned matrix layout components back into Rank 0 before rendering console output.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_mesh() const{
 
@@ -51,6 +64,11 @@ namespace laplacian_solvers{
        
     }
 
+    /**
+     * @brief Prints the final discrete numerical solution array along with execution metadata.
+     * * Outputs metrics such as residual errors and convergence loop iteration counts. 
+     * Execution output is restricted solely to the root rank (Rank 0).
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_solution() const{
         
@@ -61,7 +79,7 @@ namespace laplacian_solvers{
 
         std::cout << "Discrete solution u_h:" << std::endl;
 
-        if(result.iterartion_residue == -1.) {
+        if(result.iteration_residue == -1.) {
           std::cout << "Solver was not called" << std::endl; 
           return;
         }
@@ -71,11 +89,14 @@ namespace laplacian_solvers{
             std::cout << std::endl;
         }   
 
-        std::cout << "Residue error: " << result.iterartion_residue << std::endl;
+        std::cout << "Residue error: " << result.iteration_residue << std::endl;
         std::cout << "Total iterations: " << result.iterations << std::endl;
     }
     
 
+    /**
+     * @brief Gathers and prints the exact analytical benchmark evaluation solution array.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::print_exact_solution() const{
 
@@ -110,6 +131,13 @@ namespace laplacian_solvers{
         }   
     }
 
+    /**
+     * @brief Exports global solver results to a structured ASCII VTK file format legacy format.
+     * * Gathers mesh positions and scalar field solutions from all active compute allocations 
+     * via point-to-point gathering routines. Enforces directory tree setups and implements incremental 
+     * filename counter adjustments to avoid unwanted file overrides. Output operations are pinned to Rank 0.
+     * * @param filename Target base name designation string for the exported VTK structure.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     void Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::export_to_vtk(const std::string& filename) const {
         
@@ -214,6 +242,6 @@ namespace laplacian_solvers{
         vtk_file.close();
     }
 
+} // namespace laplacian_solvers
 
-}
-#endif
+#endif // LAPLACIAN_SOLVERS_POSTPROCESSING_HPP

@@ -1,0 +1,214 @@
+\doxysection{laplacian\+\_\+solvers\+\_\+boundary\+\_\+conditions.\+hpp}
+\hypertarget{laplacian__solvers__boundary__conditions_8hpp_source}{}\label{laplacian__solvers__boundary__conditions_8hpp_source}\index{include/laplacian\_solvers\_boundary\_conditions.hpp@{include/laplacian\_solvers\_boundary\_conditions.hpp}}
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ LAPLACIAN\_SOLVERS\_BOUNDARY\_CONDITIONS\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ LAPLACIAN\_SOLVERS\_BOUNDARY\_CONDITIONS\_HPP}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers_8hpp}{laplacian\_solvers.hpp}}"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{template}\ <ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00022\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{apply\_dirichlet\_condition}}(\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ u\_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\&\ data,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ meshX,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ meshY,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mpi\_rank,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mpi\_size)\{}
+\DoxyCodeLine{00023\ \ \ \ \ }
+\DoxyCodeLine{00024\ \ \ \ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ last\ =\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}\ -\/\ 1;}
+\DoxyCodeLine{00026\ \ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(execution\_mode\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{ExecutionMode::SEQUENTIAL}})\{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Sequential\ execution:\ mesh\ and\ u\_h\ share\ the\ exact\ same\ global\ dimensions}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ i\ =\ 0;\ i\ <\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}};\ i++)\{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ 0)\ =\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(i,\ 0),\ meshY(i,\ 0));\ \textcolor{comment}{//\ Left\ edge}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ last)\ =\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(i,\ last),\ meshY(i,\ last));\ \textcolor{comment}{//\ Right\ edge}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ i)\ =\ data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,\ i),\ meshY(0,\ i));\ \textcolor{comment}{//\ Bottom\ edge}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(last,\ i)\ =\ data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(last,\ i),\ meshY(last,\ i));\ \textcolor{comment}{//\ Top\ edge}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(execution\_mode\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb}{ExecutionMode::PARALLEL}})\{}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ up\_row\ =\ (mpi\_rank\ ==\ 0\ ?\ 0\ :\ 1);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ down\_row\ =\ (mpi\_rank\ ==\ mpi\_size\ -\/\ 1\ ?\ 0\ :\ 1);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{comment}{//const\ unsigned\ real\_subdomain\_rows\ =\ u\_h.rows()\ -\/\ up\_row\ -\/\ down\_row;}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bottom\ side}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(mpi\_rank\ ==\ 0)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ i\ =\ 0;\ i\ <\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}};\ i++)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ i)\ =\ data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,\ i),\ meshY(0,\ i));}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Top\ side\ }}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(mpi\_rank\ ==\ mpi\_size\ -\/\ 1)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ local\_last\_row\ =\ u\_h.rows()\ -\/\ 1;\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mesh\_last\_row\ =\ meshY.rows()\ -\/\ 1;\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ i\ =\ 0;\ i\ <\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}};\ i++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(local\_last\_row,\ i)\ =\ data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(mesh\_last\_row,\ i),\ meshY(mesh\_last\_row,\ i));}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Left\ -\/\ Right\ sides\ (}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ start\_loop\ =\ up\_row;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ end\_loop\ =\ u\_h.rows()\ -\/\ down\_row;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ i\ =\ start\_loop;\ i\ <\ end\_loop;\ i++)\{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ mesh\_i\ =\ i\ -\/\ up\_row;\ }
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ 0)\ \ \ \ =\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(mesh\_i,\ 0),\ meshY(mesh\_i,\ 0));}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ last)\ =\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(mesh\_i,\ last),\ meshY(mesh\_i,\ last));}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00084\ \textcolor{keyword}{template}\ <ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00085\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a13b50b1022f76b77d6964685d6493ae3}{apply\_neumann\_condition}}(\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ u\_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\&\ data,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ meshX,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ meshY,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ u\_old,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mpi\_rank,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mpi\_size)\{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ last\ =\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}\ -\/\ 1;}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ h\ \ =\ std::abs(data.\mbox{\hyperlink{structData__Struct_a88e4af144a38021903bd928debac53fa}{x2}}\ -\/\ data.\mbox{\hyperlink{structData__Struct_af70f0559e90b88882e913748941ea0e1}{x1}})\ /\ (data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}\ -\/\ 1);}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ h2\ =\ h\ *\ h;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (execution\_mode\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{ExecutionMode::SEQUENTIAL}})\ \{}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ i\ =\ 1;\ i\ <\ last;\ i++)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bottom\ side}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ i)\ =\ 0.25*(2*u\_old(1,i)\ +\ u\_old(0,i-\/1)\ +\ u\_old(0,i+1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,i),\ meshY(0,i))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,i),\ meshY(0,i)));}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Top\ side\ }}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(last,\ i)\ =\ 0.25*(2*u\_old(last-\/1,i)\ +\ u\_old(last,i-\/1)\ +\ u\_old(last,i+1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(last,i),\ meshY(last,i))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(last,i),\ meshY(last,i)));}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Left\ side}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ 0)\ =\ 0.25*(u\_old(i-\/1,0)\ +\ u\_old(i+1,0)\ +\ 2*u\_old(i,1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(i,0),\ meshY(i,0))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(i,0),\ meshY(i,0)));}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Right\ side}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ last)\ =\ 0.25*(u\_old(i-\/1,last)\ +\ u\_old(i+1,last)\ +\ 2*u\_old(i,last-\/1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(i,last),\ meshY(i,last))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(i,last),\ meshY(i,last)));}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Corners}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ u\_h(0,\ 0)\ =\ 0.25*(2*u\_old(1,0)\ +\ 2*u\_old(0,1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,0),\ meshY(0,0))\ +\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,0),\ meshY(0,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(0,0),\ meshY(0,0))));}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ u\_h(0,\ last)\ =\ 0.25*(2*u\_old(1,last)\ +\ 2*u\_old(0,last-\/1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,last),\ meshY(0,last))\ +\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,last),\ meshY(0,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(0,last),\ meshY(0,last))));}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ u\_h(last,\ 0)\ =\ 0.25*(2*u\_old(last-\/1,0)\ +\ 2*u\_old(last,1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(last,0),\ meshY(last,0))\ +\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(last,0),\ meshY(last,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(last,0),\ meshY(last,0))));}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ u\_h(last,\ last)\ =\ 0.25*(2*u\_old(last-\/1,last)\ +\ 2*u\_old(last,last-\/1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(last,last),\ meshY(last,last))\ +\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(last,last),\ meshY(last,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(last,last),\ meshY(last,last))));}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (execution\_mode\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb}{ExecutionMode::PARALLEL}})\ \{}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ indexes}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ up\_row\ =\ (mpi\_rank\ ==\ 0)?\ 0\ :\ 1;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ down\_row\ =\ (mpi\_rank\ ==\ mpi\_size\ -\/\ 1)\ ?\ 0\ :\ 1;}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ real\_first\ =\ up\_row;}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ real\_last\ =\ u\_h.rows()\ -\/\ 1\ -\/\ down\_row;}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Left\ -\/\ right\ sides\ without\ the\ corners}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ i\ =\ real\_first;\ i\ <=\ real\_last;\ i++)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_global\_bottom\ =\ (mpi\_rank\ ==\ 0\ \&\&\ i\ ==\ real\_first);}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_global\_top\ =\ (mpi\_rank\ ==\ mpi\_size\ -\/\ 1\ \&\&\ i\ ==\ real\_last);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_global\_bottom\ ||\ is\_global\_top)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mi\ =\ i\ -\/\ up\_row;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ 0)\ =\ 0.25*(u\_old(i-\/1,0)\ +\ u\_old(i+1,0)\ +\ 2*u\_old(i,1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mi,0),\ meshY(mi,0))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(mi,0),\ meshY(mi,0)));}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ last)\ =\ 0.25*(u\_old(i-\/1,last)\ \ +\ u\_old(i+1,last)\ +\ 2*u\_old(i,last-\/1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mi,last),\ meshY(mi,last))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(mi,last),\ meshY(mi,last)));}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bottom\ side\ +\ corner}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mpi\_rank\ ==\ 0)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ j\ =\ 1;\ j\ <\ last;\ j++)}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ j)\ =\ 0.25*(2*u\_old(1,j)\ +\ u\_old(0,j-\/1)\ +\ u\_old(0,j+1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,j),\ meshY(0,j))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,j),\ meshY(0,j)));}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ 0)\ =\ 0.25*(2*u\_old(1,0)\ +\ 2*u\_old(0,1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,0),\ meshY(0,0))\ +\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,0),\ meshY(0,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(0,0),\ meshY(0,0))));}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ last)\ =\ 0.25*(2*u\_old(1,last)\ +\ 2*u\_old(0,last-\/1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,last),\ meshY(0,last))\ +\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,last),\ meshY(0,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(0,last),\ meshY(0,last))));}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Top\ side\ +\ corner}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mpi\_rank\ ==\ mpi\_size\ -\/\ 1)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mt\ =\ real\_last\ -\/\ up\_row;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ j\ =\ 1;\ j\ <\ last;\ j++)}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(real\_last,\ j)\ =\ 0.25*(2*u\_old(real\_last-\/1,j)\ +\ u\_old(real\_last,j-\/1)\ +\ u\_old(real\_last,j+1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mt,j),\ meshY(mt,j))\ +\ 2*h*data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(mt,j),\ meshY(mt,j)));}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(real\_last,\ 0)\ =\ 0.25*(2*u\_old(real\_last-\/1,0)\ +\ 2*u\_old(real\_last,1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mt,0),\ meshY(mt,0))+\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(mt,0),\ meshY(mt,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(mt,0),\ meshY(mt,0))));}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(real\_last,\ last)\ =\ 0.25*(2*u\_old(real\_last-\/1,last)\ +\ 2*u\_old(real\_last,last-\/1)\ +\ h2*data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mt,last),\ meshY(mt,last))\ +\ 2*h*(data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(mt,last),\ meshY(mt,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(mt,last),\ meshY(mt,last))));}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00161\ \textcolor{keyword}{template}\ <ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00162\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a3e1203236c92e68dadc20831e4d90124}{apply\_robin\_condition}}(\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ u\_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\&\ data,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ meshX,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\&\ meshY,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ u\_old,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mpi\_rank,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mpi\_size)\{}
+\DoxyCodeLine{00163\ \ \ \ \ }
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{comment}{//\ General\ variables}}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ last\ =\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}\ -\/\ 1;}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ h\ =\ std::abs(data.\mbox{\hyperlink{structData__Struct_a88e4af144a38021903bd928debac53fa}{x2}}\ -\/\ data.\mbox{\hyperlink{structData__Struct_af70f0559e90b88882e913748941ea0e1}{x1}})\ /\ (data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}\ -\/\ 1);}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ h2\ =\ h\ *\ h;}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{comment}{//\ Denominators}}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ den\_edge\ =\ 4.0\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a51b73788011a9a858838ea64f5bb0353}{alpha}};}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ den\_corner\ =\ 4.0\ +\ 4.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a51b73788011a9a858838ea64f5bb0353}{alpha}};}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(execution\_mode\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{ExecutionMode::SEQUENTIAL}})\{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Left\ -\/\ right\ sides\ without\ the\ corners}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ i\ =\ 1;\ i\ <\ last;\ ++i)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ 0)\ \ \ \ =\ (u\_old(i-\/1,\ 0)\ +\ u\_old(i+1,\ 0)\ +\ 2.0\ *\ u\_old(i,\ 1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(i,\ 0),\ meshY(i,\ 0))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(i,\ 0),\ meshY(i,\ 0)))\ /\ den\_edge;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ last)\ =\ (u\_old(i-\/1,\ last)\ +\ u\_old(i+1,\ last)\ +\ 2.0\ *\ u\_old(i,\ last-\/1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(i,\ last),\ meshY(i,\ last))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(i,\ last),\ meshY(i,\ last)))\ /\ den\_edge;}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bottom\ -\/\ top\ sides\ without\ the\ corners}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ j\ =\ 1;\ j\ <\ last;\ ++j)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ j)\ \ \ \ =\ (2.0\ *\ u\_old(1,\ j)\ +\ u\_old(0,\ j-\/1)\ +\ u\_old(0,\ j+1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,\ j),\ meshY(0,\ j))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,\ j),\ meshY(0,\ j)))\ /\ den\_edge;}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(last,\ j)\ =\ (2.0\ *\ u\_old(last-\/1,\ j)\ +\ u\_old(last,\ j-\/1)\ +\ u\_old(last,\ j+1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(last,\ j),\ meshY(last,\ j))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(last,\ j),\ meshY(last,\ j)))\ /\ den\_edge;}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Corners}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ u\_h(0,\ 0)\ =\ (2.0\ *\ u\_old(1,\ 0)\ +\ 2.0\ *\ u\_old(0,\ 1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,0),\ meshY(0,0))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,0),\ meshY(0,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(0,0),\ meshY(0,0))))\ /\ den\_corner;}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ u\_h(0,\ last)\ =\ (2.0\ *\ u\_old(1,\ last)\ +\ 2.0\ *\ u\_old(0,\ last-\/1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,last),\ meshY(0,last))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,last),\ meshY(0,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(0,last),\ meshY(0,last))))\ /\ den\_corner;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ u\_h(last,\ 0)\ =\ (2.0\ *\ u\_old(last-\/1,\ 0)\ +\ 2.0\ *\ u\_old(last,\ 1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(last,0),\ meshY(last,0))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(last,0),\ meshY(last,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(last,0),\ meshY(last,0))))\ /\ den\_corner;}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ u\_h(last,\ last)\ =\ (2.0\ *\ u\_old(last-\/1,\ last)\ +\ 2.0\ *\ u\_old(last,\ last-\/1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(last,last),\ meshY(last,last))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(last,last),\ meshY(last,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(last,last),\ meshY(last,last))))\ /\ den\_corner;}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ }
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(execution\_mode\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb}{ExecutionMode::PARALLEL}})\{}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ indexes}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ remainder\_rows\ =\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}\ \%\ mpi\_size;}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ local\_rows\ =\ data.\mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}\ /\ mpi\_size\ +\ (mpi\_rank\ <\ remainder\_rows\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ up\_row\ =\ (mpi\_rank\ ==\ 0\ ?\ 0\ :\ 1);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ down\_row\ =\ (mpi\_rank\ ==\ mpi\_size\ -\/\ 1\ ?\ 0\ :\ 1);}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ first\_real\_row\ =\ up\_row;}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ last\_real\_row\ =\ u\_h.rows()\ -\/\ 1\ -\/\ down\_row;}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Left\ -\/\ right\ sides\ without\ corners}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ i\ =\ first\_real\_row;\ i\ <=\ last\_real\_row;\ i++)\{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_global\_bottom\ =\ (mpi\_rank\ ==\ 0\ \&\&\ i\ ==\ first\_real\_row);}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_global\_top\ \ \ \ =\ (mpi\_rank\ ==\ mpi\_size\ -\/\ 1\ \&\&\ i\ ==\ last\_real\_row);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_global\_bottom\ ||\ is\_global\_top)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ mesh\_i\ =\ i\ -\/\ up\_row;\ }
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ 0)\ \ \ \ =\ (u\_old(i-\/1,\ 0)\ +\ u\_old(i+1,\ 0)\ +\ 2.0\ *\ u\_old(i,\ 1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mesh\_i,\ 0),\ meshY(mesh\_i,\ 0))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(mesh\_i,\ 0),\ meshY(mesh\_i,\ 0)))\ /\ den\_edge;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(i,\ last)\ =\ (u\_old(i-\/1,\ last)\ +\ u\_old(i+1,\ last)\ +\ 2.0\ *\ u\_old(i,\ last-\/1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mesh\_i,\ last),\ meshY(mesh\_i,\ last))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(mesh\_i,\ last),\ meshY(mesh\_i,\ last)))\ /\ den\_edge;}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(mpi\_rank\ ==\ 0)\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bottom\ side}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ j\ =\ 1;\ j\ <\ last;\ j++)\ u\_h(0,\ j)\ =\ (2.0\ *\ u\_old(1,\ j)\ +\ u\_old(0,\ j-\/1)\ +\ u\_old(0,\ j+1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,\ j),\ meshY(0,\ j))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,\ j),\ meshY(0,\ j)))\ /\ den\_edge;}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Left\ -\/\ bottom\ corner}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ 0)\ =\ (2.0\ *\ u\_old(1,\ 0)\ +\ 2.0\ *\ u\_old(0,\ 1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,0),\ meshY(0,0))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,0),\ meshY(0,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(0,0),\ meshY(0,0))))\ /\ den\_corner;}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Right\ -\/\ bottom\ corner}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(0,\ last)\ =\ (2.0\ *\ u\_old(1,\ last)\ +\ 2.0\ *\ u\_old(0,\ last-\/1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(0,last),\ meshY(0,last))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}(meshX(0,last),\ meshY(0,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(0,last),\ meshY(0,last))))\ /\ den\_corner;}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Top\ side}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(mpi\_rank\ ==\ mpi\_size\ -\/\ 1)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ local\_last\_row\ =\ u\_h.rows()\ -\/\ 1;}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ mesh\_last\_row\ =\ local\_rows\ -\/\ 1;}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Top\ side}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ j\ =\ 1;\ j\ <\ last;\ j++)\ u\_h(local\_last\_row,\ j)\ =\ (2.0\ *\ u\_old(local\_last\_row\ -\/\ 1,\ j)\ +\ u\_old(local\_last\_row,\ j-\/1)\ +\ u\_old(local\_last\_row,\ j+1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mesh\_last\_row,\ j),\ meshY(mesh\_last\_row,\ j))\ +\ 2.0\ *\ h\ *\ data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(mesh\_last\_row,\ j),\ meshY(mesh\_last\_row,\ j)))\ /\ den\_edge;}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Left\ -\/\ top\ corner}}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(local\_last\_row,\ 0)\ =\ (2.0\ *\ u\_old(local\_last\_row-\/1,\ 0)\ +\ 2.0\ *\ u\_old(local\_last\_row,\ 1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mesh\_last\_row,0),\ meshY(mesh\_last\_row,0))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(mesh\_last\_row,0),\ meshY(mesh\_last\_row,0))\ +\ data.\mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}(meshX(mesh\_last\_row,0),\ meshY(mesh\_last\_row,0))))\ /\ den\_corner;}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Right\ -\/\ top\ corner}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ u\_h(local\_last\_row,\ last)\ =\ (2.0\ *\ u\_old(local\_last\_row-\/1,\ last)\ +\ 2.0\ *\ u\_old(local\_last\_row,\ last-\/1)\ +\ h2\ *\ data.\mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}(meshX(mesh\_last\_row,last),\ meshY(mesh\_last\_row,last))\ +\ 2.0\ *\ h\ *\ (data.\mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}(meshX(mesh\_last\_row,last),\ meshY(mesh\_last\_row,last))\ +\ data.\mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}(meshX(mesh\_last\_row,last),\ meshY(mesh\_last\_row,last))))\ /\ den\_corner;}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \}}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00255\ \textcolor{keyword}{template}\ <BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00256\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a46d4265f6b6d68242b81ca6033cbe0a8}{apply\_boundary\_condition}}(\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ u\_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\&\ data,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ meshX,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&meshY,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigenMatrix}}\ \&\ u\_old\ =\ \{\},\ \textcolor{keywordtype}{unsigned}\ mpi\_rank\ =\ 0,\ \textcolor{keywordtype}{unsigned}\ mpi\_size\ =\ 1)\{}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(boundary\_condition\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555ae151350b63efc6c3bbe2e3f0d27863ba}{BoundaryCondition::DIRICHLET}})\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{apply\_dirichlet\_condition<execution\_mode,\ funcType>}}(u\_h,\ data,\ meshX,\ meshY,\ mpi\_rank,\ mpi\_size);}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\_condition}}\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555a2f2dd8d12511598975b5475371963bd4}{BoundaryCondition::NEUMANN}})\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{apply\_neumann\_condition<execution\_mode,\ funcType>}}(u\_h,\ data,\ meshX,\ meshY,\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{u\_old}},\ mpi\_rank,\ mpi\_size);}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\_condition}}\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555abcd811f0b658b589b503a44dcde68c46}{BoundaryCondition::ROBIN}})\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{apply\_robin\_condition<execution\_mode,\ funcType>}}(u\_h,\ data,\ meshX,\ meshY,\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{u\_old}},\ mpi\_rank,\ mpi\_size);}
+\DoxyCodeLine{00260\ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ LAPLACIAN\_SOLVERS\_BOUNDARY\_CONDITIONS\_HPP}}
+
+\end{DoxyCode}

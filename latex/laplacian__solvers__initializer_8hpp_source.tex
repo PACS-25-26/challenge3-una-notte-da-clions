@@ -1,0 +1,129 @@
+\doxysection{laplacian\+\_\+solvers\+\_\+initializer.\+hpp}
+\hypertarget{laplacian__solvers__initializer_8hpp_source}{}\label{laplacian__solvers__initializer_8hpp_source}\index{include/laplacian\_solvers\_initializer.hpp@{include/laplacian\_solvers\_initializer.hpp}}
+\mbox{\hyperlink{laplacian__solvers__initializer_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ LAPLACIAN\_SOLVERS\_INITIALIZER\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ LAPLACIAN\_SOLVERS\_INITIALIZER\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <omp.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <mpi.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers_8hpp}{laplacian\_solvers.hpp}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\_solvers}}\{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{comment}{/*\ -\/-\/-\/\ CONSTRUCTOR\ -\/-\/-\/\ */}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{template}\ <\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{SolverType}}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\_type}},\ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{BoundaryCondition}}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\_condition}},\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{ExecutionMode}}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\_mode}},}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{funcType}}>}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a2385367376f5cf926807a00c148e2a6e}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::Laplacian\_Solver}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structData__Struct}{Data\_Struct<funcType>}}\&\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{d}})\ :\ data(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{d}})\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Controls\ process\ availability,\ builds\ mesh\ and\ exact\ solution}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a3c631728ff640f5b4e5769ac55c35d18}{process\_filter}}();}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2}{build\_mesh}}();}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a6001bf6394700ce9ddaf3bbbd8e4417a}{build\_exact\_solution}}();}
+\DoxyCodeLine{00037\ \ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a3c631728ff640f5b4e5769ac55c35d18}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::process\_filter}}()\{}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{MPI\_Comm\_rank}}(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{MPI\_COMM\_WORLD}},\ \&mpi\_rank);}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{MPI\_Comm\_size}}(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{MPI\_COMM\_WORLD}},\ \&mpi\_size);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ more\ processes\ are\ available\ than\ rows\ throw\ error}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\_mode}}\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb}{ExecutionMode::PARALLEL}})\{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(mpi\_size\ >\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(data.n))\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mpi\_rank\ ==\ 0)\ std::cerr\ <<\ \textcolor{stringliteral}{"{}Error:\ program\ launched\ with\ "{}}\ <<\ mpi\_size\ <<\ \textcolor{stringliteral}{"{}\ processors,\ but\ number\ of\ rows\ is\ "{}}\ <<\ data.n\ <<\ \textcolor{stringliteral}{"{}.\ Aborting..."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{MPI\_Abort}}(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{MPI\_COMM\_WORLD}},\ 1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{/*\ -\/-\/-\/\ MESH\ GENERATION\ AND\ INITIALIZATION\ -\/-\/-\/\ */}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{template}\ <\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{SolverType}}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\_type}},\ \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{BoundaryCondition}}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\_condition}},\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{ExecutionMode}}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\_mode}},}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{funcType}}>}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::build\_mesh}}()\{}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ h\ =\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{abs}}(data.x2\ -\/\ data.x1)\ /\ (data.n\ -\/\ 1);\ \textcolor{comment}{//\ Uniform\ grid\ spacing.\ Works\ even\ if\ x2\ <\ x1.\ }}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\_mode}}\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{ExecutionMode::SEQUENTIAL}})\ build\_mesh\_sequential();}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ build\_mesh\_parallel();}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ae426ef5d2dbe2f9088b1538d29e6a7aa}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::build\_mesh\_sequential}}()\{}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ meshX\ =\ eigenMatrix::Zero(data.n,\ data.n);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ meshY\ =\ eigenMatrix::Zero(data.n,\ data.n);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ <\ data.n;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}++)\ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ <\ data.n;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}++)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ meshX(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}})\ =\ data.x1\ +\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ *\ h;}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ meshY(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}})\ =\ data.x1\ +\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ *\ h;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_af1b0d3c06e34a7f5779717795c0219e5}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::build\_mesh\_parallel}}()\{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ rank\ information}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Distribute\ rows\ among\ processes.\ If\ the\ number\ of\ rows\ is\ not\ divided\ by\ the\ number\ of\ threads,\ the\ remaining\ ones\ will\ be\ assigned\ to\ the}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ fisrt\ threads,\ as\ shown\ in\ Figure\ 1\ of\ the\ challenge\ pdf\ file.}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{local\_rows}}\ =\ data.n\ /\ mpi\_size;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{remainder\_rows}}\ =\ data.n\ \%\ mpi\_size;}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{start\_row}}\ =\ mpi\_rank\ *\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{local\_rows}}\ +\ std::min(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{remainder\_rows}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\textcolor{keyword}{>}(mpi\_rank));}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{end\_row}}\ =\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{start\_row}}\ +\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{local\_rows}}\ +\ (\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\textcolor{keyword}{>}(mpi\_rank)\ <\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{remainder\_rows}}\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ meshX\ =\ eigenMatrix::Zero(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{end\_row}}\ -\/\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{start\_row}},\ data.n);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ meshY\ =\ eigenMatrix::Zero(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{end\_row}}\ -\/\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{start\_row}},\ data.n);\ \ }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#pragma\ omp\ parallel\ for}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ <\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{end\_row}}\ -\/\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{start\_row}};\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}++)\ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ <\ data.n;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}++)\{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ meshX(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}})\ =\ data.x1\ +\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ *\ h;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ meshY(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}})\ =\ data.x1\ +\ (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ +\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{start\_row}})\ *\ h;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a6001bf6394700ce9ddaf3bbbd8e4417a}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::build\_exact\_solution}}()\{}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ u\_exact\ =\ eigenMatrix::Zero(data.n,\ data.n);}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\_mode}}\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{ExecutionMode::SEQUENTIAL}})\ build\_exact\_solution\_sequential();}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ build\_exact\_solution\_parallel();}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a58d8b13081550972a1885ef531e93e2d}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::build\_exact\_solution\_sequential}}()\{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ <\ data.n;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}++)\ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ <\ data.n;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}++)\ }
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ u\_exact(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}})\ =\ data.u\_exact\_lambda(meshX(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}),\ meshY(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}));}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a8a17936272e5a10069c434203b093077}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::build\_exact\_solution\_parallel}}()\{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Distribute\ rows\ among\ processes.\ If\ the\ number\ of\ rows\ is\ not\ divided\ by\ the\ number\ of\ threads,\ the\ remaining\ ones\ will\ be\ assigned\ to\ the}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ fisrt\ threads,\ as\ shown\ in\ Figure\ 1\ of\ the\ challenge\ pdf\ file.}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{local\_rows}}\ =\ meshX.rows();}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ u\_exact\ =\ eigenMatrix::Zero(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{local\_rows}},\ data.n);}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#pragma\ omp\ parallel\ for}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}\ <\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{local\_rows}};\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}}++)\ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ =\ 0;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}\ <\ data.n;\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}++)\{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ u\_exact(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}})\ =\ data.u\_exact\_lambda(meshX(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}),\ meshY(\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{i}},\ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{j}}));}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \}\textcolor{comment}{//\ namespace\ laplacian\_solvers}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ LAPLACIAN\_SOLVERS\_INITIALIZER\_HPP}}
+
+\end{DoxyCode}

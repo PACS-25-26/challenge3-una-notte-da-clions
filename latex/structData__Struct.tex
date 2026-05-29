@@ -1,0 +1,195 @@
+\doxysection{Data\+\_\+\+Struct\texorpdfstring{$<$}{<} func\+Type \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structData__Struct}{}\label{structData__Struct}\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+
+
+Holds all geometric, physical, and numerical configuration parameters for the problem.  
+
+
+
+
+{\ttfamily \#include $<$laplacian\+\_\+solvers.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} \mbox{\hyperlink{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}{n}}
+\begin{DoxyCompactList}\small\item\em Number of discretization subintervals per spatial coordinate. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct_af70f0559e90b88882e913748941ea0e1}{x1}}
+\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct_a88e4af144a38021903bd928debac53fa}{x2}}
+\item 
+func\+Type \mbox{\hyperlink{structData__Struct_a058007ac9c8714b2b442e8753036ca64}{f0}}
+\begin{DoxyCompactList}\small\item\em Source term. \end{DoxyCompactList}\item 
+func\+Type \mbox{\hyperlink{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}{f1}}
+\begin{DoxyCompactList}\small\item\em BC bottom edge. \end{DoxyCompactList}\item 
+func\+Type \mbox{\hyperlink{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}{f2}}
+\begin{DoxyCompactList}\small\item\em BC right edge. \end{DoxyCompactList}\item 
+func\+Type \mbox{\hyperlink{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}{f3}}
+\begin{DoxyCompactList}\small\item\em BC top edge. \end{DoxyCompactList}\item 
+func\+Type \mbox{\hyperlink{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}{f4}}
+\begin{DoxyCompactList}\small\item\em BC left edge. \end{DoxyCompactList}\item 
+func\+Type \mbox{\hyperlink{structData__Struct_a9b03289c505beadb05f1ea4883824e2e}{u\+\_\+exact\+\_\+lambda}}
+\begin{DoxyCompactList}\small\item\em Analytical solution (for error analysis) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct_a19a44803e618dbb11a650d8152e3e61b}{tolerance}}
+\begin{DoxyCompactList}\small\item\em Convergence tolerance for the iterative solver. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} \mbox{\hyperlink{structData__Struct_a996f3b55776e4badcc6e52d4a46d26ae}{max\+\_\+iterations}}
+\begin{DoxyCompactList}\small\item\em Maximum number of iterations for the iterative solver. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct_a51b73788011a9a858838ea64f5bb0353}{alpha}}
+\begin{DoxyCompactList}\small\item\em Parameter for Robin boundary condition\+: gamma\texorpdfstring{$\ast$}{*}u + du/dn = g. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} \mbox{\hyperlink{structData__Struct_a18dd42d914cea7eee5015e376881e69f}{max\+\_\+schwarz\+\_\+iterations}} = 10
+\begin{DoxyCompactList}\small\item\em Maximum number of Schwarz iterations (if using Schwarz method) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type$>$\newline
+struct Data\+\_\+\+Struct$<$ func\+Type $>$}
+Holds all geometric, physical, and numerical configuration parameters for the problem. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em func\+Type} & Type of the callables representing source terms and BCs. \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structData__Struct_a51b73788011a9a858838ea64f5bb0353}\label{structData__Struct_a51b73788011a9a858838ea64f5bb0353} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!alpha@{alpha}}
+\index{alpha@{alpha}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{alpha}{alpha}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::alpha}
+
+
+
+Parameter for Robin boundary condition\+: gamma\texorpdfstring{$\ast$}{*}u + du/dn = g. 
+
+\Hypertarget{structData__Struct_a058007ac9c8714b2b442e8753036ca64}\label{structData__Struct_a058007ac9c8714b2b442e8753036ca64} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f0@{f0}}
+\index{f0@{f0}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{f0}{f0}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+func\+Type \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::f0}
+
+
+
+Source term. 
+
+\Hypertarget{structData__Struct_a03d3de2c9c958c084918b80b33d5885e}\label{structData__Struct_a03d3de2c9c958c084918b80b33d5885e} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f1@{f1}}
+\index{f1@{f1}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{f1}{f1}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+func\+Type \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::f1}
+
+
+
+BC bottom edge. 
+
+\Hypertarget{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0}\label{structData__Struct_ade0e7b951208c0281c256d8252ff8fc0} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f2@{f2}}
+\index{f2@{f2}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{f2}{f2}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+func\+Type \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::f2}
+
+
+
+BC right edge. 
+
+\Hypertarget{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61}\label{structData__Struct_a9d1e600446ae64cc3e3f6a38587d6c61} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f3@{f3}}
+\index{f3@{f3}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{f3}{f3}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+func\+Type \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::f3}
+
+
+
+BC top edge. 
+
+\Hypertarget{structData__Struct_a7dc1be995b93e977a2a34f88c513dead}\label{structData__Struct_a7dc1be995b93e977a2a34f88c513dead} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!f4@{f4}}
+\index{f4@{f4}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{f4}{f4}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+func\+Type \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::f4}
+
+
+
+BC left edge. 
+
+\Hypertarget{structData__Struct_a996f3b55776e4badcc6e52d4a46d26ae}\label{structData__Struct_a996f3b55776e4badcc6e52d4a46d26ae} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!max\_iterations@{max\_iterations}}
+\index{max\_iterations@{max\_iterations}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{max\_iterations}{max\_iterations}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::max\+\_\+iterations}
+
+
+
+Maximum number of iterations for the iterative solver. 
+
+\Hypertarget{structData__Struct_a18dd42d914cea7eee5015e376881e69f}\label{structData__Struct_a18dd42d914cea7eee5015e376881e69f} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!max\_schwarz\_iterations@{max\_schwarz\_iterations}}
+\index{max\_schwarz\_iterations@{max\_schwarz\_iterations}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{max\_schwarz\_iterations}{max\_schwarz\_iterations}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::max\+\_\+schwarz\+\_\+iterations = 10}
+
+
+
+Maximum number of Schwarz iterations (if using Schwarz method) 
+
+\Hypertarget{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef}\label{structData__Struct_a4db58d5b3e5bd589c0bd565f71123eef} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!n@{n}}
+\index{n@{n}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{n}{n}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{unsigned}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::n}
+
+
+
+Number of discretization subintervals per spatial coordinate. 
+
+\Hypertarget{structData__Struct_a19a44803e618dbb11a650d8152e3e61b}\label{structData__Struct_a19a44803e618dbb11a650d8152e3e61b} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!tolerance@{tolerance}}
+\index{tolerance@{tolerance}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{tolerance}{tolerance}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::tolerance}
+
+
+
+Convergence tolerance for the iterative solver. 
+
+\Hypertarget{structData__Struct_a9b03289c505beadb05f1ea4883824e2e}\label{structData__Struct_a9b03289c505beadb05f1ea4883824e2e} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!u\_exact\_lambda@{u\_exact\_lambda}}
+\index{u\_exact\_lambda@{u\_exact\_lambda}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{u\_exact\_lambda}{u\_exact\_lambda}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+func\+Type \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::u\+\_\+exact\+\_\+lambda}
+
+
+
+Analytical solution (for error analysis) 
+
+\Hypertarget{structData__Struct_af70f0559e90b88882e913748941ea0e1}\label{structData__Struct_af70f0559e90b88882e913748941ea0e1} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!x1@{x1}}
+\index{x1@{x1}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{x1}{x1}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::x1}
+
+\Hypertarget{structData__Struct_a88e4af144a38021903bd928debac53fa}\label{structData__Struct_a88e4af144a38021903bd928debac53fa} 
+\index{Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}!x2@{x2}}
+\index{x2@{x2}!Data\_Struct$<$ funcType $>$@{Data\_Struct$<$ funcType $>$}}
+\doxysubsubsection{\texorpdfstring{x2}{x2}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} func\+Type $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ func\+Type $>$\+::x2}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{laplacian__solvers_8hpp}{laplacian\+\_\+solvers.\+hpp}}\end{DoxyCompactItemize}

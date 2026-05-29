@@ -1,0 +1,43 @@
+\doxysection{include/laplacian\+\_\+solvers\+\_\+test\+\_\+2.hpp File Reference}
+\hypertarget{laplacian__solvers__test__2_8hpp}{}\label{laplacian__solvers__test__2_8hpp}\index{include/laplacian\_solvers\_test\_2.hpp@{include/laplacian\_solvers\_test\_2.hpp}}
+
+
+Extended integration test suite evaluating non-\/homogeneous boundary test cases.  
+
+
+{\ttfamily \#include "{}laplacian\+\_\+solvers\+\_\+test\+\_\+1.\+hpp"{}}\newline
+Include dependency graph for laplacian\+\_\+solvers\+\_\+test\+\_\+2.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\+\_\+solvers}}
+\begin{DoxyCompactList}\small\item\em Namespace dedicated to the computation and numerical resolution of the Laplacian operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a50b24e2d661907cf503b5ffdad5fbc54}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+16\+\_\+dirichlet\+\_\+sequential}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 16\+: Sequential Jacobi solver with a non-\/homogeneous polynomial solution under Dirichlet boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a4734c62aa22cd92714deb7f2d8bef992}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+17\+\_\+neumann\+\_\+sequential}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 17\+: Sequential Jacobi solver with a non-\/homogeneous polynomial solution under Neumann boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a794b39f83c48ee25ca2d9a67c015c579}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+18\+\_\+robin\+\_\+sequential}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 18\+: Sequential Jacobi solver with a non-\/homogeneous trigonometric solution under Robin boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_afafc4f13939b8ccf1464f22d8e9a53ba}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+19\+\_\+dirichlet\+\_\+parallel}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 19\+: Parallel MPI-\/distributed Jacobi solver with a non-\/homogeneous polynomial solution under Dirichlet boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_ae191b81aae7448afc5614a0d38c13bc5}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+20\+\_\+neumann\+\_\+parallel}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 20\+: Parallel MPI-\/distributed Jacobi solver with a non-\/homogeneous polynomial solution under Neumann boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_aff2ea56abb0effa685b5819177077566}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+21\+\_\+robin\+\_\+parallel}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 21\+: Parallel MPI-\/distributed Jacobi solver with a non-\/homogeneous trigonometric solution under Robin boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{namespacelaplacian__solvers_a1f15d78b39257dcf96536eadda7fc1dc}{laplacian\+\_\+solvers\+::run\+\_\+test\+\_\+22\+\_\+neumann\+\_\+sequential\+\_\+vs\+\_\+parallel\+\_\+schwarz}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} mpi\+\_\+rank)
+\begin{DoxyCompactList}\small\item\em Test 22\+: Performance convergence benchmark for a polynomial solution under Neumann conditions using the Schwarz solver. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Extended integration test suite evaluating non-\/homogeneous boundary test cases. 
+
+
+\begin{DoxyItemize}
+\item Contains advanced validation tests using multi-\/dimensional polynomial and trigonometric exact solutions to verify convergence under complex boundary configurations. 
+\end{DoxyItemize}

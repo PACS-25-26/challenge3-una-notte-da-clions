@@ -1,0 +1,45 @@
+\doxysection{laplacian\+\_\+solvers\+\_\+implementation.\+hpp}
+\hypertarget{laplacian__solvers__implementation_8hpp_source}{}\label{laplacian__solvers__implementation_8hpp_source}\index{include/laplacian\_solvers\_implementation.hpp@{include/laplacian\_solvers\_implementation.hpp}}
+\mbox{\hyperlink{laplacian__solvers__implementation_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ LAPLACIAN\_SOLVERS\_IMPLEMENTATION\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ LAPLACIAN\_SOLVERS\_IMPLEMENTATION\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers_8hpp}{laplacian\_solvers.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp}{laplacian\_solvers\_boundary\_conditions.hpp}}"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacelaplacian__solvers}{laplacian\_solvers}}\{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a050cbed7a1be81395096708c97f3dc1d}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::solve}}()\{}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(mpi\_rank\ >=\ mpi\_size)\ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\_mode}}\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fda39403cd282d944abcd4f14996cb71bcb}{ExecutionMode::SEQUENTIAL}})\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(mpi\_rank\ !=\ 0)\ \textcolor{keywordflow}{return}\ result;\ \textcolor{comment}{//\ Only\ rank\ 0\ will\ run\ the\ sequential\ solver}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ jacobi\_sequential();}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ parallel\_solve();}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{template}\ <SolverType\ solver\_type,\ BoundaryCondition\ boundary\_condition,\ ExecutionMode\ execution\_mode,\ \textcolor{keyword}{typename}\ funcType>}
+\DoxyCodeLine{00056\ \ \ \ \ \mbox{\hyperlink{structResult__Struct}{Result\_Struct}}\ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a28f69b0dd54c09c790bca575d8108ffe}{Laplacian\_Solver<solver\_type,\ boundary\_condition,\ execution\_mode,\ funcType>::parallel\_solve}}()\{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\_type}}\ ==\ \mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ecadad0f4ccf1b8ed048ded063c2844611f}{SolverType::JACOBI}})\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ jacobi\_parallel();}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ schwarz\_parallel();}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

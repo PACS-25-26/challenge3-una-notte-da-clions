@@ -7,10 +7,26 @@
 #include <cmath>
 #include <vector>
 
+/**
+ * @file laplacian_solvers_parallel_schwarz_implementation.hpp
+ * @brief Hybrid MPI+OpenMP parallel implementation of the Schwarz domain decomposition method.
+ */
+
 #define MAX_SCHWARZ_ITERATIONS 10
 
 namespace laplacian_solvers{
 
+    /**
+     * @brief Solves the Laplacian problem using a parallel alternating Schwarz method.
+     * * Divides the domain into subdomains allocated to different MPI ranks. The algorithm 
+     * alternates between global macro-steps (inter-process halo updates via MPI) and local 
+     * micro-steps (multi-threaded relaxation loops via OpenMP confined to the subdomains).
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam execution_mode Parallel execution policy backend.
+     * @tparam funcType Callable type for boundary and source terms.
+     * * @return A @ref Result_Struct containing the assembled solution on Rank 0, or partial fields on other ranks.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::schwarz_parallel(){
         
@@ -135,10 +151,11 @@ namespace laplacian_solvers{
         result.X.swap(meshX_global);
         result.Y.swap(meshY_global);
         result.iterations = global_iter;
-        result.iterartion_residue = global_err;
+        result.iteration_residue = global_err;
         if(mpi_rank == 0) result.valid = true;
 
         return result;
     }
-}
-#endif
+}// namespace laplacian_solvers
+
+#endif // LAPLACIAN_SOLVERS_PARALLEL_SCHWARZ_IMPLEMENTATION_HPP

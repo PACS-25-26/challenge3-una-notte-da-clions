@@ -9,9 +9,24 @@
 #include <vector>
 #include <fstream>
 
+/**
+ * @file laplacian_solvers_sequential_implementations.hpp
+ * @brief Implementation of the sequential Jacobi iterative solver.
+ */
 
 namespace laplacian_solvers{
      
+    /**
+     * @brief Solves the Laplacian problem sequentially using the Jacobi iterative method.
+     * * Initializes the solution matrix, applies the initial boundary conditions, and runs the 
+     * main relaxation loop until the squared \f$ L^2 \f$ norm error drops below the tolerance 
+     * or the maximum iteration count is reached.
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam execution_mode Sequential execution policy backend.
+     * @tparam funcType Callable type for boundary and source terms.
+     * * @return A @ref Result_Struct containing the final solution matrix, coordinates, and iteration metadata.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_sequential(){
         
@@ -61,10 +76,10 @@ namespace laplacian_solvers{
         result.iterations = iter;
         result.X = meshX;
         result.Y = meshY;
-        result.iterartion_residue = std::sqrt(err); 
+        result.iteration_residue = std::sqrt(err); 
         result.valid = true;
         return result;
     }
-}
+} // namespace laplacian_solvers
 
-#endif
+#endif // LAPLACIAN_SOLVERS_SEQUENTIAL_IMPLEMENTATIONS_HPP

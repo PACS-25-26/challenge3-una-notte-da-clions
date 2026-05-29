@@ -1,0 +1,622 @@
+\doxysection{laplacian\+\_\+solvers\+::Laplacian\+\_\+\+Solver\texorpdfstring{$<$}{<} solver\+\_\+type, boundary\+\_\+condition, execution\+\_\+mode, func\+Type \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classlaplacian__solvers_1_1Laplacian__Solver}{}\label{classlaplacian__solvers_1_1Laplacian__Solver}\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+
+
+Core class for solving the Laplace/\+Poisson equation on structured grids.  
+
+
+
+
+{\ttfamily \#include $<$laplacian\+\_\+solvers.\+hpp$>$}
+
+
+
+Collaboration diagram for laplacian\+\_\+solvers\+::Laplacian\+\_\+\+Solver\texorpdfstring{$<$}{<} solver\+\_\+type, boundary\+\_\+condition, execution\+\_\+mode, func\+Type \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a2385367376f5cf926807a00c148e2a6e}{Laplacian\+\_\+\+Solver}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \&\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{d}})
+\begin{DoxyCompactList}\small\item\em Constructs a new Laplacian Solver object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a050cbed7a1be81395096708c97f3dc1d}{solve}} ()
+\begin{DoxyCompactList}\small\item\em Method that triggers the appropriate linear solver backend. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a388322e5abde88112808a061d0ddd676}{print}} () \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}}
+\begin{DoxyCompactList}\small\item\em Wrapper method to print the mesh, numerical solution, and exact solution. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a9a01023c583379332c80653741a1e353}{export\+\_\+to\+\_\+vtk}} (\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} std\+::string \&\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{filename}}) \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}}
+\begin{DoxyCompactList}\small\item\em Exports global solver results to a structured ASCII VTK file format legacy format. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2}{build\+\_\+mesh}} ()
+\begin{DoxyCompactList}\small\item\em Computes the uniform grid spacing and routes mesh generation to the active backend. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ae426ef5d2dbe2f9088b1538d29e6a7aa}{build\+\_\+mesh\+\_\+sequential}} ()
+\begin{DoxyCompactList}\small\item\em Generates the global coordinates mesh on a single thread. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_af1b0d3c06e34a7f5779717795c0219e5}{build\+\_\+mesh\+\_\+parallel}} ()
+\begin{DoxyCompactList}\small\item\em Generates a local sub-\/grid slice allocated to the invoking MPI process. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a3c631728ff640f5b4e5769ac55c35d18}{process\+\_\+filter}} ()
+\begin{DoxyCompactList}\small\item\em Filters active MPI processes and checks communicator sizing validity. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a6001bf6394700ce9ddaf3bbbd8e4417a}{build\+\_\+exact\+\_\+solution}} ()
+\begin{DoxyCompactList}\small\item\em Allocates space for the exact analytical solution matrix and triggers initialization. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a58d8b13081550972a1885ef531e93e2d}{build\+\_\+exact\+\_\+solution\+\_\+sequential}} ()
+\begin{DoxyCompactList}\small\item\em Evaluates the exact analytical lambda expression sequentially across the full grid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a8a17936272e5a10069c434203b093077}{build\+\_\+exact\+\_\+solution\+\_\+parallel}} ()
+\begin{DoxyCompactList}\small\item\em Evaluates the exact analytical lambda function in parallel over the local grid slice. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a0aa5d72e85c1bc13a9badca765ef2888}{print\+\_\+mesh}} () \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}}
+\begin{DoxyCompactList}\small\item\em Gathers and prints the grid mesh coordinates across all active nodes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_af5b2a6e6f0b59fd207560887ebe2bc9b}{print\+\_\+solution}} () \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}}
+\begin{DoxyCompactList}\small\item\em Prints the final discrete numerical solution array along with execution metadata. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a832bb77ca5a7076da17bbeb1fe1dfb92}{print\+\_\+exact\+\_\+solution}} () \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}}
+\begin{DoxyCompactList}\small\item\em Gathers and prints the exact analytical benchmark evaluation solution array. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a28f69b0dd54c09c790bca575d8108ffe}{parallel\+\_\+solve}} ()
+\begin{DoxyCompactList}\small\item\em Dispatches the parallel execution loop to the selected numerical algorithm. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ad8888be50670afbc3bdb0d1bd5ce9ee9}{jacobi\+\_\+sequential}} ()
+\begin{DoxyCompactList}\small\item\em Solves the Laplacian problem sequentially using the Jacobi iterative method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_aee80a6ca379eea564e4f8f64097938ba}{jacobi\+\_\+parallel}} ()
+\begin{DoxyCompactList}\small\item\em Solves the Laplacian problem using a parallel hybrid Jacobi method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_aac6e442f2fdaaaf71665a38c6193a2aa}{schwarz\+\_\+parallel}} ()
+\begin{DoxyCompactList}\small\item\em Solves the Laplacian problem using a parallel alternating Schwarz method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a524c6e537ce1db6815d029ffdbc82965}{data}}
+\begin{DoxyCompactList}\small\item\em Configuration of the problem and parameters. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a97e27b24bd4fa4c9213ba42631cbadb2}{meshX}}
+\begin{DoxyCompactList}\small\item\em Matrix containing the X coordinates of the structured grid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_af44850ba823b7afecd5bc86a88158fc1}{meshY}}
+\begin{DoxyCompactList}\small\item\em Matrix containing the Y coordinates of the structured grid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a534ff523be71a43e94858f204249a280}{h}}
+\begin{DoxyCompactList}\small\item\em Uniform grid spacing parameter h. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a3629e5081b801a0b9fd60b884462209c}{u\+\_\+exact}}
+\begin{DoxyCompactList}\small\item\em Analytical solution over the mesh points matrix. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a2a6972a29124af507d06f64c429b9b1f}{result}}
+\begin{DoxyCompactList}\small\item\em Struct to hold the final results of the solver. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ab0f5574363b6f45361d478871014a0f1}{mpi\+\_\+rank}}
+\begin{DoxyCompactList}\small\item\em Rank of the MPI process (used in parallel execution). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_aab2717e95ae6600a902de930d7748e4e}{mpi\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em Number of participating MPI processes (used in parallel execution). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_ad0404e1bd6884fef2fbf31a2f243c45d}{mpi\+\_\+used\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em Actual MPI\+\_\+\+COMM\+\_\+\+WORLD size (for reference). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{bool}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver_a60ea20036e69bee111b81bfa6f3d5ab0}{participating}} = \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{true}}
+\begin{DoxyCompactList}\small\item\em True if this rank participates in computation (rank \texorpdfstring{$<$}{<} mpi\+\_\+size) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}}$>$\newline
+class laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver$<$ solver\+\_\+type, boundary\+\_\+condition, execution\+\_\+mode, func\+Type $>$}
+Core class for solving the Laplace/\+Poisson equation on structured grids. 
+
+
+\begin{DoxyItemize}
+\item Leverages compile-\/time metaprogramming (via template parameters) to statically configure the algorithm, boundary conditions, and execution backend, maximizing runtime efficiency.
+\item 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em solver\+\_\+type} & The iterative algorithm to be used (\doxylink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}). \\
+\hline
+{\em boundary\+\_\+condition} & The type of BC applied to the domain (\doxylink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}). \\
+\hline
+{\em execution\+\_\+mode} & The computational paradigm backend (\doxylink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}). \\
+\hline
+{\em func\+Type} & The type of functional descriptors for sources and boundaries. \\
+\hline
+\end{DoxyTemplParams}
+
+\end{DoxyItemize}
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a2385367376f5cf926807a00c148e2a6e}\label{classlaplacian__solvers_1_1Laplacian__Solver_a2385367376f5cf926807a00c148e2a6e} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!Laplacian\_Solver@{Laplacian\_Solver}}
+\index{Laplacian\_Solver@{Laplacian\_Solver}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{Laplacian\_Solver()}{Laplacian\_Solver()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::\+Laplacian\+\_\+\+Solver (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} \mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$ \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \&}]{d }\end{DoxyParamCaption})}
+
+
+
+Constructs a new Laplacian Solver object. 
+
+
+\begin{DoxyItemize}
+\item Initializes problem data parameters, checks process topology validity via the filter, and allocates/populates both the computational grid grid and the exact solution matrix.
+\item 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em solver\+\_\+type} & Iterative algorithm selector. \\
+\hline
+{\em boundary\+\_\+condition} & Boundary condition policy. \\
+\hline
+{\em execution\+\_\+mode} & Parallelism execution backend policy. \\
+\hline
+{\em func\+Type} & Callable type for boundary and source terms.\\
+\hline
+\end{DoxyTemplParams}
+
+\item 
+\begin{DoxyParams}{Parameters}
+{\em d} & Configuration data structure containing physical and analytical bounds. \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 1
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a6001bf6394700ce9ddaf3bbbd8e4417a}\label{classlaplacian__solvers_1_1Laplacian__Solver_a6001bf6394700ce9ddaf3bbbd8e4417a} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_exact\_solution@{build\_exact\_solution}}
+\index{build\_exact\_solution@{build\_exact\_solution}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{build\_exact\_solution()}{build\_exact\_solution()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::build\+\_\+exact\+\_\+solution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Allocates space for the exact analytical solution matrix and triggers initialization. 
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a8a17936272e5a10069c434203b093077}\label{classlaplacian__solvers_1_1Laplacian__Solver_a8a17936272e5a10069c434203b093077} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_exact\_solution\_parallel@{build\_exact\_solution\_parallel}}
+\index{build\_exact\_solution\_parallel@{build\_exact\_solution\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{build\_exact\_solution\_parallel()}{build\_exact\_solution\_parallel()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::build\+\_\+exact\+\_\+solution\+\_\+parallel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Evaluates the exact analytical lambda function in parallel over the local grid slice. 
+
+
+\begin{DoxyItemize}
+\item Re-\/allocates the local {\ttfamily u\+\_\+exact} array to match the chunk sizing generated in \doxylink{classlaplacian__solvers_1_1Laplacian__Solver_af1b0d3c06e34a7f5779717795c0219e5}{build\+\_\+mesh\+\_\+parallel}. Computations are offloaded to an active Open\+MP thread pool operating on local memory rows. 
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 4
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a58d8b13081550972a1885ef531e93e2d}\label{classlaplacian__solvers_1_1Laplacian__Solver_a58d8b13081550972a1885ef531e93e2d} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_exact\_solution\_sequential@{build\_exact\_solution\_sequential}}
+\index{build\_exact\_solution\_sequential@{build\_exact\_solution\_sequential}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{build\_exact\_solution\_sequential()}{build\_exact\_solution\_sequential()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::build\+\_\+exact\+\_\+solution\+\_\+sequential (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Evaluates the exact analytical lambda expression sequentially across the full grid. 
+
+Here is the call graph for this function\+:
+% FIG 5
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2}\label{classlaplacian__solvers_1_1Laplacian__Solver_a7229e80dfd533056afcea5a4122495c2} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_mesh@{build\_mesh}}
+\index{build\_mesh@{build\_mesh}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{build\_mesh()}{build\_mesh()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::build\+\_\+mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Computes the uniform grid spacing and routes mesh generation to the active backend. 
+
+
+\begin{DoxyItemize}
+\item Calculates the uniform grid step $ h = \frac{|x_2 - x_1|}{N - 1} $. It guarantees correct computation even if domain bounds are specified in reversed spatial orientation ( $ x_2 < x_1 $). 
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 6
+Here is the caller graph for this function\+:
+% FIG 7
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_af1b0d3c06e34a7f5779717795c0219e5}\label{classlaplacian__solvers_1_1Laplacian__Solver_af1b0d3c06e34a7f5779717795c0219e5} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_mesh\_parallel@{build\_mesh\_parallel}}
+\index{build\_mesh\_parallel@{build\_mesh\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{build\_mesh\_parallel()}{build\_mesh\_parallel()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::build\+\_\+mesh\+\_\+parallel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Generates a local sub-\/grid slice allocated to the invoking MPI process. 
+
+
+\begin{DoxyItemize}
+\item Distributes grid rows dynamically across active MPI processes. If the row count $ N $ is not perfectly divisible by the number of processes, the remainder rows are assigned one-\/by-\/one to the first lower-\/ranked processes to ensure optimal workload distribution. Internal cell row populations are accelerated locally via multi-\/threaded Open\+MP parallel loops. 
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 8
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_ae426ef5d2dbe2f9088b1538d29e6a7aa}\label{classlaplacian__solvers_1_1Laplacian__Solver_ae426ef5d2dbe2f9088b1538d29e6a7aa} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!build\_mesh\_sequential@{build\_mesh\_sequential}}
+\index{build\_mesh\_sequential@{build\_mesh\_sequential}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{build\_mesh\_sequential()}{build\_mesh\_sequential()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::build\+\_\+mesh\+\_\+sequential (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Generates the global coordinates mesh on a single thread. 
+
+
+\begin{DoxyItemize}
+\item Allocates and populates an $ N \times N $ matrix representing the full grid domain layout, assigning spatial continuous coordinate mappings directly to {\ttfamily meshX} and {\ttfamily meshY}. 
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 9
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a9a01023c583379332c80653741a1e353}\label{classlaplacian__solvers_1_1Laplacian__Solver_a9a01023c583379332c80653741a1e353} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!export\_to\_vtk@{export\_to\_vtk}}
+\index{export\_to\_vtk@{export\_to\_vtk}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{export\_to\_vtk()}{export\_to\_vtk()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::export\+\_\+to\+\_\+vtk (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{const}} std\+::string \&}]{filename }\end{DoxyParamCaption}) const}
+
+
+
+Exports global solver results to a structured ASCII VTK file format legacy format. 
+
+
+\begin{DoxyItemize}
+\item Gathers mesh positions and scalar field solutions from all active compute allocations via point-\/to-\/point gathering routines. Enforces directory tree setups and implements incremental filename counter adjustments to avoid unwanted file overrides. Output operations are pinned to Rank 0.
+\item 
+\begin{DoxyParams}{Parameters}
+{\em filename} & Target base name designation string for the exported VTK structure. \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 10
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_aee80a6ca379eea564e4f8f64097938ba}\label{classlaplacian__solvers_1_1Laplacian__Solver_aee80a6ca379eea564e4f8f64097938ba} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!jacobi\_parallel@{jacobi\_parallel}}
+\index{jacobi\_parallel@{jacobi\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{jacobi\_parallel()}{jacobi\_parallel()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::jacobi\+\_\+parallel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Solves the Laplacian problem using a parallel hybrid Jacobi method. 
+
+
+\begin{DoxyItemize}
+\item Splits the domain among MPI processes along rows. Each process allocates ghost/halo rows for neighbor data exchange. Within each process, calculations are threaded using Open\+MP, and ghost layers are synchronized via non-\/blocking or point-\/to-\/point MPI primitives.
+\item 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em solver\+\_\+type} & Iterative algorithm selector. \\
+\hline
+{\em boundary\+\_\+condition} & Boundary condition policy. \\
+\hline
+{\em execution\+\_\+mode} & Parallel execution policy backend. \\
+\hline
+{\em func\+Type} & Callable type for boundary and source terms.\\
+\hline
+\end{DoxyTemplParams}
+
+\item \begin{DoxyReturn}{Returns}
+A \doxylink{structResult__Struct}{Result\+\_\+\+Struct} containing the gathered solution on Rank 0, or partial local structs on other ranks. 
+\end{DoxyReturn}
+
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 11
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_ad8888be50670afbc3bdb0d1bd5ce9ee9}\label{classlaplacian__solvers_1_1Laplacian__Solver_ad8888be50670afbc3bdb0d1bd5ce9ee9} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!jacobi\_sequential@{jacobi\_sequential}}
+\index{jacobi\_sequential@{jacobi\_sequential}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{jacobi\_sequential()}{jacobi\_sequential()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::jacobi\+\_\+sequential (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Solves the Laplacian problem sequentially using the Jacobi iterative method. 
+
+
+\begin{DoxyItemize}
+\item Initializes the solution matrix, applies the initial boundary conditions, and runs the main relaxation loop until the squared $ L^2 $ norm error drops below the tolerance or the maximum iteration count is reached.
+\item 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em solver\+\_\+type} & Iterative algorithm selector. \\
+\hline
+{\em boundary\+\_\+condition} & Boundary condition policy. \\
+\hline
+{\em execution\+\_\+mode} & Sequential execution policy backend. \\
+\hline
+{\em func\+Type} & Callable type for boundary and source terms.\\
+\hline
+\end{DoxyTemplParams}
+
+\item \begin{DoxyReturn}{Returns}
+A \doxylink{structResult__Struct}{Result\+\_\+\+Struct} containing the final solution matrix, coordinates, and iteration metadata. 
+\end{DoxyReturn}
+
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 12
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a28f69b0dd54c09c790bca575d8108ffe}\label{classlaplacian__solvers_1_1Laplacian__Solver_a28f69b0dd54c09c790bca575d8108ffe} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!parallel\_solve@{parallel\_solve}}
+\index{parallel\_solve@{parallel\_solve}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{parallel\_solve()}{parallel\_solve()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::parallel\+\_\+solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Dispatches the parallel execution loop to the selected numerical algorithm. 
+
+
+\begin{DoxyItemize}
+\item Performs compile-\/time static routing between a standard point-\/to-\/point Jacobi method or an overlapping/non-\/overlapping alternating Schwarz domain decomposition method.
+\item 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em solver\+\_\+type} & Iterative algorithm selector. \\
+\hline
+{\em boundary\+\_\+condition} & Boundary condition policy. \\
+\hline
+{\em execution\+\_\+mode} & Parallelism execution backend policy. \\
+\hline
+{\em func\+Type} & Callable type for boundary and source terms.\\
+\hline
+\end{DoxyTemplParams}
+
+\item \begin{DoxyReturn}{Returns}
+A \doxylink{structResult__Struct}{Result\+\_\+\+Struct} containing local or gathered compute states. 
+\end{DoxyReturn}
+
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 13
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a388322e5abde88112808a061d0ddd676}\label{classlaplacian__solvers_1_1Laplacian__Solver_a388322e5abde88112808a061d0ddd676} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print@{print}}
+\index{print@{print}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::print (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Wrapper method to print the mesh, numerical solution, and exact solution. 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a832bb77ca5a7076da17bbeb1fe1dfb92}\label{classlaplacian__solvers_1_1Laplacian__Solver_a832bb77ca5a7076da17bbeb1fe1dfb92} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print\_exact\_solution@{print\_exact\_solution}}
+\index{print\_exact\_solution@{print\_exact\_solution}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{print\_exact\_solution()}{print\_exact\_solution()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::print\+\_\+exact\+\_\+solution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Gathers and prints the exact analytical benchmark evaluation solution array. 
+
+Here is the call graph for this function\+:
+% FIG 14
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a0aa5d72e85c1bc13a9badca765ef2888}\label{classlaplacian__solvers_1_1Laplacian__Solver_a0aa5d72e85c1bc13a9badca765ef2888} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print\_mesh@{print\_mesh}}
+\index{print\_mesh@{print\_mesh}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{print\_mesh()}{print\_mesh()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::print\+\_\+mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Gathers and prints the grid mesh coordinates across all active nodes. 
+
+
+\begin{DoxyItemize}
+\item If operating in parallel execution mode, a collective {\ttfamily MPI\+\_\+\+Gatherv} operation collects the partitioned matrix layout components back into Rank 0 before rendering console output. 
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 15
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_af5b2a6e6f0b59fd207560887ebe2bc9b}\label{classlaplacian__solvers_1_1Laplacian__Solver_af5b2a6e6f0b59fd207560887ebe2bc9b} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!print\_solution@{print\_solution}}
+\index{print\_solution@{print\_solution}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{print\_solution()}{print\_solution()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::print\+\_\+solution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Prints the final discrete numerical solution array along with execution metadata. 
+
+
+\begin{DoxyItemize}
+\item Outputs metrics such as residual errors and convergence loop iteration counts. Execution output is restricted solely to the root rank (Rank 0). 
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 16
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a3c631728ff640f5b4e5769ac55c35d18}\label{classlaplacian__solvers_1_1Laplacian__Solver_a3c631728ff640f5b4e5769ac55c35d18} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!process\_filter@{process\_filter}}
+\index{process\_filter@{process\_filter}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{process\_filter()}{process\_filter()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{void}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::process\+\_\+filter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+Filters active MPI processes and checks communicator sizing validity. 
+
+
+\begin{DoxyItemize}
+\item In parallel execution mode, ensures that the number of allocated MPI ranks does not exceed the total number of mesh rows ( $ N $), preventing empty or unassigned processes. If the topology is invalid, Rank 0 prints an error and aborts execution. 
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 17
+Here is the caller graph for this function\+:
+% FIG 18
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_aac6e442f2fdaaaf71665a38c6193a2aa}\label{classlaplacian__solvers_1_1Laplacian__Solver_aac6e442f2fdaaaf71665a38c6193a2aa} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!schwarz\_parallel@{schwarz\_parallel}}
+\index{schwarz\_parallel@{schwarz\_parallel}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{schwarz\_parallel()}{schwarz\_parallel()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::schwarz\+\_\+parallel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Solves the Laplacian problem using a parallel alternating Schwarz method. 
+
+
+\begin{DoxyItemize}
+\item Divides the domain into subdomains allocated to different MPI ranks. The algorithm alternates between global macro-\/steps (inter-\/process halo updates via MPI) and local micro-\/steps (multi-\/threaded relaxation loops via Open\+MP confined to the subdomains).
+\item 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em solver\+\_\+type} & Iterative algorithm selector. \\
+\hline
+{\em boundary\+\_\+condition} & Boundary condition policy. \\
+\hline
+{\em execution\+\_\+mode} & Parallel execution policy backend. \\
+\hline
+{\em func\+Type} & Callable type for boundary and source terms.\\
+\hline
+\end{DoxyTemplParams}
+
+\item \begin{DoxyReturn}{Returns}
+A \doxylink{structResult__Struct}{Result\+\_\+\+Struct} containing the assembled solution on Rank 0, or partial fields on other ranks. 
+\end{DoxyReturn}
+
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 19
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a050cbed7a1be81395096708c97f3dc1d}\label{classlaplacian__solvers_1_1Laplacian__Solver_a050cbed7a1be81395096708c97f3dc1d} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!solve@{solve}}
+\index{solve@{solve}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Method that triggers the appropriate linear solver backend. 
+
+
+\begin{DoxyItemize}
+\item Checks process validity and uses compile-\/time template routing ({\ttfamily if constexpr}) to dispatch execution based on the configured \doxylink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}.
+\item 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em solver\+\_\+type} & Iterative algorithm selector. \\
+\hline
+{\em boundary\+\_\+condition} & Boundary condition policy. \\
+\hline
+{\em execution\+\_\+mode} & Parallelism execution backend policy. \\
+\hline
+{\em func\+Type} & Callable type for boundary and source terms.\\
+\hline
+\end{DoxyTemplParams}
+
+\item \begin{DoxyReturn}{Returns}
+A \doxylink{structResult__Struct}{Result\+\_\+\+Struct} containing the final solution state.
+\end{DoxyReturn}
+
+\item \begin{DoxyNote}{Note}
+Non-\/participating MPI processes or non-\/zero ranks under sequential mode will immediately return an uninitialized or incomplete result object. 
+\end{DoxyNote}
+
+\end{DoxyItemize}Here is the call graph for this function\+:
+% FIG 20
+Here is the caller graph for this function\+:
+% FIG 21
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a524c6e537ce1db6815d029ffdbc82965}\label{classlaplacian__solvers_1_1Laplacian__Solver_a524c6e537ce1db6815d029ffdbc82965} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!data@{data}}
+\index{data@{data}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{structData__Struct}{Data\+\_\+\+Struct}}$<$\mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}}$>$ \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::data\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Configuration of the problem and parameters. 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a534ff523be71a43e94858f204249a280}\label{classlaplacian__solvers_1_1Laplacian__Solver_a534ff523be71a43e94858f204249a280} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!h@{h}}
+\index{h@{h}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{h}{h}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{double}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::h\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Uniform grid spacing parameter h. 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a97e27b24bd4fa4c9213ba42631cbadb2}\label{classlaplacian__solvers_1_1Laplacian__Solver_a97e27b24bd4fa4c9213ba42631cbadb2} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!meshX@{meshX}}
+\index{meshX@{meshX}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{meshX}{meshX}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::meshX\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Matrix containing the X coordinates of the structured grid. 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_af44850ba823b7afecd5bc86a88158fc1}\label{classlaplacian__solvers_1_1Laplacian__Solver_af44850ba823b7afecd5bc86a88158fc1} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!meshY@{meshY}}
+\index{meshY@{meshY}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{meshY}{meshY}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::meshY\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Matrix containing the Y coordinates of the structured grid. 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_ab0f5574363b6f45361d478871014a0f1}\label{classlaplacian__solvers_1_1Laplacian__Solver_ab0f5574363b6f45361d478871014a0f1} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!mpi\_rank@{mpi\_rank}}
+\index{mpi\_rank@{mpi\_rank}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{mpi\_rank}{mpi\_rank}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::mpi\+\_\+rank\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Rank of the MPI process (used in parallel execution). 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_aab2717e95ae6600a902de930d7748e4e}\label{classlaplacian__solvers_1_1Laplacian__Solver_aab2717e95ae6600a902de930d7748e4e} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!mpi\_size@{mpi\_size}}
+\index{mpi\_size@{mpi\_size}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{mpi\_size}{mpi\_size}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::mpi\+\_\+size\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Number of participating MPI processes (used in parallel execution). 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_ad0404e1bd6884fef2fbf31a2f243c45d}\label{classlaplacian__solvers_1_1Laplacian__Solver_ad0404e1bd6884fef2fbf31a2f243c45d} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!mpi\_used\_size@{mpi\_used\_size}}
+\index{mpi\_used\_size@{mpi\_used\_size}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{mpi\_used\_size}{mpi\_used\_size}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{int}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::mpi\+\_\+used\+\_\+size\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Actual MPI\+\_\+\+COMM\+\_\+\+WORLD size (for reference). 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a60ea20036e69bee111b81bfa6f3d5ab0}\label{classlaplacian__solvers_1_1Laplacian__Solver_a60ea20036e69bee111b81bfa6f3d5ab0} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!participating@{participating}}
+\index{participating@{participating}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{participating}{participating}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{bool}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::participating = \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{true}}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+True if this rank participates in computation (rank \texorpdfstring{$<$}{<} mpi\+\_\+size) 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a2a6972a29124af507d06f64c429b9b1f}\label{classlaplacian__solvers_1_1Laplacian__Solver_a2a6972a29124af507d06f64c429b9b1f} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!result@{result}}
+\index{result@{result}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{result}{result}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{structResult__Struct}{Result\+\_\+\+Struct}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::result\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Struct to hold the final results of the solver. 
+
+\Hypertarget{classlaplacian__solvers_1_1Laplacian__Solver_a3629e5081b801a0b9fd60b884462209c}\label{classlaplacian__solvers_1_1Laplacian__Solver_a3629e5081b801a0b9fd60b884462209c} 
+\index{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}!u\_exact@{u\_exact}}
+\index{u\_exact@{u\_exact}!laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$@{laplacian\_solvers::Laplacian\_Solver$<$ solver\_type, boundary\_condition, execution\_mode, funcType $>$}}
+\doxysubsubsection{\texorpdfstring{u\_exact}{u\_exact}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{laplacian__solvers_8hpp_a8b06041d7c1fb05f379714f4312306ec}{Solver\+Type}} solver\+\_\+type, \mbox{\hyperlink{laplacian__solvers_8hpp_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary\+\_\+condition, \mbox{\hyperlink{laplacian__solvers_8hpp_ad14b0c6d4ed8fcadff6dcf39c5cf17fd}{Execution\+Mode}} execution\+\_\+mode, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{typename}} \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$ \\
+\mbox{\hyperlink{laplacian__solvers_8hpp_a7ab7242e567c252db0759dc515f6960e}{eigen\+Matrix}} \mbox{\hyperlink{classlaplacian__solvers_1_1Laplacian__Solver}{laplacian\+\_\+solvers\+::\+Laplacian\+\_\+\+Solver}}$<$ \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{solver\+\_\+type}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{boundary\+\_\+condition}}, \mbox{\hyperlink{laplacian__solvers__boundary__conditions_8hpp_a8d4ff4aa41303532aa97bc19ac6128ec}{execution\+\_\+mode}}, \mbox{\hyperlink{namespacelaplacian__solvers_aa6af04d599ab7cd7e53c05d468926810}{func\+Type}} $>$\+::u\+\_\+exact\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Analytical solution over the mesh points matrix. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{laplacian__solvers_8hpp}{laplacian\+\_\+solvers.\+hpp}}\item 
+include/\mbox{\hyperlink{laplacian__solvers__implementation_8hpp}{laplacian\+\_\+solvers\+\_\+implementation.\+hpp}}\item 
+include/\mbox{\hyperlink{laplacian__solvers__initializer_8hpp}{laplacian\+\_\+solvers\+\_\+initializer.\+hpp}}\item 
+include/\mbox{\hyperlink{laplacian__solvers__parallel__jacobi__implementation_8hpp}{laplacian\+\_\+solvers\+\_\+parallel\+\_\+jacobi\+\_\+implementation.\+hpp}}\item 
+include/\mbox{\hyperlink{laplacian__solvers__parallel__schwarz__implementation_8hpp}{laplacian\+\_\+solvers\+\_\+parallel\+\_\+schwarz\+\_\+implementation.\+hpp}}\item 
+include/\mbox{\hyperlink{laplacian__solvers__postprocessing_8hpp}{laplacian\+\_\+solvers\+\_\+postprocessing.\+hpp}}\item 
+include/\mbox{\hyperlink{laplacian__solvers__sequential__implementations_8hpp}{laplacian\+\_\+solvers\+\_\+sequential\+\_\+implementations.\+hpp}}\end{DoxyCompactItemize}

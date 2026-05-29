@@ -9,8 +9,24 @@
 #include <vector>
 #include <fstream>
 
+/**
+ * @file laplacian_solvers_parallel_jacobi_implementation.hpp
+ * @brief Hybrid MPI+OpenMP parallel implementation of the Jacobi solver.
+ */
+
 namespace laplacian_solvers{
 
+    /**
+     * @brief Solves the Laplacian problem using a parallel hybrid Jacobi method.
+     * * Splits the domain among MPI processes along rows. Each process allocates ghost/halo 
+     * rows for neighbor data exchange. Within each process, calculations are threaded using 
+     * OpenMP, and ghost layers are synchronized via non-blocking or point-to-point MPI primitives.
+     * * @tparam solver_type Iterative algorithm selector.
+     * @tparam boundary_condition Boundary condition policy.
+     * @tparam execution_mode Parallel execution policy backend.
+     * @tparam funcType Callable type for boundary and source terms.
+     * * @return A @ref Result_Struct containing the gathered solution on Rank 0, or partial local structs on other ranks.
+     */
     template <SolverType solver_type, BoundaryCondition boundary_condition, ExecutionMode execution_mode, typename funcType>
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel(){
         
@@ -110,13 +126,13 @@ namespace laplacian_solvers{
         result.X.swap(meshX_global);
         result.Y.swap(meshY_global);
         result.iterations = iter;
-        result.iterartion_residue = std::sqrt(err);
+        result.iteration_residue = std::sqrt(err);
         if(mpi_rank == 0) result.valid = true;
 
         return result;
     
     }
-}
+} // namespace laplacian_solvers
 
 
-#endif
+#endif // LAPLACIAN_SOLVERS_PARALLEL_JACOBI_IMPLEMENTATION_HPP
