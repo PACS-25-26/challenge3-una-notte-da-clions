@@ -1,4 +1,155 @@
-\chapter{README}
-\hypertarget{md_README}{}\label{md_README}\index{README@{README}}
-\href{https://classroom.github.com/a/tKSbaXxd}{\texttt{ }} \hypertarget{md_README_autotoc_md0}{}\doxysection{\texorpdfstring{challenge3}{challenge3}}\label{md_README_autotoc_md0}
-The third challenge 
+\chapter{Challenge 3\+: 2D Laplacian Solver Suite}
+\hypertarget{md_README}{}\label{md_README}\index{Challenge 3: 2D Laplacian Solver Suite@{Challenge 3: 2D Laplacian Solver Suite}}
+\label{md_README_autotoc_md0}%
+\Hypertarget{md_README_autotoc_md0}%
+ C++ project for the numerical solution of the 2D Poisson/\+Laplacian equation on a structured grid.\hypertarget{md_README_autotoc_md1}{}\doxysection{\texorpdfstring{Overview}{Overview}}\label{md_README_autotoc_md1}
+This project implements a solver suite for elliptic boundary value problems on a square domain, with support for\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Dirichlet}}, {\bfseries{Neumann}}, and {\bfseries{Robin}} boundary conditions
+\item iterative solvers {\bfseries{Jacobi}} and {\bfseries{Schwarz}}
+\item {\bfseries{sequential}} and {\bfseries{parallel}} execution using {\bfseries{MPI}} + {\bfseries{Open\+MP}}
+\item verification tests with analytical solutions and convergence monitoring
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md2}{}\doxysection{\texorpdfstring{Main structure}{Main structure}}\label{md_README_autotoc_md2}
+
+\begin{DoxyItemize}
+\item {\ttfamily \doxylink{main_8cpp}{main.\+cpp}} — initializes MPI/\+Open\+MP and runs the test cases
+\item {\ttfamily \doxylink{laplacian__solvers_8hpp}{include/laplacian\+\_\+solvers.\+hpp}} — solver classes, data structures, and algorithm definitions
+\item {\ttfamily \doxylink{laplacian__solvers__test__1_8hpp}{include/laplacian\+\_\+solvers\+\_\+test\+\_\+1.\+hpp}} — main verification tests and baseline cases
+\item {\ttfamily \doxylink{laplacian__solvers__test__2_8hpp}{include/laplacian\+\_\+solvers\+\_\+test\+\_\+2.\+hpp}} — advanced tests and non-\/homogeneous boundary cases
+\item {\ttfamily Makefile} — build rules using {\ttfamily mpic++}
+\item {\ttfamily executables/} — target directory for the compiled executable
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md3}{}\doxysection{\texorpdfstring{Requirements}{Requirements}}\label{md_README_autotoc_md3}
+
+\begin{DoxyItemize}
+\item C++ compiler with {\bfseries{C++23}} support
+\item {\bfseries{MPI}} runtime installed
+\item {\bfseries{Open\+MP}} support
+\item {\ttfamily mpic++} available in the PATH
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md4}{}\doxysection{\texorpdfstring{Build}{Build}}\label{md_README_autotoc_md4}
+From the project root\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make\ clean\ \&\&\ make}
+
+\end{DoxyCode}
+
+
+This command builds the executable at {\ttfamily executables/exe}.\hypertarget{md_README_autotoc_md5}{}\doxysubsection{\texorpdfstring{Build modes}{Build modes}}\label{md_README_autotoc_md5}
+
+\begin{DoxyItemize}
+\item {\ttfamily make} — standard build
+\item {\ttfamily make debug} — build with {\ttfamily -\/Wall -\/g -\/O0}
+\item {\ttfamily make release} — build with {\ttfamily -\/O3 -\/DNDEBUG}
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md6}{}\doxysection{\texorpdfstring{Run}{Run}}\label{md_README_autotoc_md6}
+Run the executable with MPI\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mpirun\ -\/np\ 4\ ./executables/exe}
+
+\end{DoxyCode}
+
+
+The program executes a predefined sequence of test cases covering boundary conditions and iterative methods.\hypertarget{md_README_autotoc_md7}{}\doxysection{\texorpdfstring{Open\+MP settings}{OpenMP settings}}\label{md_README_autotoc_md7}
+In the {\ttfamily Makefile}, you can configure the total number of Open\+MP threads\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily USE\+\_\+\+OPENMP=true}
+\item {\ttfamily AVAILABLE\+\_\+\+THREADS=16}
+\end{DoxyItemize}
+
+The number of threads per MPI rank is computed automatically based on the number of launched processes.\hypertarget{md_README_autotoc_md8}{}\doxysection{\texorpdfstring{Output}{Output}}\label{md_README_autotoc_md8}
+
+\begin{DoxyItemize}
+\item convergence information, residuals, and iteration counts printed to the console
+\item VTK output files generated for visualization (e.\+g. {\ttfamily test\+\_\+1\+\_\+dirichlet\+\_\+sequential.\+vtk})
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md9}{}\doxysubsection{\texorpdfstring{VTK visualization}{VTK visualization}}\label{md_README_autotoc_md9}
+The solver writes solution output in VTK format, which can be opened with Para\+View for interactive visualization.\hypertarget{md_README_autotoc_md10}{}\doxysection{\texorpdfstring{Test Suites}{Test Suites}}\label{md_README_autotoc_md10}
+The integrated test suite ({\ttfamily \doxylink{laplacian__solvers__test__1_8hpp}{laplacian\+\_\+solvers\+\_\+test\+\_\+1.\+hpp}} and {\ttfamily \doxylink{laplacian__solvers__test__2_8hpp}{laplacian\+\_\+solvers\+\_\+test\+\_\+2.\+hpp}}) verifies correctness, measures parallel efficiency, and analyses convergence of the implemented solvers. It covers three boundary condition types – Dirichlet, Neumann, and Robin – for both the {\bfseries{Jacobi}} and {\bfseries{Schwarz}} solvers, in {\bfseries{sequential}} and {\bfseries{MPI‑parallel}} execution modes.\hypertarget{md_README_autotoc_md11}{}\doxysection{\texorpdfstring{Exact solutions and source terms}{Exact solutions and source terms}}\label{md_README_autotoc_md11}
+{\bfseries{Group 1}} (tests 1, 4, 7, 10, 13)
+
+Exact solution\+: \$\$u(x,y) = \textbackslash{}sin(\textbackslash{}pi x) \textbackslash{}sin(\textbackslash{}pi y)\$\$
+
+Source term\+: \$\$f\+\_\+0(x,y) = -\/\textbackslash{}\+Delta u = 2\textbackslash{}pi\texorpdfstring{$^\wedge$}{\string^}2 \textbackslash{}sin(\textbackslash{}pi x) \textbackslash{}sin(\textbackslash{}pi y)\$\$
+
+\DoxyHorRuler{0}
+
+
+{\bfseries{Group 2}} (tests 2, 5, 8, 11, 14)
+
+Exact solution\+: \$\$u(x,y) = \textbackslash{}cos(\textbackslash{}pi x) \textbackslash{}cos(\textbackslash{}pi y)\$\$
+
+Source term\+: \$\$f\+\_\+0(x,y) = 2\textbackslash{}pi\texorpdfstring{$^\wedge$}{\string^}2 \textbackslash{}cos(\textbackslash{}pi x) \textbackslash{}cos(\textbackslash{}pi y)\$\$
+
+\DoxyHorRuler{0}
+
+
+{\bfseries{Group 3}} (tests 3, 6, 9, 12, 15)
+
+Exact solution\+: \$\$u(x,y) = e\texorpdfstring{$^\wedge$}{\string^}\{x+y\}\$\$
+
+Source term\+: \$\$f\+\_\+0(x,y) = -\/2e\texorpdfstring{$^\wedge$}{\string^}\{x+y\}\$\$
+
+\DoxyHorRuler{0}
+
+
+{\bfseries{Group 4}} (tests 16, 17, 19, 20, 22)
+
+Exact solution\+: \$\$u(x,y) = x\texorpdfstring{$^\wedge$}{\string^}2y + xy\texorpdfstring{$^\wedge$}{\string^}2 + x + y + 1\$\$
+
+Source term\+: \$\$f\+\_\+0(x,y) = -\/2(x+y)\$\$
+
+\DoxyHorRuler{0}
+
+
+{\bfseries{Group 5}} (tests 18, 21)
+
+Exact solution\+: \$\$u(x,y) = \textbackslash{}sin(x+y) + 2x + 3y\$\$
+
+Source term\+: \$\$f\+\_\+0(x,y) = 2\textbackslash{}sin(x+y)\$\$\hypertarget{md_README_autotoc_md16}{}\doxysection{\texorpdfstring{Boundary conditions}{Boundary conditions}}\label{md_README_autotoc_md16}
+
+\begin{DoxyItemize}
+\item {\bfseries{Dirichlet}} – prescribed value \$u = g\$ on \$\textbackslash{}partial\textbackslash{}\+Omega\$
+\item {\bfseries{Neumann}} – prescribed normal derivative \$\textbackslash{}frac\{\textbackslash{}partial u\}\{\textbackslash{}partial n\} = g\$ on \$\textbackslash{}partial\textbackslash{}\+Omega\$
+\item {\bfseries{Robin}} – linear combination \$u + \textbackslash{}frac\{\textbackslash{}partial u\}\{\textbackslash{}partial n\} = g\$ on \$\textbackslash{}partial\textbackslash{}\+Omega\$
+\end{DoxyItemize}
+
+The convergence benchmark evaluates serial and parallel runs across refinement levels\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{n\ =\ 8,\(\backslash\)\ 16,\(\backslash\)\ 32,\(\backslash\)\ 64,\(\backslash\)\ 128}
+
+\end{DoxyCode}
+
+
+and records\+:
+
+
+\begin{DoxyItemize}
+\item L2 error norms of the numerical solution
+\item iteration counts
+\item execution time in milliseconds
+\item parallel speedup ratios
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md17}{}\doxysection{\texorpdfstring{Doxygen and La\+Te\+X documentation}{Doxygen and LaTeX documentation}}\label{md_README_autotoc_md17}
+This repository already includes generated documentation in both HTML and La\+TeX form.\hypertarget{md_README_autotoc_md18}{}\doxysubsection{\texorpdfstring{Open the Doxygen site}{Open the Doxygen site}}\label{md_README_autotoc_md18}
+Open one of the generated HTML files in your browser\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily xdg-\/open html/index.\+html}
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md19}{}\doxysubsection{\texorpdfstring{Open the La\+Te\+X reference manual}{Open the LaTeX reference manual}}\label{md_README_autotoc_md19}
+Use a PDF viewer to open the generated La\+TeX reference manual\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{xdg-\/open\ latex/refman.pdf}
+
+\end{DoxyCode}
+
+
+If {\ttfamily latex/refman.\+pdf} is not built yet, you can generate it from the La\+TeX source inside {\ttfamily latex/} using the provided {\ttfamily Makefile}. 

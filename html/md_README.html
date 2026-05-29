@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Laplacian Solvers: README</title>
+<title>Laplacian Solvers: Challenge 3: 2D Laplacian Solver Suite</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,13 +69,125 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">README</div></div>
+  <div class="headertitle"><div class="title">Challenge 3: 2D Laplacian Solver Suite</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a href="https://classroom.github.com/a/tKSbaXxd"><img src="https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg" alt="Review Assignment Due Date" style="pointer-events: none;" class="inline"/></a> </p>
-<h1><a class="anchor" id="autotoc_md0"></a>
-challenge3</h1>
-<p>The third challenge </p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> C++ project for the numerical solution of the 2D Poisson/Laplacian equation on a structured grid.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Overview</h1>
+<p>This project implements a solver suite for elliptic boundary value problems on a square domain, with support for:</p>
+<ul>
+<li><b>Dirichlet</b>, <b>Neumann</b>, and <b>Robin</b> boundary conditions</li>
+<li>iterative solvers <b>Jacobi</b> and <b>Schwarz</b></li>
+<li><b>sequential</b> and <b>parallel</b> execution using <b>MPI</b> + <b>OpenMP</b></li>
+<li>verification tests with analytical solutions and convergence monitoring</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Main structure</h1>
+<ul>
+<li><code><a class="el" href="main_8cpp.html">main.cpp</a></code> — initializes MPI/OpenMP and runs the test cases</li>
+<li><code><a class="el" href="laplacian__solvers_8hpp.html" title="Definition of the Laplacian/Poisson equation solver with multi-backend support (MPI,...">include/laplacian_solvers.hpp</a></code> — solver classes, data structures, and algorithm definitions</li>
+<li><code><a class="el" href="laplacian__solvers__test__1_8hpp.html" title="Integration test suite covering sequential, parallel, and convergence benchmarks.">include/laplacian_solvers_test_1.hpp</a></code> — main verification tests and baseline cases</li>
+<li><code><a class="el" href="laplacian__solvers__test__2_8hpp.html" title="Extended integration test suite evaluating non-homogeneous boundary test cases.">include/laplacian_solvers_test_2.hpp</a></code> — advanced tests and non-homogeneous boundary cases</li>
+<li><code>Makefile</code> — build rules using <code>mpic++</code></li>
+<li><code>executables/</code> — target directory for the compiled executable</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Requirements</h1>
+<ul>
+<li>C++ compiler with <b>C++23</b> support</li>
+<li><b>MPI</b> runtime installed</li>
+<li><b>OpenMP</b> support</li>
+<li><code>mpic++</code> available in the PATH</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Build</h1>
+<p>From the project root:</p>
+<div class="fragment"><div class="line">make clean &amp;&amp; make</div>
+</div><!-- fragment --><p>This command builds the executable at <code>executables/exe</code>.</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Build modes</h2>
+<ul>
+<li><code>make</code> — standard build</li>
+<li><code>make debug</code> — build with <code>-Wall -g -O0</code></li>
+<li><code>make release</code> — build with <code>-O3 -DNDEBUG</code></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Run</h1>
+<p>Run the executable with MPI:</p>
+<div class="fragment"><div class="line">mpirun -np 4 ./executables/exe</div>
+</div><!-- fragment --><p>The program executes a predefined sequence of test cases covering boundary conditions and iterative methods.</p>
+<h1><a class="anchor" id="autotoc_md7"></a>
+OpenMP settings</h1>
+<p>In the <code>Makefile</code>, you can configure the total number of OpenMP threads:</p>
+<ul>
+<li><code>USE_OPENMP=true</code></li>
+<li><code>AVAILABLE_THREADS=16</code></li>
+</ul>
+<p>The number of threads per MPI rank is computed automatically based on the number of launched processes.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
+Output</h1>
+<ul>
+<li>convergence information, residuals, and iteration counts printed to the console</li>
+<li>VTK output files generated for visualization (e.g. <code>test_1_dirichlet_sequential.vtk</code>)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md9"></a>
+VTK visualization</h2>
+<p>The solver writes solution output in VTK format, which can be opened with ParaView for interactive visualization.</p>
+<h1><a class="anchor" id="autotoc_md10"></a>
+Test Suites</h1>
+<p>The integrated test suite (<code><a class="el" href="laplacian__solvers__test__1_8hpp.html" title="Integration test suite covering sequential, parallel, and convergence benchmarks.">laplacian_solvers_test_1.hpp</a></code> and <code><a class="el" href="laplacian__solvers__test__2_8hpp.html" title="Extended integration test suite evaluating non-homogeneous boundary test cases.">laplacian_solvers_test_2.hpp</a></code>) verifies correctness, measures parallel efficiency, and analyses convergence of the implemented solvers. It covers three boundary condition types – Dirichlet, Neumann, and Robin – for both the <b>Jacobi</b> and <b>Schwarz</b> solvers, in <b>sequential</b> and <b>MPI‑parallel</b> execution modes.</p>
+<h1><a class="anchor" id="autotoc_md11"></a>
+Exact solutions and source terms</h1>
+<p><b>Group 1</b> (tests 1, 4, 7, 10, 13)</p>
+<p>Exact solution: $$u(x,y) = \sin(\pi x) \sin(\pi y)$$</p>
+<p>Source term: $$f_0(x,y) = -\Delta u = 2\pi^2 \sin(\pi x) \sin(\pi y)$$</p>
+<hr  />
+<p><b>Group 2</b> (tests 2, 5, 8, 11, 14)</p>
+<p>Exact solution: $$u(x,y) = \cos(\pi x) \cos(\pi y)$$</p>
+<p>Source term: $$f_0(x,y) = 2\pi^2 \cos(\pi x) \cos(\pi y)$$</p>
+<hr  />
+<p><b>Group 3</b> (tests 3, 6, 9, 12, 15)</p>
+<p>Exact solution: $$u(x,y) = e^{x+y}$$</p>
+<p>Source term: $$f_0(x,y) = -2e^{x+y}$$</p>
+<hr  />
+<p><b>Group 4</b> (tests 16, 17, 19, 20, 22)</p>
+<p>Exact solution: $$u(x,y) = x^2y + xy^2 + x + y + 1$$</p>
+<p>Source term: $$f_0(x,y) = -2(x+y)$$</p>
+<hr  />
+<p><b>Group 5</b> (tests 18, 21)</p>
+<p>Exact solution: $$u(x,y) = \sin(x+y) + 2x + 3y$$</p>
+<p>Source term: $$f_0(x,y) = 2\sin(x+y)$$</p>
+<h1><a class="anchor" id="autotoc_md16"></a>
+Boundary conditions</h1>
+<ul>
+<li><b>Dirichlet</b> – prescribed value $u = g$ on $\partial\Omega$</li>
+<li><b>Neumann</b> – prescribed normal derivative $\frac{\partial u}{\partial n} = g$ on $\partial\Omega$</li>
+<li><b>Robin</b> – linear combination $u + \frac{\partial u}{\partial n} = g$ on $\partial\Omega$</li>
+</ul>
+<p>The convergence benchmark evaluates serial and parallel runs across refinement levels:</p>
+<div class="fragment"><div class="line">n = 8,\ 16,\ 32,\ 64,\ 128</div>
+</div><!-- fragment --><p>and records:</p>
+<ul>
+<li>L2 error norms of the numerical solution</li>
+<li>iteration counts</li>
+<li>execution time in milliseconds</li>
+<li>parallel speedup ratios</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md17"></a>
+Doxygen and LaTeX documentation</h1>
+<p>This repository already includes generated documentation in both HTML and LaTeX form.</p>
+<h2><a class="anchor" id="autotoc_md18"></a>
+Open the Doxygen site</h2>
+<p>Open one of the generated HTML files in your browser:</p>
+<ul>
+<li><code>xdg-open html/index.html</code></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md19"></a>
+Open the LaTeX reference manual</h2>
+<p>Use a PDF viewer to open the generated LaTeX reference manual:</p>
+<div class="fragment"><div class="line">xdg-open latex/refman.pdf</div>
+</div><!-- fragment --><p>If <code>latex/refman.pdf</code> is not built yet, you can generate it from the LaTeX source inside <code>latex/</code> using the provided <code>Makefile</code>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['readme_0',['README',['../md_README.html',1,'']]],
-  ['results_1',['results',['../md_results.html',1,'']]]
+  ['2d_20laplacian_20solver_20suite_0',['Challenge 3: 2D Laplacian Solver Suite',['../md_README.html',1,'']]]
 ];

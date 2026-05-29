@@ -1,12 +1,15 @@
 var searchData=
 [
-  ['parallel_0',['PARALLEL',['../laplacian__solvers_8hpp.html#ad14b0c6d4ed8fcadff6dcf39c5cf17fdadf13a99b035d6f0bce4f44ab18eec8eb',1,'laplacian_solvers.hpp']]],
-  ['parallel_5fsolve_1',['parallel_solve',['../classlaplacian__solvers_1_1Laplacian__Solver.html#a28f69b0dd54c09c790bca575d8108ffe',1,'laplacian_solvers::Laplacian_Solver']]],
-  ['participating_2',['participating',['../classlaplacian__solvers_1_1Laplacian__Solver.html#a60ea20036e69bee111b81bfa6f3d5ab0',1,'laplacian_solvers::Laplacian_Solver']]],
-  ['print_3',['print',['../classlaplacian__solvers_1_1Laplacian__Solver.html#a388322e5abde88112808a061d0ddd676',1,'laplacian_solvers::Laplacian_Solver']]],
-  ['print_5fconvergence_5fresults_4',['print_convergence_results',['../classlaplacian__solvers_1_1Convergence__Test.html#ad428012f3cb6ebec328eefe10a382953',1,'laplacian_solvers::Convergence_Test']]],
-  ['print_5fexact_5fsolution_5',['print_exact_solution',['../classlaplacian__solvers_1_1Laplacian__Solver.html#a832bb77ca5a7076da17bbeb1fe1dfb92',1,'laplacian_solvers::Laplacian_Solver']]],
-  ['print_5fmesh_6',['print_mesh',['../classlaplacian__solvers_1_1Laplacian__Solver.html#a0aa5d72e85c1bc13a9badca765ef2888',1,'laplacian_solvers::Laplacian_Solver']]],
-  ['print_5fsolution_7',['print_solution',['../classlaplacian__solvers_1_1Laplacian__Solver.html#af5b2a6e6f0b59fd207560887ebe2bc9b',1,'laplacian_solvers::Laplacian_Solver']]],
-  ['process_5ffilter_8',['process_filter',['../classlaplacian__solvers_1_1Laplacian__Solver.html#a3c631728ff640f5b4e5769ac55c35d18',1,'laplacian_solvers::Laplacian_Solver']]]
+  ['main_0',['main',['../main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
+  ['main_20structure_1',['Main structure',['../md_README.html#autotoc_md2',1,'']]],
+  ['main_2ecpp_2',['main.cpp',['../main_8cpp.html',1,'']]],
+  ['manual_3',['Open the LaTeX reference manual',['../md_README.html#autotoc_md19',1,'']]],
+  ['max_5fiterations_4',['max_iterations',['../structData__Struct.html#a996f3b55776e4badcc6e52d4a46d26ae',1,'Data_Struct']]],
+  ['max_5fschwarz_5fiterations_5',['max_schwarz_iterations',['../structData__Struct.html#a18dd42d914cea7eee5015e376881e69f',1,'Data_Struct::max_schwarz_iterations'],['../laplacian__solvers_8hpp.html#ab78e4a04e3fc13a96a7b6864038ed094',1,'MAX_SCHWARZ_ITERATIONS:&#160;laplacian_solvers.hpp'],['../laplacian__solvers__parallel__schwarz__implementation_8hpp.html#ab78e4a04e3fc13a96a7b6864038ed094',1,'MAX_SCHWARZ_ITERATIONS:&#160;laplacian_solvers_parallel_schwarz_implementation.hpp']]],
+  ['meshx_6',['meshX',['../classlaplacian__solvers_1_1Laplacian__Solver.html#a97e27b24bd4fa4c9213ba42631cbadb2',1,'laplacian_solvers::Laplacian_Solver']]],
+  ['meshy_7',['meshY',['../classlaplacian__solvers_1_1Laplacian__Solver.html#af44850ba823b7afecd5bc86a88158fc1',1,'laplacian_solvers::Laplacian_Solver']]],
+  ['modes_8',['Build modes',['../md_README.html#autotoc_md5',1,'']]],
+  ['mpi_5frank_9',['mpi_rank',['../classlaplacian__solvers_1_1Convergence__Test.html#a7b135d37407e1a8109c9107110f49cff',1,'laplacian_solvers::Convergence_Test::mpi_rank'],['../classlaplacian__solvers_1_1Laplacian__Solver.html#ab0f5574363b6f45361d478871014a0f1',1,'laplacian_solvers::Laplacian_Solver::mpi_rank']]],
+  ['mpi_5fsize_10',['mpi_size',['../classlaplacian__solvers_1_1Laplacian__Solver.html#aab2717e95ae6600a902de930d7748e4e',1,'laplacian_solvers::Laplacian_Solver']]],
+  ['mpi_5fused_5fsize_11',['mpi_used_size',['../classlaplacian__solvers_1_1Laplacian__Solver.html#ad0404e1bd6884fef2fbf31a2f243c45d',1,'laplacian_solvers::Laplacian_Solver']]]
 ];

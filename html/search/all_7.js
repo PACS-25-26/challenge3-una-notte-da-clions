@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['is_5ftest_5fdone_0',['is_test_done',['../classlaplacian__solvers_1_1Convergence__Test.html#ab31db2238ef53e0691b11002df1c50fa',1,'laplacian_solvers::Convergence_Test']]],
-  ['iteration_5fresidue_1',['iteration_residue',['../structResult__Struct.html#a115a9215010d085d164fa6bfe8a5f517',1,'Result_Struct']]],
-  ['iterations_2',['iterations',['../structResult__Struct.html#ae3deb59528c23db8b0cf22649307202c',1,'Result_Struct']]],
-  ['iterations_5fparallel_3',['iterations_parallel',['../structlaplacian__solvers_1_1Convergence__Struct.html#af98ce9ed23a065b06acc27710c41c4b2',1,'laplacian_solvers::Convergence_Struct']]],
-  ['iterations_5fserial_4',['iterations_serial',['../structlaplacian__solvers_1_1Convergence__Struct.html#a30b52a2ca749deda677a66073703e6fd',1,'laplacian_solvers::Convergence_Struct']]]
+  ['f0_0',['f0',['../structData__Struct.html#a058007ac9c8714b2b442e8753036ca64',1,'Data_Struct']]],
+  ['f1_1',['f1',['../structData__Struct.html#a03d3de2c9c958c084918b80b33d5885e',1,'Data_Struct']]],
+  ['f2_2',['f2',['../structData__Struct.html#ade0e7b951208c0281c256d8252ff8fc0',1,'Data_Struct']]],
+  ['f3_3',['f3',['../structData__Struct.html#a9d1e600446ae64cc3e3f6a38587d6c61',1,'Data_Struct']]],
+  ['f4_4',['f4',['../structData__Struct.html#a7dc1be995b93e977a2a34f88c513dead',1,'Data_Struct']]],
+  ['functype_5',['funcType',['../namespacelaplacian__solvers.html#aa6af04d599ab7cd7e53c05d468926810',1,'laplacian_solvers']]]
 ];

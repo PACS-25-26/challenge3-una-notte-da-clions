@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['challenge3_0',['challenge3',['../md_README.html#autotoc_md0',1,'']]],
-  ['compute_5ferror_1',['compute_error',['../classlaplacian__solvers_1_1Convergence__Test.html#a7872138ab9ab0237dc5f59823f838ce3',1,'laplacian_solvers::Convergence_Test']]],
-  ['convergence_5fdata_5fstruct_2',['convergence_data_struct',['../classlaplacian__solvers_1_1Convergence__Test.html#a76a38a57f1aa09f6386c77601352110a',1,'laplacian_solvers::Convergence_Test']]],
-  ['convergence_5fstruct_3',['Convergence_Struct',['../structlaplacian__solvers_1_1Convergence__Struct.html',1,'laplacian_solvers']]],
-  ['convergence_5ftest_4',['convergence_test',['../classlaplacian__solvers_1_1Convergence__Test.html',1,'laplacian_solvers::Convergence_Test&lt; solver_type, boundary_condition, funcType &gt;'],['../classlaplacian__solvers_1_1Convergence__Test.html#a5c5db4e9859dca0be4c2a3a91cf9f54a',1,'laplacian_solvers::Convergence_Test::Convergence_Test()']]],
-  ['create_5fdefault_5fdata_5',['create_default_data',['../namespacelaplacian__solvers.html#af32d241ef9f01a7e278b81f1436ec679',1,'laplacian_solvers']]]
+  ['alpha_0',['alpha',['../structData__Struct.html#a51b73788011a9a858838ea64f5bb0353',1,'Data_Struct']]],
+  ['and_20latex_20documentation_1',['Doxygen and LaTeX documentation',['../md_README.html#autotoc_md17',1,'']]],
+  ['and_20source_20terms_2',['Exact solutions and source terms',['../md_README.html#autotoc_md11',1,'']]],
+  ['apply_5fboundary_5fcondition_3',['apply_boundary_condition',['../laplacian__solvers__boundary__conditions_8hpp.html#a46d4265f6b6d68242b81ca6033cbe0a8',1,'laplacian_solvers_boundary_conditions.hpp']]],
+  ['apply_5fdirichlet_5fcondition_4',['apply_dirichlet_condition',['../laplacian__solvers__boundary__conditions_8hpp.html#a8d4ff4aa41303532aa97bc19ac6128ec',1,'laplacian_solvers_boundary_conditions.hpp']]],
+  ['apply_5fneumann_5fcondition_5',['apply_neumann_condition',['../laplacian__solvers__boundary__conditions_8hpp.html#a13b50b1022f76b77d6964685d6493ae3',1,'laplacian_solvers_boundary_conditions.hpp']]],
+  ['apply_5frobin_5fcondition_6',['apply_robin_condition',['../laplacian__solvers__boundary__conditions_8hpp.html#a3e1203236c92e68dadc20831e4d90124',1,'laplacian_solvers_boundary_conditions.hpp']]]
 ];
