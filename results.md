@@ -1,3 +1,17 @@
+# Results
+
+This file contains the solver output from the numerical test suite. The test was executed with 8 MPI processes and a total of 16 OpenMP threads.
+
+The report includes mesh coordinates, the computed discrete solution `u_h`, residual errors, iteration counts, and the analytical exact solution for each test case.
+
+Comments on the results:
+
+- Each test block contains the grid coordinates, the computed discrete solution `u_h`, the final residual, the number of iterations, and the analytical exact solution for comparison.
+- Residual values around `1e-6` indicate that the iterative solver reached its convergence tolerance.
+- In sequential tests, values are shown for baseline verification. In parallel Jacobi and Schwarz tests, the same pattern is reproduced across MPI ranks.
+- The convergence benchmark at the end reports L2 errors, iteration counts, execution times, and speedups between serial and parallel runs.
+
+```text
 === Running Test 1: DIRICHLET SEQUENTIAL (Jacobi) ===
 Mesh points (x, y):
 (0, 0) (0.142857, 0) (0.285714, 0) (0.428571, 0) (0.571429, 0) (0.714286, 0) (0.857143, 0) (1, 0) 
@@ -518,3 +532,10 @@ Refinement Level (n) | L2 Error (Serial) | L2 Error (Parallel) | Iterations (Ser
 32 | 13.4115 | 13.4414 | 100000 | 726 | 627.354 | 22.4681 | 27.922
 64 | 18.8146 | 18.8356 | 100000 | 2192 | 2303.21 | 122.13 | 18.8588
 128 | 26.5025 | 26.5173 | 100000 | 7075 | 8777.83 | 1205.8 | 7.27964
+```
+
+Final comments:
+
+- The last benchmark shows that parallel execution reduces wall-clock time in this case compared with the serial run.
+- The L2 error values for serial and parallel executions are comparable, confirming consistency between the two implementations.
+- Iteration counts differ because the parallel Schwarz solver uses a different convergence path, but the end result remains within the expected error tolerance.

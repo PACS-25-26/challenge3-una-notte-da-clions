@@ -67,6 +67,10 @@ The number of threads per MPI rank is computed automatically based on the number
 - convergence information, residuals, and iteration counts printed to the console
 - VTK output files generated for visualization (e.g. `test_1_dirichlet_sequential.vtk`)
 
+### VTK visualization
+
+The solver writes solution output in VTK format, which can be opened with ParaView for interactive visualization.
+
 ## Test suites
 
 ### `include/laplacian_solvers_test_1.hpp`
