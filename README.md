@@ -79,8 +79,6 @@ Each test constructs a known analytical solution \( u_{\text{exact}}(x,y) \), de
 
 ## Exact solutions and source terms
 
-## Exact solutions and source terms
-
 **Group 1** (tests 1, 4, 7, 10, 13)
 
 Exact solution:
@@ -134,31 +132,6 @@ $$f_0(x,y) = 2\sin(x+y)$$
 - **Dirichlet** – prescribed value $u = g$ on $\partial\Omega$
 - **Neumann** – prescribed normal derivative $\frac{\partial u}{\partial n} = g$ on $\partial\Omega$
 - **Robin** – linear combination $u + \frac{\partial u}{\partial n} = g$ on $\partial\Omega$
-
-## List of tests
-
-- **Test 1** – Jacobi, Sequential, Dirichlet, $\sin(\pi x)\sin(\pi y)$ → baseline validation
-- **Test 2** – Jacobi, Sequential, Neumann, $\cos(\pi x)\cos(\pi y)$ → Neumann consistency
-- **Test 3** – Jacobi, Sequential, Robin, $e^{x+y}$ → Robin verification
-- **Test 4** – Jacobi, Parallel (MPI), Dirichlet, $\sin(\pi x)\sin(\pi y)$ → parallel correctness
-- **Test 5** – Jacobi, Parallel, Neumann, $\cos(\pi x)\cos(\pi y)$ → parallel Neumann
-- **Test 6** – Jacobi, Parallel, Robin, $e^{x+y}$ → parallel Robin
-- **Test 7** – Schwarz, Parallel, Dirichlet, $\sin(\pi x)\sin(\pi y)$ → domain decomposition
-- **Test 8** – Schwarz, Parallel, Neumann, $\cos(\pi x)\cos(\pi y)$ → DD with Neumann
-- **Test 9** – Schwarz, Parallel, Robin, $e^{x+y}$ → DD with Robin
-- **Test 10** – Jacobi, Seq vs Par, Dirichlet, $\sin(\pi x)\sin(\pi y)$ → convergence & speedup
-- **Test 11** – Jacobi, Seq vs Par, Neumann, $\cos(\pi x)\cos(\pi y)$ → convergence & speedup
-- **Test 12** – Jacobi, Seq vs Par, Robin, $e^{x+y}$ → convergence & speedup
-- **Test 13** – Schwarz, Seq vs Par, Dirichlet, $\sin(\pi x)\sin(\pi y)$ → DD convergence
-- **Test 14** – Schwarz, Seq vs Par, Neumann, $\cos(\pi x)\cos(\pi y)$ → DD Neumann convergence
-- **Test 15** – Schwarz, Seq vs Par, Robin, $e^{x+y}$ → DD Robin convergence
-- **Test 16** – Jacobi, Sequential, Dirichlet, $x^2y+xy^2+x+y+1$ → non‑homogeneous polynomial
-- **Test 17** – Jacobi, Sequential, Neumann, $x^2y+xy^2+x+y+1$ → Neumann polynomial
-- **Test 18** – Jacobi, Sequential, Robin, $\sin(x+y)+2x+3y$ → Robin trigonometric
-- **Test 19** – Jacobi, Parallel, Dirichlet, polynomial → parallel polynomial
-- **Test 20** – Jacobi, Parallel, Neumann, polynomial → parallel Neumann polynomial
-- **Test 21** – Jacobi, Parallel, Robin, trigonometric → parallel Robin trigonometric
-- **Test 22** – Schwarz, Seq vs Par, Neumann, polynomial → DD convergence (polynomial)
 
 All tests export the computed solution to **VTK** files for visual inspection. Convergence tests report \( L_2 \) errors, experimental order of convergence, and parallel speedup relative to the sequential baseline.
 
