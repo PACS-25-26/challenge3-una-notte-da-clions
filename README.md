@@ -71,41 +71,54 @@ The number of threads per MPI rank is computed automatically based on the number
 
 The solver writes solution output in VTK format, which can be opened with ParaView for interactive visualization.
 
-## Test suites
+## Test Suites
 
-### `include/laplacian_solvers_test_1.hpp`
+The integrated test suite (`laplacian_solvers_test_1.hpp` and `laplacian_solvers_test_2.hpp`) verifies correctness, measures parallel efficiency, and analyses convergence of the implemented solvers. It covers three boundary condition types – Dirichlet, Neumann, and Robin – for both the **Jacobi** and **Schwarz** (domain decomposition) solvers, in **sequential** and **MPI‑parallel** execution modes.
 
-This file implements the core validation cases for homogeneous boundary conditions and algorithmic comparisons. It includes:
+Each test constructs a known analytical solution \( u_{\text{exact}}(x,y) \), derives the corresponding source term \( f_0 = -\Delta u_{\text{exact}} \) and boundary data, then compares the numerical solution against the exact one. Convergence tests sweep over increasing mesh resolutions to compute experimental orders of convergence (EOC) and speedup profiles.
 
-- `run_test_1_dirichlet_sequential` — sequential Jacobi with exact solution `u(x,y) = \sin(\pi x) \sin(\pi y)`
-- `run_test_2_neumann_sequential` — sequential Jacobi with exact solution `u(x,y) = \cos(\pi x) \cos(\pi y)`
-- `run_test_3_robin_sequential` — sequential Jacobi with exact solution `u(x,y) = e^{x+y}`
-- `run_test_4_dirichlet_parallel`, `run_test_5_neumann_parallel`, `run_test_6_robin_parallel` — MPI+OpenMP parallel Jacobi tests
-- `run_test_7_dirichlet_parallel_schwarz`, `run_test_8_neumann_parallel_schwarz`, `run_test_9_robin_parallel_schwarz` — parallel Schwarz domain decomposition tests
-- `run_test_10_dirichlet_sequential_vs_parallel_jacobi`, `run_test_11_neumann_sequential_vs_parallel_jacobi`, `run_test_12_robin_sequential_vs_parallel_jacobi` — sequential vs parallel convergence comparisons for Jacobi
-- `run_test_13_dirichlet_sequential_vs_parallel_schwarz`, `run_test_14_neumann_sequential_vs_parallel_schwarz`, `run_test_15_robin_sequential_vs_parallel_schwarz` — sequential vs parallel convergence comparisons for Schwarz
+### Exact Solutions & Laplacians
 
-The mathematical model solved in these tests is:
+| Test group | Exact solution \( u(x,y) \) | Source term \( f_0(x,y) = -\Delta u \) |
+| 1,4,7,10,13 | \( \sin(\pi x)\sin(\pi y) \) | \( 2\pi^2 \sin(\pi x)\sin(\pi y) \) |
+| 2,5,8,11,14 | \( \cos(\pi x)\cos(\pi y) \) | \( 2\pi^2 \cos(\pi x)\cos(\pi y) \) |
+| 3,6,9,12,15 | \( e^{x+y} \) | \( -2e^{x+y} \) |
+| 16,17,19,20,22 | \( x^2y + xy^2 + x + y + 1 \) | \( -2(x+y) \) |
+| 18,21 | \( \sin(x+y) + 2x + 3y \) | \( 2\sin(x+y) \) |
 
-- `-Δ u(x, y) = f(x, y),  (x, y) ∈ (0, 1)^2`
+### Boundary Conditions
 
-with boundary conditions of the form:
+- **Dirichlet** – Prescribed value \( u = g \) on \(\partial\Omega\).
+- **Neumann** – Prescribed normal derivative \( \frac{\partial u}{\partial n} = g \) on \(\partial\Omega\).
+- **Robin** – Linear combination \( u + \frac{\partial u}{\partial n} = g \) on \(\partial\Omega\).
 
-- Dirichlet: `u|∂Ω = g_D`
-- Neumann: `∂u/∂n |∂Ω = g_N`
-- Robin: `α u + β ∂u/∂n |∂Ω = g_R`
+### List of Tests
 
-The tests use manufactured solutions to derive the source term `f(x, y)` and the boundary values, enabling direct comparison between the numerical and analytical solutions.
+| Test | Solver | Mode | BC | Exact solution | Purpose |
+| 1 | Jacobi | Sequential | Dirichlet | \( \sin(\pi x)\sin(\pi y) \) | Baseline validation |
+| 2 | Jacobi | Sequential | Neumann | \( \cos(\pi x)\cos(\pi y) \) | Neumann consistency |
+| 3 | Jacobi | Sequential | Robin | \( e^{x+y} \) | Robin verification |
+| 4 | Jacobi | Parallel (MPI) | Dirichlet | \( \sin(\pi x)\sin(\pi y) \) | Parallel correctness |
+| 5 | Jacobi | Parallel | Neumann | \( \cos(\pi x)\cos(\pi y) \) | Parallel Neumann |
+| 6 | Jacobi | Parallel | Robin | \( e^{x+y} \) | Parallel Robin |
+| 7 | Schwarz | Parallel | Dirichlet | \( \sin(\pi x)\sin(\pi y) \) | Domain decomposition |
+| 8 | Schwarz | Parallel | Neumann | \( \cos(\pi x)\cos(\pi y) \) | DD with Neumann |
+| 9 | Schwarz | Parallel | Robin | \( e^{x+y} \) | DD with Robin |
+| 10 | Jacobi | Sequential *vs* Parallel | Dirichlet | \( \sin(\pi x)\sin(\pi y) \) | Convergence & speedup |
+| 11 | Jacobi | Sequential *vs* Parallel | Neumann | \( \cos(\pi x)\cos(\pi y) \) | Convergence & speedup |
+| 12 | Jacobi | Sequential *vs* Parallel | Robin | \( e^{x+y} \) | Convergence & speedup |
+| 13 | Schwarz | Sequential *vs* Parallel | Dirichlet | \( \sin(\pi x)\sin(\pi y) \) | DD convergence |
+| 14 | Schwarz | Sequential *vs* Parallel | Neumann | \( \cos(\pi x)\cos(\pi y) \) | DD Neumann convergence |
+| 15 | Schwarz | Sequential *vs* Parallel | Robin | \( e^{x+y} \) | DD Robin convergence |
+| 16 | Jacobi | Sequential | Dirichlet | \( x^2y + xy^2 + x + y + 1 \) | Non‑homogeneous polynomial |
+| 17 | Jacobi | Sequential | Neumann | \( x^2y + xy^2 + x + y + 1 \) | Neumann polynomial |
+| 18 | Jacobi | Sequential | Robin | \( \sin(x+y) + 2x + 3y \) | Robin trigonometric |
+| 19 | Jacobi | Parallel | Dirichlet | polynomial | Parallel polynomial |
+| 20 | Jacobi | Parallel | Neumann | polynomial | Parallel Neumann polynomial |
+| 21 | Jacobi | Parallel | Robin | trigonometric | Parallel Robin trigonometric |
+| 22 | Schwarz | Sequential *vs* Parallel | Neumann | polynomial | DD convergence (polynomial) |
 
-### `include/laplacian_solvers_test_2.hpp`
-
-This file adds advanced non-homogeneous benchmark cases and a convergence study framework. It includes:
-
-- `run_test_16_dirichlet_sequential` — Dirichlet test with exact solution `u(x,y) = x^2 y + x y^2 + x + y + 1`
-- `run_test_17_neumann_sequential` — Neumann test for the same polynomial exact solution
-- `run_test_18_robin_sequential` — Robin test with exact solution `u(x,y) = \sin(x+y) + 2x + 3y`
-- `run_test_19_dirichlet_parallel`, `run_test_20_neumann_parallel`, `run_test_21_robin_parallel` — MPI+OpenMP parallel Jacobi versions of the non-homogeneous tests
-- `run_test_22_neumann_sequential_vs_parallel_schwarz` — convergence and performance benchmark for Schwarz under Neumann conditions
+All tests export the computed solution to **VTK** files for visual inspection. Convergence tests report \( L_2 \) errors, experimental order of convergence, and parallel speedup relative to the sequential baseline.
 
 The convergence benchmark evaluates serial and parallel runs across refinement levels:
 
