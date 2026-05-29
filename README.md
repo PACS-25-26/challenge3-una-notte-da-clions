@@ -73,9 +73,7 @@ The solver writes solution output in VTK format, which can be opened with ParaVi
 
 ## Test Suites
 
-The integrated test suite (`laplacian_solvers_test_1.hpp` and `laplacian_solvers_test_2.hpp`) verifies correctness, measures parallel efficiency, and analyses convergence of the implemented solvers. It covers three boundary condition types – Dirichlet, Neumann, and Robin – for both the **Jacobi** and **Schwarz** (domain decomposition) solvers, in **sequential** and **MPI‑parallel** execution modes.
-
-Each test constructs a known analytical solution \( u_{\text{exact}}(x,y) \), derives the corresponding source term \( f_0 = -\Delta u_{\text{exact}} \) and boundary data, then compares the numerical solution against the exact one. Convergence tests sweep over increasing mesh resolutions to compute experimental orders of convergence (EOC) and speedup profiles.
+The integrated test suite (`laplacian_solvers_test_1.hpp` and `laplacian_solvers_test_2.hpp`) verifies correctness, measures parallel efficiency, and analyses convergence of the implemented solvers. It covers three boundary condition types – Dirichlet, Neumann, and Robin – for both the **Jacobi** and **Schwarz** solvers, in **sequential** and **MPI‑parallel** execution modes.
 
 ## Exact solutions and source terms
 
@@ -133,8 +131,6 @@ $$f_0(x,y) = 2\sin(x+y)$$
 - **Neumann** – prescribed normal derivative $\frac{\partial u}{\partial n} = g$ on $\partial\Omega$
 - **Robin** – linear combination $u + \frac{\partial u}{\partial n} = g$ on $\partial\Omega$
 
-All tests export the computed solution to **VTK** files for visual inspection. Convergence tests report \( L_2 \) errors, experimental order of convergence, and parallel speedup relative to the sequential baseline.
-
 The convergence benchmark evaluates serial and parallel runs across refinement levels:
 
 ```tex
@@ -147,8 +143,6 @@ and records:
 - iteration counts
 - execution time in milliseconds
 - parallel speedup ratios
-
-For these cases, the forcing term `f(x,y)` is computed from the exact solution's analytic Laplacian, and boundary conditions are set accordingly.
 
 ## Doxygen and LaTeX documentation
 
@@ -169,9 +163,3 @@ xdg-open latex/refman.pdf
 ```
 
 If `latex/refman.pdf` is not built yet, you can generate it from the LaTeX source inside `latex/` using the provided `Makefile`.
-
-## Notes
-
-- `main.cpp` runs a fixed sequence of tests for Jacobi and Schwarz solvers
-- the implementation supports both sequential and parallel execution
-- boundary conditions and forcing terms are defined analytically within the test cases
