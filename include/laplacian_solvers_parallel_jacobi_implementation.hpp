@@ -15,20 +15,16 @@ namespace laplacian_solvers{
     Result_Struct Laplacian_Solver<solver_type, boundary_condition, execution_mode, funcType>::jacobi_parallel(){
         
         // Compute indexes and communication info
-        const unsigned remainder_rows = data.n % mpi_size;
-        const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
-
-        // Indexes for meshX and meshY
-        const unsigned start_row = mpi_rank * (data.n / mpi_size) + std::min(static_cast<unsigned>(mpi_rank), remainder_rows);
-        const unsigned end_row = start_row + local_rows - 1;
+        const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+        const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
 
         // Find process neighbors
         const int rank_up = (mpi_rank == 0) ? MPI_PROC_NULL : mpi_rank - 1; 
         const int rank_down = (mpi_rank == mpi_size - 1) ? MPI_PROC_NULL : mpi_rank + 1;
 
-        const unsigned up_row = (mpi_rank == 0? 0: 1);
-        const unsigned down_row = (mpi_rank == mpi_size -1? 0: 1);
-        const unsigned total_rows = local_rows + up_row + down_row;
+        const int up_row = (mpi_rank == 0 ? 0 : 1);
+        const int down_row = (mpi_rank == mpi_size - 1 ? 0 : 1);
+        const int total_rows = local_rows + up_row + down_row;
 
         // Build local matrixes. It will also host the upper and lower rows for later communication
         eigenMatrix u_h_local = eigenMatrix::Zero(total_rows, data.n);
@@ -58,7 +54,7 @@ namespace laplacian_solvers{
 
                 // Second - Compute new values, but not the received ones!
                 #pragma omp for collapse(2)
-                for(unsigned i = 1; i < total_rows - 1; i++){
+                for(int i = 1; i < total_rows - 1; i++){
                     for(unsigned j = 1; j < data.n - 1; j++){
                         u_h_new_local(i, j) = 0.25 * (u_h_local(i-1, j) + u_h_local(i+1, j) + u_h_local(i, j-1) + u_h_local(i, j+1) + h2 * data.f0(meshX(i - up_row, j), meshY(i - up_row, j)));         
                     }
@@ -94,9 +90,9 @@ namespace laplacian_solvers{
         std::vector<int> recv_counts(mpi_size);
         std::vector<int> displs(mpi_size);
 
-        for(unsigned i = 0; i < mpi_size; i++){
-            recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
-            displs[i] = i == 0? 0: displs[i-1] + recv_counts[i-1];
+        for(int i = 0; i < mpi_size; i++){
+            recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
+            displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
         }
 
         // Assemble global solution and mesh

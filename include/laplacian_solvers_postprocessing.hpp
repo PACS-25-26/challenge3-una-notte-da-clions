@@ -24,19 +24,19 @@ namespace laplacian_solvers{
             MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
             MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
-            const unsigned remainder_rows = data.n % mpi_size;
-            const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+            const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+            const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
 
             std::vector<int> recv_counts(mpi_size);
             std::vector<int> displs(mpi_size);
 
-            for(unsigned i = 0; i < mpi_size; i++){
-                recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
-                displs[i] = i == 0? 0: displs[i-1] + recv_counts[i-1];
+            for(int i = 0; i < mpi_size; i++){
+                recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
+                displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
             }
 
-            MPI_Gatherv(meshX.data(), local_rows * data.n, MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
-            MPI_Gatherv(meshY.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshX.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshY.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
          
 
         } else{
@@ -90,18 +90,18 @@ namespace laplacian_solvers{
             MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
             MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);*/
 
-            const unsigned remainder_rows = data.n % mpi_size;
-            const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+            const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+            const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
 
             std::vector<int> recv_counts(mpi_size);
             std::vector<int> displs(mpi_size);
 
-            for(unsigned i = 0; i < mpi_size; i++){
-                recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
-                displs[i] = i == 0? 0: displs[i-1] + recv_counts[i-1];
+            for(int i = 0; i < mpi_size; i++){
+                recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
+                displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
             }
 
-            MPI_Gatherv(u_exact.data(), local_rows * data.n, MPI_DOUBLE, exact_solution.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(u_exact.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, exact_solution.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
         } else{
             exact_solution = u_exact;
@@ -132,20 +132,20 @@ namespace laplacian_solvers{
             //int mpi_size;
             //MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
 
-            const unsigned remainder_rows = data.n % mpi_size;
-            const unsigned local_rows = data.n / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
+            const int remainder_rows = static_cast<int>(data.n) % mpi_size;
+            const int local_rows = static_cast<int>(data.n) / mpi_size + (mpi_rank < remainder_rows ? 1 : 0); 
 
             std::vector<int> recv_counts(mpi_size);
             std::vector<int> displs(mpi_size);
 
-            for(unsigned i = 0; i < mpi_size; i++){
-                recv_counts[i] = data.n * (data.n / mpi_size + (i < remainder_rows? 1: 0));
+            for(int i = 0; i < mpi_size; i++){
+                recv_counts[i] = static_cast<int>(data.n) * (static_cast<int>(data.n) / mpi_size + (i < remainder_rows ? 1 : 0));
                 displs[i] = (i == 0) ? 0 : displs[i-1] + recv_counts[i-1];
             }
 
-            MPI_Gatherv(meshX.data(), local_rows * data.n, MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
-            MPI_Gatherv(meshY.data(), local_rows * data.n, MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
-            MPI_Gatherv(u_exact.data(), local_rows * data.n, MPI_DOUBLE, exact_solution_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshX.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshX_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(meshY.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, meshY_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            MPI_Gatherv(u_exact.data(), local_rows * static_cast<int>(data.n), MPI_DOUBLE, exact_solution_global.data(), recv_counts.data(), displs.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
         } else {
             // Caso sequenziale: le matrici globali copiano direttamente quelle locali

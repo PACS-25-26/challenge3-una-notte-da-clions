@@ -7,6 +7,8 @@
 #include <cmath>
 #include <vector>
 
+#define MAX_SCHWARZ_ITERATIONS 10
+
 namespace laplacian_solvers{
 
     /*
@@ -401,8 +403,7 @@ namespace laplacian_solvers{
         // Initialize loop variables
         eigenMatrix u_h_new_local(u_h_local);
         eigenMatrix u_h_old_global_step(u_h_local);
-        const double tol_squared = data.tolerance * data.tolerance;
-        double global_err = tol_squared + 1.0;
+        double global_err = data.tolerance + 1.0;
         unsigned global_iter = 0;
         const double h2 = h * h;
             
@@ -410,7 +411,7 @@ namespace laplacian_solvers{
 
         #pragma omp parallel
         {
-            while(global_err > tol_squared && global_iter < data.max_iterations){
+            while(global_err > data.tolerance && global_iter < data.max_iterations){
                 #pragma omp single
                 {
                     // 1. Handle communication with other processes (Exchange Ghost Cells)
@@ -426,7 +427,7 @@ namespace laplacian_solvers{
 
 
             // Local Schwarz iterations
-                for(unsigned local_iter = 0; local_iter < data.max_schwarz_iterations; ++local_iter) {
+                for(unsigned local_iter = 0; local_iter < MAX_SCHWARZ_ITERATIONS; ++local_iter) {
                 
                     #pragma omp for collapse(2)
                         for(unsigned i = 1; i < total_rows - 1; i++){
@@ -464,10 +465,11 @@ namespace laplacian_solvers{
 
             
                     // 3. Global error computation based on real rows ONLY
-                    const double macro_local_err = (u_h_local.block(up_row, 0, local_rows, data.n) - u_h_old_global_step.block(up_row, 0, local_rows, data.n)).squaredNorm();
+                    const double macro_local_err = (u_h_local.block(up_row, 0, local_rows, data.n) - 
+                                                u_h_old_global_step.block(up_row, 0, local_rows, data.n)).squaredNorm();
             
                     MPI_Allreduce(&macro_local_err, &global_err, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);  
-                    global_err = h * global_err; 
+                    global_err = std::sqrt(h * global_err); 
             
                     global_iter++;       
             
@@ -498,7 +500,7 @@ namespace laplacian_solvers{
         result.X.swap(meshX_global);
         result.Y.swap(meshY_global);
         result.iterations = global_iter;
-        result.iterartion_residue = std::sqrt(global_err);
+        result.iterartion_residue = global_err;
         if(mpi_rank == 0) result.valid = true;
 
         return result;

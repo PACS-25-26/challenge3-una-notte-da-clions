@@ -31,7 +31,7 @@ namespace laplacian_solvers{
         // If more processes are available than rows throw error
         
         if constexpr(execution_mode == ExecutionMode::PARALLEL){
-            if(mpi_size > data.n) {
+            if(mpi_size > static_cast<int>(data.n)) {
                 if (mpi_rank == 0) std::cerr << "Error: program launched with " << mpi_size << " processors, but number of rows is " << data.n << ". Aborting..." << std::endl;
                 MPI_Abort(MPI_COMM_WORLD, 1);                
             }
@@ -92,12 +92,12 @@ namespace laplacian_solvers{
         const unsigned remainder_rows = data.n % mpi_size;
 
         const unsigned start_row = mpi_rank * local_rows + std::min(remainder_rows, static_cast<unsigned>(mpi_rank));
-        const unsigned end_row = start_row + local_rows + (mpi_rank < remainder_rows ? 1 : 0);
+        const unsigned end_row = start_row + local_rows + (static_cast<unsigned>(mpi_rank) < remainder_rows ? 1 : 0);
 
         meshX = eigenMatrix::Zero(end_row - start_row, data.n);
         meshY = eigenMatrix::Zero(end_row - start_row, data.n);  
         
-        #pragma omp prallel for
+        #pragma omp parallel for
         for(unsigned i = 0; i < end_row - start_row; i++) for(unsigned j = 0; j < data.n; j++){
            meshX(i, j) = data.x1 + j * h;
            meshY(i, j) = data.x1 + (i + start_row) * h;
